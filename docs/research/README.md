@@ -10,6 +10,7 @@ Research audit and plan for the Dimts (ድምጽ) proposal described in `DIMTS_A
 | [`ASSUMPTIONS.md`](ASSUMPTIONS.md) | Register of the 50 assumptions the design rests on: origin, status, evidence, test and impact if wrong. |
 | [`CODEBASE_STRUCTURE.md`](CODEBASE_STRUCTURE.md) | Proposed monorepo layout revised from §12 in light of the findings, including the two-tier (competition cloud / in-country pilot) deployment. |
 | [`TO_OBTAIN.md`](TO_OBTAIN.md) | Sources still needed, and what the supplied batch resolved. |
+| [`HOSTING_OPTIONS.md`](HOSTING_OPTIONS.md) | Ethiopian hosting/cloud providers checked against Article 22 (data sovereignty), for the `infra/openeuler` sovereign-tier server. |
 | [`papers/`](papers/) | Full texts supplied on 2026-09-26. Copyrighted, so keep them private (see TO_OBTAIN). |
 
 ## Verdict labels

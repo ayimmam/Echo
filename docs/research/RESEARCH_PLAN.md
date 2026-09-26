@@ -119,7 +119,7 @@ The core thesis question: *Do Dimts' acoustic indicators measure something Ethio
 | S3 | PyTorch→ONNX→`.ms` and MindSpore→MindIR→`.ms` outputs agree within 1e-4; full-quant PTQ runs; list the ops that fall back to FP32 | W3 |
 | S4 | MindSpore 2.10 trains a toy model on the in-country hardware | W1 |
 | S5 | ModelArts, OBS and ECS all in **AF-Johannesburg**; flavours and prices recorded; OBS unencrypted and holding **public data only** | W1 |
-| S6 | openEuler LTS + openGauss + psycopg connect (SASL/sha256 workaround) | W1 |
+| S6 | openEuler LTS + openGauss + psycopg connect (SASL/sha256 workaround); **host chosen from [`HOSTING_OPTIONS.md`](HOSTING_OPTIONS.md)** — Zergaw VPS/DBaaS, INSA G-Cloud or Ethio Telecom teleCloud, not the on-campus box, unless the university prefers self-hosting | W1 |
 | S7 | Microphone foreground service; `AudioRecordingCallback` detects call-silencing; 40-minute battery test | W2 |
 | S8 | 16 KB decision: sideload for the pilot; rebuild Lite before any Play release | W6 |
 | S9 | SQLCipher + Keystore key | W2 |
