@@ -8,6 +8,21 @@ This answers a narrower question than the rest of the pack: **where can the `inf
 
 The Ethio Telecom pricing shown (Linux Bronze/Silver/Gold/Platinum, Plesk, ETB 650–5,200/year) is **shared web hosting** — a PHP/MySQL site host with a control panel, not a VPS or bare-metal server with root access. Dimts' sovereign tier needs to run a custom FastAPI app and openGauss/PostgreSQL, which shared Plesk hosting cannot do. Even if Ethio Telecom's data centers are in Ethiopia (they are — see below), this specific product is the wrong tier.
 
+## Update 2026-09-26: Zergaw's own shared-hosting tier has the same problem
+
+The user found Zergaw's shared-hosting page (`zergaw.com/shared-hosting-platform/`), which states **"Hosting Location: Ethiopia"** per plan — even more explicit Article 22 evidence than anything found earlier. But most of its tiers have the same fit problem as the Ethio Telecom screenshot:
+
+| Zergaw plan | Server | Root access | Price | Fits `infra/openeuler`? |
+|---|---|---|---|---|
+| Basic | "None (shared)" | No | ETB 5,481/**year** | No — shared hosting, "Python support" is a WSGI/Passenger app slot, not a machine you control |
+| Standard | "None (shared)" | No | ETB 7,035/year | No |
+| Premium | "None (shared)" | No | ETB 10,139/year | No |
+| **Dedicated** | 2 CPU, 4 GB RAM, dedicated IP | **Yes** | ETB 5,646.55/**month** (≈ ETB 67,760/year) | **Yes** — this is the one that can install openGauss and run FastAPI, WorkManager ingest, and cron jobs as your own daemons |
+
+The "Dedicated" row is a materially different product from the shared tiers above it, despite being listed on the same pricing page. It overlaps in spec (2 vCPU/4 GB) with a similarly-priced entry on Zergaw's separate Cloud Server (VPS) page (`CS02004`, ETB 5,205/month, quoted in the table below) — confirm with Zergaw sales whether "Dedicated" (shared-hosting page) and the `CS02004` cloud server (VPS page) are the same underlying product, and whether either lets you provision an openEuler image rather than their default OS template.
+
+**Rule of thumb going forward:** on any Ethiopian host's pricing page, "shared hosting" / "Server: none" / a Plesk-or-cPanel-style feature list (subdomains, email accounts, "N databases") means no root and no ability to install openGauss or run your own background services, whatever the location says. Only a line item that names CPU/RAM and says **root/dedicated IP** (VPS, cloud server, dedicated server, bare metal) is a candidate for `infra/openeuler`.
+
 ## Providers that offer rentable infrastructure in Ethiopia
 
 | Provider | Confirmed location | Offering | Fits the sovereign-tier server? | Price |
@@ -27,4 +42,4 @@ The Ethio Telecom pricing shown (Linux Bronze/Silver/Gold/Platinum, Plesk, ETB 6
 
 ## Recommendation
 
-For a **budget self-service VPS or managed Postgres with an explicit local-law framing**, contact **Zergaw** first — it's the only one of these with published ETB pricing and a direct compliance statement. For the strongest **compliance and pitch narrative** ("hosted on Ethiopia's own national data center"), get a quote from **INSA's G-Cloud**. Check **Ethio Telecom teleCloud** too, given the Huawei Cloud Stack overlap with the rest of the competition build. Treat Raxio and UT Solutions as colocation/build options only, not as what you want for W0–W1's spike S6.
+For a **budget self-service VPS or managed Postgres with an explicit local-law framing**, contact **Zergaw** first, specifically about their **Dedicated** server or `CS02004` cloud server (both root, 2 vCPU/4 GB) — not the Basic/Standard/Premium shared tiers, which don't give you a machine to install anything on regardless of their stated location. For the strongest **compliance and pitch narrative** ("hosted on Ethiopia's own national data center"), get a quote from **INSA's G-Cloud**. Check **Ethio Telecom teleCloud** too, given the Huawei Cloud Stack overlap with the rest of the competition build. Treat Raxio and UT Solutions as colocation/build options only, not as what you want for W0–W1's spike S6.
