@@ -1,6 +1,6 @@
 # In-country hosting options — Article 22 compliance
 
-Checked 2026-09-26, prompted by a review of Ethio Telecom's shared-hosting pricing (`myportal.ethiotelecom.et`) against the uploaded copy of Proclamation No. 1321/2016 E.C. (= 1321/2024 G.C.), Article 22 ("Data Sovereignty"): *"Every data controller or data processor shall ensure the storage, on a server or data center located in Ethiopia, of personal data collected or obtained locally."* This matches the Negarit Gazeta text already used in [`CLAIMS_AUDIT.md`](CLAIMS_AUDIT.md) §3 (Art. 22).
+Checked 2026-09-26, prompted by a review of Ethio Telecom's shared-hosting pricing (`myportal.ethiotelecom.et`) against the uploaded copy of Proclamation No. 1321/2016 E.C. (= 1321/2024 G.C.), Article 22 ("Data Sovereignty"): *"Every data controller or data processor shall ensure the storage, on a server or data center located in Ethiopia, of personal data collected or obtained locally."* This matches the Negarit Gazeta text already used in [`CLAIMS_AUDIT.md`](CLAIMS_AUDIT.md) §3 (Art. 22). A copy of the Proclamation is kept at [`../legal/Proclamation-1321-2016EC-Personal-Data-Protection.pdf`](../legal/Proclamation-1321-2016EC-Personal-Data-Protection.pdf).
 
 This answers a narrower question than the rest of the pack: **where can the `infra/openeuler` sovereign-tier server (§8.1, §12) actually be hosted?**
 

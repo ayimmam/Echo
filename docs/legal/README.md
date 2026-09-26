@@ -1,0 +1,5 @@
+# Legal source documents
+
+- [`Proclamation-1321-2016EC-Personal-Data-Protection.pdf`](Proclamation-1321-2016EC-Personal-Data-Protection.pdf) — Ethiopia's Personal Data Protection Proclamation No. 1321/2024 (1321/2016 E.C.), Federal Negarit Gazette, 30th Year No. 35, 24 July 2024. Supplied by the user 2026-09-26; confirmed identical to the DataGuidance-hosted scan used throughout `docs/research/` (same 64 pages, same Article 22 text). See [`../research/CLAIMS_AUDIT.md`](../research/CLAIMS_AUDIT.md) §3 and [`../research/HOSTING_OPTIONS.md`](../research/HOSTING_OPTIONS.md) for how it's used.
+
+**Before making this repository public** (the Huawei ICT Competition requires open-sourcing for the Regional and Global stages — see `docs/research/RESEARCH_PLAN.md` WS-G): keep this folder and `docs/research/papers/` out of the public repository, or check with the legal advisor whether redistributing the Gazette text is fine. The Proclamation itself is a public law, but confirm before including any other legal correspondence here.

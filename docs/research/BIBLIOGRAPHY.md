@@ -150,7 +150,7 @@ The tag says how far the source was read for this audit. It doesn't judge the so
 
 ## F. Legal, ethics and privacy
 
-- Federal Democratic Republic of Ethiopia. (2024). Personal Data Protection Proclamation No. 1321/2024. *Federal Negarit Gazette, 30*(35), 15619ff. Scan hosted by DataGuidance: https://www.dataguidance.com/sites/default/files/personal_data_protection_proclamation_1321-2024.pdf **[Full]** Get the official copy through the university legal office.
+- Federal Democratic Republic of Ethiopia. (2024). Personal Data Protection Proclamation No. 1321/2024 (1321/2016 E.C.). *Federal Negarit Gazette, 30*(35), 15619ff. **[Full]** Two copies checked and confirmed identical (both 64 pp; Art. 22 text matches): the scan hosted by DataGuidance (`https://www.dataguidance.com/sites/default/files/personal_data_protection_proclamation_1321-2024.pdf`) and a copy supplied by the user, kept in this repo at `docs/legal/Proclamation-1321-2016EC-Personal-Data-Protection.pdf`. Still worth checking both against the university legal office's copy before final citation.
 - Sweeney, L. (2002). k-anonymity: A model for protecting privacy. *International Journal of Uncertainty, Fuzziness and Knowledge-Based Systems, 10*(5), 557–570. https://doi.org/10.1142/S0218488502001648 **[Metadata]**
 
 ## G. Competition
