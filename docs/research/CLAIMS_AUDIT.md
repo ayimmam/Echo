@@ -1,5 +1,8 @@
 # Claims audit — DIMTS_ARCHITECTURE_CONTEXT.md
 
+> Planning review 2026-09-27: this is a dated source audit, not implementation evidence. See [IMPLEMENTATION_REVIEW.md](IMPLEMENTATION_REVIEW.md). In particular, the reviewed papers do not prove universal absence of prior automated language measurement; public/synthetic speech is not automatically non-personal; model licensing needs derived-weight review; and sideloading does not resolve 16 KB runtime incompatibility.
+
+
 First checked 2026-09-25. Updated 2026-09-26 with the full texts supplied in [`papers/`](papers/). Verdict labels are defined in [`README.md`](README.md). Citations are (Author, year) and resolve in [`BIBLIOGRAPHY.md`](BIBLIOGRAPHY.md). Section numbers (§) refer to the architecture document. Page numbers marked "PDF p." count PDF pages rather than printed page numbers.
 
 ## 0. Findings that change the design

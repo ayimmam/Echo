@@ -1,6 +1,6 @@
 # Assumptions register — Dimts
 
-Status as of 2026-09-26. This lists every assumption the design still rests on, where it comes from, how strong the evidence is, and how it will be tested. Evidence is detailed in [`CLAIMS_AUDIT.md`](CLAIMS_AUDIT.md); tests are scheduled in [`RESEARCH_PLAN.md`](RESEARCH_PLAN.md).
+Evidence register dated 2026-09-26; planning caveats updated 2026-09-27. Status counts include the 2026-09-27 downgrade of the unproven novelty claim, not implementation readiness. See [`IMPLEMENTATION_REVIEW.md`](IMPLEMENTATION_REVIEW.md) for current gates. This lists every assumption the design still rests on, where it comes from, how strong the evidence is, and how it will be tested. Evidence is detailed in [`CLAIMS_AUDIT.md`](CLAIMS_AUDIT.md); tests are scheduled in [`RESEARCH_PLAN.md`](RESEARCH_PLAN.md).
 
 **Origin column:**
 
@@ -21,9 +21,9 @@ Status as of 2026-09-26. This lists every assumption the design still rests on, 
 ## Summary
 
 - **Out of 50 assumptions:**
-  - 7 hold;
+  - 6 hold;
   - 16 are plausible but untested in this setting;
-  - 16 are untested;
+  - 17 are untested;
   - 11 were contradicted and have been replaced.
 - **The five that could sink the project if wrong:**
   - **A-T4:** a desk-placed phone yields usable audio.
@@ -50,7 +50,7 @@ Status as of 2026-09-26. This lists every assumption the design still rests on, 
 | A-P5 | Talk ratio (I-1) is a meaningful quality proxy that teachers can change with feedback. | ARCH §5 | 🟡 Plausible | RCT −5 pp talk share (Demszky & Liu, 2023, US online); Liu & Cohen (2021) | Pilot pre/post plus the expert panel (B2) | Report it only as descriptive |
 | A-P6 | Short response latency (I-2) signals insufficient wait time. | ARCH §5 | 🟡 Plausible, confounded | Rowe (1986); Tobin (1987). Choral drills have near-zero latency by design. | Split I-2 by response type; question detection (R-4) | Drop the coaching rule for I-2 |
 | A-P7 | High choral ratio (I-3) is undesirable. | ARCH §5 | ❌ Changed | Heward et al. (1989) vs Pontefract & Hardman (2005) | **Replacement:** I-3 is a *balance* indicator | — |
-| A-P8 | Classroom language has not been measured systematically, so I-6 is novel. | ARCH §2.4 | ✅ Holds (as "automated, systematic") | Heugh et al. (2007): notes, checklist abandoned. Piper et al. (2016): child self-report. | Systematic search C1 before claiming "first" | Reword to "first automated" |
+| A-P8 | Classroom language has not been measured systematically, so I-6 is novel. | ARCH §2.4 | ❓ Untested (novelty search incomplete) | Heugh et al. (2007): notes, checklist abandoned. Piper et al. (2016): child self-report. | Systematic search C1 before claiming "first" | Describe proposed continuous measurement; first-of-kind claim remains unverified |
 | A-P9 | Teachers switch between Amharic, Sidaamu Afoo and English within lessons. | ARCH §6 C-6 | 🟡 Plausible | Heugh et al. (2007) observed routine Amharic–English code-switching | RQ-A4 classroom visits | The LID label set changes |
 | A-P10 | Teachers will use a private, non-punitive weekly report. | ARCH §3 | ❓ Untested | Jensen et al. (2020): feedback is usually evaluative. Birnhack & Perry-Hazan (2021): teachers weigh their own privacy. | Pilot interviews (§14.5), co-design | Product redesign |
 | A-P11 | Classrooms have 40–80 children. | ARCH §6 C-5 | 🟡 Plausible (averages) | Pupil-section ratio, Grades 1–6: national 54.2, Sidama 59.6 (MoE, 2025) | Record class size per pilot lesson | Augmentation ranges change |
@@ -62,10 +62,10 @@ Status as of 2026-09-26. This lists every assumption the design still rests on, 
 |---|---|---|---|---|---|---|
 | A-T1 | Teachers own Android 10+ phones with about 2 GB RAM. | ARCH C-2 | 🟡 Plausible | StatCounter: Android 94%, mostly v11+ (web traffic) | Phone survey of pilot teachers. Sys, W1 | Provide reference phones |
 | A-T2 | RTF ≤ 0.3 and RSS ≤ 300 MB on the target phone. | ARCH C-3 | ❓ Untested | Schlotterbeck et al. (2021) ≈ RTF 0.12 on unspecified hardware | S2 with the bundled `benchmark` tool | Smaller model or frame skipping |
-| A-T3 | All on-device inference is INT8. | ARCH C-2 | ❌ Changed | Lite r2.10.0: GRU/LSTM FP16/FP32 only | **Replacement:** conv/attention layers INT8, recurrent layers FP16 (or a convolution-only student) | — |
+| A-T3 | All on-device inference is INT8. | ARCH C-2 | ❌ Changed | Lite r2.10.0: GRU/LSTM FP16/FP32 only | **Replacement:** INT8 candidate where export/runtime support is demonstrated; recurrent layers may need FP16/FP32 (or a convolution-only student) | — |
 | A-T4 | A phone lying on the teacher's desk captures usable audio. | ARCH §3 | ❓ Untested — **critical** | Jensen et al. (2020): room mics "produced noisy audio". Schlotterbeck et al. (2021): lavalier into a smartphone. | E1: desk vs wired lavalier. ML, W1 | Add a clip-on mic to the kit (D-7) |
 | A-T5 | MindSpore Lite 2.10.0 runs on Android via the Java API. | ARCH §7 | ✅ Holds (package) / ❓ on device | AAR inspected; minSdk 19 | S1 | JNI or ONNX fallback |
-| A-T6 | The app can be published on Google Play later. | PACK | ❓ Untested | The AAR is 4 KB-aligned; Play requires 16 KB for API 35+ updates from 2027-02-01 | S8 | Rebuild Lite with 16 KB alignment |
+| A-T6 | The app can be published on Google Play later. | PACK | ❓ Untested | The AAR is 4 KB-aligned; Play requires 16 KB for API 35+ updates from 2027-02-01; sideloading does not fix incompatible native libraries on 16 KB devices | S8 | Rebuild Lite with 16 KB alignment |
 | A-T7 | Capture runs uninterrupted for 40 minutes. | ARCH §8.3 | 🟡 Plausible, with gaps | Android silences the mic during calls or when a higher-priority app takes it | S7; mark silenced spans as missing | Indicators computed on partial lessons |
 | A-T8 | MindNLP loads the SSL teacher encoder. | ARCH §7.2 | ❌ Changed | The repository pivoted to MindAct; legacy branch frozen | **Replacement:** PyTorch/HF teacher; student in MindSpore (D-1) | — |
 | A-T9 | MindSpore 2.10 trains on the in-country node. | ARCH §7.2 | ❓ Untested | 2.10 notes are Ascend-focused | S4 | Train the student in PyTorch too; keep Lite for inference |
@@ -85,7 +85,7 @@ Status as of 2026-09-26. This lists every assumption the design still rests on, 
 | A-D6 | Teacher–student distillation gets a tiny model close to a large one. | ARCH §8.2 | 🟡 Plausible | Chang et al. (2022); Schmid et al. (2023) | E6 | Supervised small model only |
 | A-D7 | 6–10 annotated hours with κ ≥ 0.70 is achievable. | ARCH §9.3 | ❓ Untested | — | Annotation pilot, W3–4 | Fewer classes or more hours |
 | A-D8 | Frame-level errors don't wreck indicator validity. | PACK | ❓ Untested | Errors bias downstream estimates (Gautheron et al., 2025) | E7 | Report calibrated indicators with intervals |
-| A-D9 | MMS models (CC-BY-NC) may be used for this project. | PACK | 🟡 Plausible | Non-commercial thesis and competition | Note in model cards | Replace them before any commercial use |
+| A-D9 | MMS models (CC-BY-NC) may be used for this project. | PACK | 🟡 Plausible | Non-commercial thesis and competition | Review competition use and derived-weight redistribution before G3; document in model manifests | Use an approved alternative where restrictions cannot be met |
 | A-D10 | Synthetic classroom mixtures give a useful pre-training signal. | ARCH D-6 | 🟡 Plausible | Common practice (Ko et al., 2017) | E2/E4 comparisons | Rely on real data only |
 
 ## L — Legal and ethics
@@ -105,7 +105,7 @@ Status as of 2026-09-26. This lists every assumption the design still rests on, 
 |---|---|---|---|---|---|---|
 | A-C1 | The Preliminary submission is due around **1 Dec 2026**. | PACK | ❓ Untested | The page says only "Nov–Dec 2026" | Read the template and portal deadline. Lead, W0 | Pull W7–8 work forward |
 | A-C2 | The Huawei stack is a *preference*. | ARCH C-11 | ❌ Changed | 2026–27: "must be deployed on Huawei Cloud and use at least one Huawei Cloud service" | **Replacement:** Huawei Cloud deployment is mandatory for the competition build | — |
-| A-C3 | A Huawei Cloud demo holding **only synthetic or public data** satisfies both the competition ("complying with local laws") and Proclamation 1321/2024. | PACK | 🟡 Plausible — **critical** | No personal data means Art. 22 doesn't apply; the competition only requires lawful operation | Legal advisor WS-F Q8, in writing | Demo hosted in Ethiopia with only a thin Huawei Cloud service (e.g. RDS for public aggregates) |
+| A-C3 | A Huawei Cloud demo holding **only synthetic or public data** satisfies both the competition ("complying with local laws") and Proclamation 1321/2024. | PACK | 🟡 Plausible — **critical** | Synthetic records minimise pilot-data risk; public voices, mixtures and derived artefacts still require review. Legal and competition acceptance remains open | Legal advisor WS-F Q8, in writing | Demo hosted in Ethiopia with only a thin Huawei Cloud service (e.g. RDS for public aggregates) |
 | A-C4 | Ethiopia competes in the "Northern Africa" division. | PACK | 🟡 Plausible | The Huawei Technologies Ethiopia registration guide points to the Northern Africa division | Email the Huawei Ethiopia contact | Different schedule or rules |
 | A-C5 | A live Android demo will count. | ARCH §17 | ✅ Holds (optional) | "Hardware devices are optional … prepare them on their own" | — | — |
 | A-C6 | Scoring rewards system and technical complexity. | ARCH §17 | ❌ Changed → see A-C2 | Prelim/National score Innovation 60 / Application value 40 | Pitch leads with innovation and application value; complexity supports them | — |
@@ -118,3 +118,18 @@ Status as of 2026-09-26. This lists every assumption the design still rests on, 
 | A-O1 | Ethics approval arrives by W3–4. | ARCH §16 | ❓ Untested — **critical** | — | Ask the IRB for typical turnaround. Lead, W0 | Synthetic-only ML until approval; the Preliminary uses synthetic data |
 | A-O2 | Three people can deliver edge, server, dashboard, ML and cloud demo by December. | ARCH C-10 | 🟡 Plausible, tight | The scope grew with the cloud demo tier (S10) | Weekly burn-down | Cut the dashboard to one view; the demo page reuses it |
 | A-O3 | Twenty to thirty lessons can be recorded by W5–6. | ARCH §16 | ❓ Untested | Depends on A-O1 and on teachers | Recruitment log | Fewer lessons, more augmentation |
+
+
+## Follow-up register — STEM-first trial (2026-09-27)
+
+The 50-entry counts above cover the original audit only. Stage order is user-directed, not an assumption. These additional assumptions remain open:
+
+| ID | Assumption | Status / test | Consequence |
+|---|---|---|---|
+| A-U1 | Undergraduate participants are all adults. | Not assumed; eligibility and approved consent at G4-U. | Apply appropriate procedure or exclude minors before recording. |
+| A-U2 | Child-role model transfers to adult instructor/student attribution. | Untested; STREAM-02/MODEL-01; do not relabel logits. | Capture/coarse-activity only or compatible adult model/human annotations. |
+| A-U3 | STEM rooms/mics/languages represent early grades. | Untested; E1/E3 repeated independently in P2. | P1 technical success cannot replace G5-E validity. |
+| A-U4 | ≥3 instructors/≥2 courses/6 sessions can be recruited. | Planning target; confirm formats, durations, languages and voluntary participation. | Report actual sample and unsupported conditions. |
+| A-U5 | Selected DB/driver verifies server identity. | Open; INF-09/DB-01 documents openGauss verify-full limitation. | Ratify authenticated alternative or PostgreSQL before real data. |
+
+See [STEM_TRIAL_PLAN.md](STEM_TRIAL_PLAN.md) and [INFRASTRUCTURE_RECHECK.md](INFRASTRUCTURE_RECHECK.md). Neither classroom cohort may export personal or pilot-derived data to the synthetic cloud demo.

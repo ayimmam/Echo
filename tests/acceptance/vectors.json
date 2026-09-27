@@ -1,0 +1,587 @@
+[
+  {
+    "id": "CORE-01",
+    "rationale": "No elapsed or observed time; ratios are unavailable.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 0,
+      "timeline": []
+    },
+    "expected": {
+      "observed_s": 0.0,
+      "missing_s": 0.0,
+      "I1": null,
+      "I2": {
+        "single": {
+          "n": 0,
+          "median": null
+        }
+      },
+      "I3": null,
+      "I4": {
+        "count": 0,
+        "per_10min": null
+      },
+      "I5": null,
+      "I6": null,
+      "I7": null,
+      "I8": 0
+    }
+  },
+  {
+    "id": "CORE-02",
+    "rationale": "Exactly 60 seconds observed silence is one event, no speech ratios.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 6000,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 6000,
+          "label": "NON_SPEECH"
+        }
+      ]
+    },
+    "expected": {
+      "observed_s": 60.0,
+      "I1": null,
+      "I3": null,
+      "I5": 0.0,
+      "I6": null,
+      "I7": 0.0,
+      "I8": 1
+    }
+  },
+  {
+    "id": "CORE-03",
+    "rationale": "Missing capture is neither silence nor an eligible minute.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 6000,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 6000,
+          "label": "MISSING"
+        }
+      ]
+    },
+    "expected": {
+      "observed_s": 0.0,
+      "missing_s": 60.0,
+      "I1": null,
+      "I4": {
+        "count": 0,
+        "per_10min": null
+      },
+      "I5": null,
+      "I7": null,
+      "I8": 0
+    }
+  },
+  {
+    "id": "CORE-04",
+    "rationale": "Unknown teacher language retains its duration in denominator.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 6000,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 6000,
+          "label": "TEACHER",
+          "lang": "unknown"
+        }
+      ]
+    },
+    "expected": {
+      "I1": 1.0,
+      "I3": null,
+      "I5": 0.0,
+      "I6": {
+        "amh": 0.0,
+        "sid": 0.0,
+        "eng": 0.0,
+        "oth": 0.0,
+        "unknown": 1.0
+      },
+      "I7": 0.0,
+      "I8": 0
+    }
+  },
+  {
+    "id": "CORE-05",
+    "rationale": "One zero-gap response, one turn in one observed minute.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 6000,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 1000,
+          "label": "TEACHER",
+          "lang": "eng"
+        },
+        {
+          "start_tick": 1000,
+          "end_tick": 2000,
+          "label": "CHILD_SINGLE"
+        },
+        {
+          "start_tick": 2000,
+          "end_tick": 6000,
+          "label": "NON_SPEECH"
+        }
+      ]
+    },
+    "expected": {
+      "I1": 0.5,
+      "I2": {
+        "single": {
+          "n": 1,
+          "median": 0.0,
+          "p25": 0.0,
+          "p75": 0.0
+        },
+        "choral": {
+          "n": 0,
+          "median": null
+        }
+      },
+      "I3": 0.0,
+      "I4": {
+        "count": 1,
+        "per_10min": 10.0
+      },
+      "I5": 1.0,
+      "I6": {
+        "eng": 1.0,
+        "unknown": 0.0
+      },
+      "I7": 1.0,
+      "I8": 0
+    }
+  },
+  {
+    "id": "CORE-06",
+    "rationale": "Missing gap breaks turn and invalidates the sole coverage bin; rate uses 50 seconds.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 6000,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 1000,
+          "label": "TEACHER",
+          "lang": "amh"
+        },
+        {
+          "start_tick": 1000,
+          "end_tick": 2000,
+          "label": "MISSING"
+        },
+        {
+          "start_tick": 2000,
+          "end_tick": 3000,
+          "label": "CHILD_SINGLE"
+        },
+        {
+          "start_tick": 3000,
+          "end_tick": 6000,
+          "label": "NON_SPEECH"
+        }
+      ]
+    },
+    "expected": {
+      "observed_s": 50.0,
+      "missing_s": 10.0,
+      "I1": 0.5,
+      "I2": {
+        "single": {
+          "n": 0,
+          "median": null
+        }
+      },
+      "I4": {
+        "count": 1,
+        "per_10min": 12.0
+      },
+      "I5": 0.0,
+      "I7": null,
+      "I8": 0
+    }
+  },
+  {
+    "id": "CORE-07",
+    "rationale": "Exactly 10 second response gap is included in latency.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 6000,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 1000,
+          "label": "TEACHER",
+          "lang": "eng"
+        },
+        {
+          "start_tick": 1000,
+          "end_tick": 2000,
+          "label": "NON_SPEECH"
+        },
+        {
+          "start_tick": 2000,
+          "end_tick": 3000,
+          "label": "CHILD_CHORAL"
+        },
+        {
+          "start_tick": 3000,
+          "end_tick": 6000,
+          "label": "NON_SPEECH"
+        }
+      ]
+    },
+    "expected": {
+      "I1": 0.5,
+      "I2": {
+        "choral": {
+          "n": 1,
+          "median": 10.0,
+          "p25": 10.0,
+          "p75": 10.0
+        }
+      },
+      "I3": 1.0,
+      "I4": {
+        "count": 0,
+        "per_10min": 0.0
+      },
+      "I5": 1.0,
+      "I7": 1.0
+    }
+  },
+  {
+    "id": "CORE-08",
+    "rationale": "10.01 second gap excluded from I2 but I5 has no silence-gap cap.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 6000,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 1000,
+          "label": "TEACHER",
+          "lang": "eng"
+        },
+        {
+          "start_tick": 1000,
+          "end_tick": 2001,
+          "label": "NON_SPEECH"
+        },
+        {
+          "start_tick": 2001,
+          "end_tick": 3001,
+          "label": "CHILD_SINGLE"
+        },
+        {
+          "start_tick": 3001,
+          "end_tick": 6000,
+          "label": "NON_SPEECH"
+        }
+      ]
+    },
+    "expected": {
+      "I2": {
+        "single": {
+          "n": 0,
+          "median": null
+        }
+      },
+      "I5": 1.0,
+      "I7": 1.0
+    }
+  },
+  {
+    "id": "CORE-09",
+    "rationale": "Overlap contributes to speech denominator but is not attributed to teacher.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 6000,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 6000,
+          "label": "OVERLAP"
+        }
+      ]
+    },
+    "expected": {
+      "I1": 0.0,
+      "I3": null,
+      "I5": 0.0,
+      "I6": null,
+      "I7": 0.0,
+      "I8": 0
+    }
+  },
+  {
+    "id": "CORE-10",
+    "rationale": "Within-turn language change/abstention is duration weighted without nearest-label inheritance.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 6000,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 3000,
+          "label": "TEACHER",
+          "lang": "eng"
+        },
+        {
+          "start_tick": 3000,
+          "end_tick": 6000,
+          "label": "TEACHER",
+          "lang": "unknown"
+        }
+      ]
+    },
+    "expected": {
+      "I1": 1.0,
+      "I6": {
+        "eng": 0.5,
+        "unknown": 0.5
+      },
+      "I5": 0.0
+    }
+  },
+  {
+    "id": "CORE-11",
+    "rationale": "Two 59.99 second silent spans separated by missing tick are not a long silence; final partial bin is observed.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 11999,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 5999,
+          "label": "NON_SPEECH"
+        },
+        {
+          "start_tick": 5999,
+          "end_tick": 6000,
+          "label": "MISSING"
+        },
+        {
+          "start_tick": 6000,
+          "end_tick": 11999,
+          "label": "NON_SPEECH"
+        }
+      ]
+    },
+    "expected": {
+      "observed_s": 119.98,
+      "missing_s": 0.01,
+      "I8": 0,
+      "I7": 0.0
+    }
+  },
+  {
+    "id": "CORE-12",
+    "rationale": "Turn at exact minute boundary belongs to destination bin only.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 12000,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 5000,
+          "label": "TEACHER",
+          "lang": "eng"
+        },
+        {
+          "start_tick": 5000,
+          "end_tick": 6000,
+          "label": "NON_SPEECH"
+        },
+        {
+          "start_tick": 6000,
+          "end_tick": 7000,
+          "label": "CHILD_SINGLE"
+        },
+        {
+          "start_tick": 7000,
+          "end_tick": 12000,
+          "label": "NON_SPEECH"
+        }
+      ]
+    },
+    "expected": {
+      "I2": {
+        "single": {
+          "n": 1,
+          "median": 10.0
+        }
+      },
+      "I4": {
+        "count": 1,
+        "per_10min": 5.0
+      },
+      "I5": 0.5,
+      "I7": 0.5
+    }
+  },
+  {
+    "id": "COHORT-01",
+    "rationale": "Adult model trial cannot use O-class grade context.",
+    "request": {
+      "operation": "validate_context",
+      "contract": "acceptance-v1",
+      "cohort": "undergraduate_stem",
+      "session_type": "lecture",
+      "course_category": "physics",
+      "grade": "O"
+    },
+    "expected": {
+      "valid": false,
+      "reason": "cohort_context_mismatch"
+    }
+  },
+  {
+    "id": "COHORT-02",
+    "rationale": "Valid STEM session with no child grade.",
+    "request": {
+      "operation": "validate_context",
+      "contract": "acceptance-v1",
+      "cohort": "undergraduate_stem",
+      "session_type": "lecture",
+      "course_category": "physics"
+    },
+    "expected": {
+      "valid": true
+    }
+  },
+  {
+    "id": "COHORT-03",
+    "rationale": "Early-grade model must not silently relabel child logits as adult students.",
+    "request": {
+      "operation": "validate_model",
+      "contract": "acceptance-v1",
+      "cohort": "undergraduate_stem",
+      "model": {
+        "supported_cohorts": [
+          "early_grade"
+        ],
+        "labels": [
+          "TEACHER",
+          "CHILD_SINGLE",
+          "CHILD_CHORAL",
+          "OVERLAP",
+          "NON_SPEECH"
+        ]
+      }
+    },
+    "expected": {
+      "valid": false,
+      "reason": "unsupported_cohort"
+    }
+  },
+  {
+    "id": "COHORT-04",
+    "rationale": "Unknown cohort must not fall back to early grade.",
+    "request": {
+      "operation": "validate_context",
+      "contract": "acceptance-v1",
+      "cohort": "unspecified",
+      "session_type": "lecture"
+    },
+    "expected": {
+      "valid": false,
+      "reason": "unsupported_cohort"
+    }
+  },
+  {
+    "id": "COHORT-05",
+    "rationale": "Early-grade context remains supported independently.",
+    "request": {
+      "operation": "validate_context",
+      "contract": "acceptance-v1",
+      "cohort": "early_grade",
+      "session_type": "early_grade_lesson",
+      "grade": "2",
+      "subject": "math"
+    },
+    "expected": {
+      "valid": true
+    }
+  },
+  {
+    "id": "COHORT-06",
+    "rationale": "Reject adult labels in early-grade indicator input.",
+    "request": {
+      "operation": "indicators",
+      "contract": "acceptance-v1",
+      "indicator_spec_version": 2,
+      "cohort": "early_grade",
+      "tick_ms": 10,
+      "duration_ticks": 6000,
+      "timeline": [
+        {
+          "start_tick": 0,
+          "end_tick": 6000,
+          "label": "STUDENT_SINGLE"
+        }
+      ]
+    },
+    "expected": {
+      "error": "label_schema_mismatch"
+    }
+  }
+]

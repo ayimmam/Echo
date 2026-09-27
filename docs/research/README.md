@@ -1,9 +1,13 @@
 # Dimts research pack
 
-Research audit and plan for the Dimts (ድምጽ) proposal described in `DIMTS_ARCHITECTURE_CONTEXT.md` (status "pre-architecture", 2026-09-25). Finalised 2026-09-26 after reading the supplied full texts. No code exists yet, so "the codebase" here means the design in §7–§13 of that document.
+Research audit and plan for the Dimts (ድምጽ) proposal described in `DIMTS_ARCHITECTURE_CONTEXT.md` (reviewed proposal, 2026-09-27). Research evidence updated 2026-09-26; implementation-plan review updated 2026-09-27. A basic Android Compose starter exists; other components are placeholders. No runtime or product behavior has been validated.
 
 | File | What it is |
 |---|---|
+| [`STEM_TRIAL_PLAN.md`](STEM_TRIAL_PLAN.md) | Undergraduate STEM technical trial first, then separate early-grade validation. |
+| [`INFRASTRUCTURE_RECHECK.md`](INFRASTRUCTURE_RECHECK.md) | Current official infrastructure findings, proposed choices and linked acceptance cases. |
+| [`../testing/POST_IMPLEMENTATION_TEST_PLAN.md`](../testing/POST_IMPLEMENTATION_TEST_PLAN.md) | Test procedures, acceptance criteria and evidence template; links to 18 executable contract cases needing implementation adapters. |
+| [`IMPLEMENTATION_REVIEW.md`](IMPLEMENTATION_REVIEW.md) | Current repository baseline, architecture findings, contract checklist and implementation gates G0–G5. Read before implementing. |
 | [`CLAIMS_AUDIT.md`](CLAIMS_AUDIT.md) | Each factual claim and assumption in the architecture document, checked against sources (2026-09-25; updated 2026-09-26 with supplied full texts), with a verdict and the change it implies. |
 | [`RESEARCH_PLAN.md`](RESEARCH_PLAN.md) | What is still open: research questions, reading lists, experiments, infrastructure spikes, legal questions, team decisions and a schedule merged with the 2026–27 competition calendar. |
 | [`BIBLIOGRAPHY.md`](BIBLIOGRAPHY.md) | Every source used or recommended, in APA 7th style, tagged with how far it was checked. |
