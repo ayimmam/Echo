@@ -1,2 +1,25 @@
 .DS_Store
 **/.DS_Store
+
+# Local configuration, secrets and private research/runtime artefacts
+.env
+.env.*
+!.env.example
+*.local.json
+*.local.toml
+*.pem
+*.key
+*.p12
+*.pfx
+/private-data/
+/artifacts/
+/backups/
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+# Copyrighted PDFs already tracked are NOT removed by ignore rules.

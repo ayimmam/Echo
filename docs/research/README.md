@@ -1,9 +1,14 @@
 # Dimts research pack
 
-Research audit and plan for the Dimts (ድምጽ) proposal described in `DIMTS_ARCHITECTURE_CONTEXT.md` (reviewed proposal, 2026-09-27). Research evidence updated 2026-09-26; implementation-plan review updated 2026-09-27. A basic Android Compose starter exists; other components are placeholders. No runtime or product behavior has been validated.
+> **Current infrastructure (2026-10-02):** [ADR-015](../adr/015-capability-gated-hosting.md), [structure](CODEBASE_STRUCTURE.md), [security](../security/ARCHITECTURE.md), [HOST/SEC suites](../testing/HOSTING_SECURITY_TEST_PLAN.md) and [deployment scaffolding](../../infra/README.md). Hosting remains conditional; research infrastructure is not yet available. Only the evidence checker and its tests are executable infrastructure additions.
+
+Research audit and plan for the Dimts (ድምጽ) proposal described in `DIMTS_ARCHITECTURE_CONTEXT.md` (reviewed proposal, 2026-09-27). Research evidence updated 2026-09-26; implementation-plan review updated 2026-09-27. A basic Android Compose starter exists; product components remain unimplemented; structural hosting contracts and checker tests also exist. No runtime or product behavior has been validated.
 
 | File | What it is |
 |---|---|
+| [`FEATURE_REVIEW.md`](FEATURE_REVIEW.md) | Whole-product feature scores, external evidence, five additions, cuts, two critique/search/revision passes and June 2027 scope. Draft ADR-016 governs removed recording paths and deferred components. |
+| [`STAKEHOLDER_MAP.md`](STAKEHOLDER_MAP.md) | Full proposed participation map: intensity, phases, contributions, consent/decision rights, data access and engagement owners. |
+| [`RESEARCH_DATA_MANAGEMENT_PLAN.md`](RESEARCH_DATA_MANAGEMENT_PLAN.md) | Thesis/manuscript output, named author access, R0/R1/R2 separation, minimal study fields, anonymous release review and retention; draft ADR-017. |
 | [`STEM_TRIAL_PLAN.md`](STEM_TRIAL_PLAN.md) | Undergraduate STEM technical trial first, then separate early-grade validation. |
 | [`INFRASTRUCTURE_RECHECK.md`](INFRASTRUCTURE_RECHECK.md) | Current official infrastructure findings, proposed choices and linked acceptance cases. |
 | [`../testing/POST_IMPLEMENTATION_TEST_PLAN.md`](../testing/POST_IMPLEMENTATION_TEST_PLAN.md) | Test procedures, acceptance criteria and evidence template; links to 18 executable contract cases needing implementation adapters. |
@@ -11,10 +16,10 @@ Research audit and plan for the Dimts (ድምጽ) proposal described in `DIMTS_A
 | [`CLAIMS_AUDIT.md`](CLAIMS_AUDIT.md) | Each factual claim and assumption in the architecture document, checked against sources (2026-09-25; updated 2026-09-26 with supplied full texts), with a verdict and the change it implies. |
 | [`RESEARCH_PLAN.md`](RESEARCH_PLAN.md) | What is still open: research questions, reading lists, experiments, infrastructure spikes, legal questions, team decisions and a schedule merged with the 2026–27 competition calendar. |
 | [`BIBLIOGRAPHY.md`](BIBLIOGRAPHY.md) | Every source used or recommended, in APA 7th style, tagged with how far it was checked. |
-| [`ASSUMPTIONS.md`](ASSUMPTIONS.md) | Register of the 50 assumptions the design rests on: origin, status, evidence, test and impact if wrong. |
-| [`CODEBASE_STRUCTURE.md`](CODEBASE_STRUCTURE.md) | Proposed monorepo layout revised from §12 in light of the findings, including the two-tier (competition cloud / in-country pilot) deployment. |
+| [`ASSUMPTIONS.md`](ASSUMPTIONS.md) | Historical register of 50 assumptions plus current FR-1–FR-8 scope assumptions the design rests on: origin, status, evidence, test and impact if wrong. |
+| [`CODEBASE_STRUCTURE.md`](CODEBASE_STRUCTURE.md) | Proposed monorepo layout revised from §12 in light of the findings, including shared-hosting, VPS fallback, separate research and synthetic demo boundaries. |
 | [`TO_OBTAIN.md`](TO_OBTAIN.md) | Sources still needed, and what the supplied batch resolved. |
-| [`HOSTING_OPTIONS.md`](HOSTING_OPTIONS.md) | Ethiopian hosting/cloud providers checked against Article 22 (data sovereignty), for the `infra/openeuler` sovereign-tier server. |
+| [`HOSTING_OPTIONS.md`](HOSTING_OPTIONS.md) | Ethiopian hosting/cloud providers checked against Article 22 (data sovereignty), with the current capability-gated shared-hosting correction and VPS alternatives. |
 | [`papers/`](papers/) | Full texts supplied on 2026-09-26. Copyrighted, so keep them private (see TO_OBTAIN). |
 
 ## Verdict labels

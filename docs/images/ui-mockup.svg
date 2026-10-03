@@ -1,0 +1,346 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1268" width="920" height="1268" role="img" aria-label="Echovolve teacher app UI mockup: six Android screens covering one lesson start to finish, the weekly report in English and Amharic, and the teacher's own data controls.">
+<title>Echovolve — teacher app UI mockup</title>
+<desc>Target user interface for the Echovolve Android teacher app. Row one shows starting a lesson, the in-lesson screen, and the saved-lesson summary. Row two shows the weekly report in English, the same report in Amharic, and the teacher's consent and data controls. All values are illustrative fixtures, not measurements.</desc>
+<style>
+  .s{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif}
+  .eth{font-family:"Noto Sans Ethiopic",Nyala,Kefa,"Abyssinica SIL","Noto Serif Ethiopic",-apple-system,sans-serif}
+  .ink{fill:#10151E}.mut{fill:#5B6472}.fade{fill:#8A93A1}.w{fill:#FFFFFF}.tl{fill:#0F6E63}
+  .b{font-weight:700}.sb{font-weight:600}
+</style>
+<defs>
+  <clipPath id="sc1"><rect x="33" y="108" width="256" height="504" rx="15"/></clipPath>
+  <clipPath id="sc2"><rect x="331" y="108" width="256" height="504" rx="15"/></clipPath>
+  <clipPath id="sc3"><rect x="629" y="108" width="256" height="504" rx="15"/></clipPath>
+  <clipPath id="sc4"><rect x="33" y="674" width="256" height="504" rx="15"/></clipPath>
+  <clipPath id="sc5"><rect x="331" y="674" width="256" height="504" rx="15"/></clipPath>
+  <clipPath id="sc6"><rect x="629" y="674" width="256" height="504" rx="15"/></clipPath>
+</defs>
+
+<rect width="920" height="1268" fill="#F4F6F8"/>
+
+<text class="s b ink" x="25" y="33" font-size="19">Echovolve — what the teacher sees</text>
+<text class="s mut" x="25" y="52" font-size="9.5">Target UI for the Android teacher app. Values are illustrative fixtures, not measurements. Nothing in this repository implements these screens.</text>
+
+<text class="s b" x="25" y="92" font-size="11" fill="#3B4553">One lesson, start to finish — Deployment Mode</text>
+<text class="s mut" x="330" y="92" font-size="9">no audio is written to disk in this mode</text>
+
+<!-- ============ PHONE 1 : START A LESSON ============ -->
+<rect x="25" y="100" width="272" height="520" rx="22" fill="#1E2430"/>
+<rect x="33" y="108" width="256" height="504" rx="15" fill="#FFFFFF"/>
+<g clip-path="url(#sc1)">
+  <text class="s mut" x="45" y="123" font-size="8.5">08:15</text>
+  <rect x="232" y="116" width="2.6" height="4" fill="#9AA4B2"/><rect x="236.5" y="114" width="2.6" height="6" fill="#9AA4B2"/><rect x="241" y="112" width="2.6" height="8" fill="#C6CEDA"/>
+  <rect x="250" y="113" width="22" height="8" rx="2" fill="none" stroke="#9AA4B2" stroke-width="1"/><rect x="252" y="115" width="13" height="4" fill="#9AA4B2"/><rect x="272.5" y="115.5" width="1.6" height="3" fill="#9AA4B2"/>
+  <rect x="33" y="128" width="256" height="38" fill="#0F6E63"/>
+  <text class="s b w" x="47" y="152" font-size="13">Echovolve</text>
+  <rect x="206" y="136" width="70" height="20" rx="10" fill="#FFFFFF" fill-opacity="0.18"/>
+  <text class="s sb w" x="241" y="149.5" font-size="7.5" text-anchor="middle">Deployment</text>
+
+  <text class="s b ink" x="47" y="192" font-size="14">New lesson</text>
+  <text class="s mut" x="47" y="212" font-size="8.5">Grade</text>
+  <rect x="47" y="218" width="40" height="24" rx="6" fill="none" stroke="#C6CEDA"/><text class="s" x="67" y="234" font-size="10" fill="#3B4553" text-anchor="middle">O</text>
+  <rect x="93" y="218" width="40" height="24" rx="6" fill="none" stroke="#C6CEDA"/><text class="s" x="113" y="234" font-size="10" fill="#3B4553" text-anchor="middle">1</text>
+  <rect x="139" y="218" width="40" height="24" rx="6" fill="#0F6E63"/><text class="s b w" x="159" y="234" font-size="10" text-anchor="middle">2</text>
+  <rect x="185" y="218" width="40" height="24" rx="6" fill="none" stroke="#C6CEDA"/><text class="s" x="205" y="234" font-size="10" fill="#3B4553" text-anchor="middle">3</text>
+
+  <text class="s mut" x="47" y="262" font-size="8.5">Subject</text>
+  <rect x="47" y="268" width="96" height="24" rx="6" fill="#0F6E63"/><text class="s b w" x="95" y="284" font-size="9" text-anchor="middle">Mother tongue</text>
+  <rect x="149" y="268" width="50" height="24" rx="6" fill="none" stroke="#C6CEDA"/><text class="s" x="174" y="284" font-size="9" fill="#3B4553" text-anchor="middle">Maths</text>
+  <rect x="205" y="268" width="56" height="24" rx="6" fill="none" stroke="#C6CEDA"/><text class="s" x="233" y="284" font-size="9" fill="#3B4553" text-anchor="middle">English</text>
+  <rect x="47" y="298" width="90" height="24" rx="6" fill="none" stroke="#C6CEDA"/><text class="s" x="92" y="314" font-size="9" fill="#3B4553" text-anchor="middle">Environmental</text>
+  <rect x="143" y="298" width="48" height="24" rx="6" fill="none" stroke="#C6CEDA"/><text class="s" x="167" y="314" font-size="9" fill="#3B4553" text-anchor="middle">Other</text>
+
+  <text class="s mut" x="47" y="342" font-size="8.5">Class size</text>
+  <rect x="47" y="348" width="52" height="26" rx="6" fill="none" stroke="#C6CEDA"/><text class="s sb ink" x="73" y="365" font-size="11" text-anchor="middle">58</text>
+  <text class="s mut" x="111" y="342" font-size="8.5">Microphone</text>
+  <rect x="111" y="348" width="164" height="26" rx="6" fill="#F1F4F8" stroke="#C6CEDA"/>
+  <rect x="112.5" y="349.5" width="80" height="23" rx="5" fill="#0F6E63"/>
+  <text class="s b w" x="152" y="365" font-size="9" text-anchor="middle">Built-in</text>
+  <text class="s" x="234" y="365" font-size="9" fill="#5B6472" text-anchor="middle">Clip-on</text>
+
+  <rect x="47" y="394" width="228" height="42" rx="10" fill="#0F6E63"/>
+  <text class="s b w" x="161" y="420" font-size="13" text-anchor="middle">Start lesson</text>
+
+  <rect x="47" y="448" width="228" height="58" rx="8" fill="#F2F7F6" stroke="#CFE3DF"/>
+  <path d="M60 458 l7 2.6 v6.4 c0 4.4 -3 8.2 -7 9.6 c-4 -1.4 -7 -5.2 -7 -9.6 v-6.4z" fill="#0F6E63"/>
+  <text class="s b" x="76" y="466" font-size="9.5" fill="#0B5F55">No audio is saved.</text>
+  <text class="s" x="58" y="482" font-size="8" fill="#4A6A65">Sound is processed as it happens, in memory</text>
+  <text class="s" x="58" y="493" font-size="8" fill="#4A6A65">only. Only the numbers are stored.</text>
+
+  <rect x="47" y="516" width="228" height="26" rx="6" fill="#FDF4E7" stroke="#F0D5AE"/>
+  <circle cx="60" cy="529" r="3.5" fill="#E8A33D"/>
+  <text class="s sb" x="70" y="532.5" font-size="8.5" fill="#8A5A16">3 lessons waiting to sync</text>
+
+  <rect x="33" y="572" width="256" height="40" fill="#FAFBFC"/><line x1="33" y1="572" x2="289" y2="572" stroke="#E3E8EF"/>
+  <circle cx="76" cy="585" r="3.5" fill="#0F6E63"/><text class="s b tl" x="76" y="600" font-size="8" text-anchor="middle">Lessons</text>
+  <circle cx="161" cy="585" r="3.5" fill="#C6CEDA"/><text class="s mut" x="161" y="600" font-size="8" text-anchor="middle">Report</text>
+  <circle cx="246" cy="585" r="3.5" fill="#C6CEDA"/><text class="s mut" x="246" y="600" font-size="8" text-anchor="middle">Settings</text>
+</g>
+
+<!-- ============ PHONE 2 : IN LESSON ============ -->
+<rect x="323" y="100" width="272" height="520" rx="22" fill="#1E2430"/>
+<rect x="331" y="108" width="256" height="504" rx="15" fill="#FFFFFF"/>
+<g clip-path="url(#sc2)">
+  <text class="s mut" x="343" y="123" font-size="8.5">08:27</text>
+  <rect x="530" y="116" width="2.6" height="4" fill="#9AA4B2"/><rect x="534.5" y="114" width="2.6" height="6" fill="#9AA4B2"/><rect x="539" y="112" width="2.6" height="8" fill="#C6CEDA"/>
+  <rect x="548" y="113" width="22" height="8" rx="2" fill="none" stroke="#9AA4B2"/><rect x="550" y="115" width="11" height="4" fill="#9AA4B2"/><rect x="570.5" y="115.5" width="1.6" height="3" fill="#9AA4B2"/>
+  <rect x="331" y="128" width="256" height="38" fill="#0F6E63"/>
+  <circle cx="348" cy="147" r="4" fill="#FF6B60"/>
+  <text class="s b w" x="360" y="151" font-size="12">Lesson in progress</text>
+
+  <text class="s b ink" x="459" y="216" font-size="34" text-anchor="middle">12:04</text>
+  <text class="s mut" x="459" y="234" font-size="8.5" text-anchor="middle">Grade 2 · Mother tongue · built-in mic</text>
+
+  <g fill="#0F6E63">
+    <rect x="347" y="267" width="5" height="10" rx="2.5" fill-opacity="0.45"/>
+    <rect x="358.2" y="263" width="5" height="18" rx="2.5" fill-opacity="0.6"/>
+    <rect x="369.4" y="258.5" width="5" height="27" rx="2.5"/>
+    <rect x="380.6" y="265" width="5" height="14" rx="2.5" fill-opacity="0.5"/>
+    <rect x="391.8" y="256" width="5" height="32" rx="2.5"/>
+    <rect x="403" y="251.5" width="5" height="41" rx="2.5"/>
+    <rect x="414.2" y="261" width="5" height="22" rx="2.5" fill-opacity="0.7"/>
+    <rect x="425.4" y="266" width="5" height="12" rx="2.5" fill-opacity="0.45"/>
+    <rect x="436.6" y="259.5" width="5" height="25" rx="2.5"/>
+    <rect x="447.8" y="253" width="5" height="38" rx="2.5"/>
+    <rect x="459" y="250" width="5" height="44" rx="2.5"/>
+    <rect x="470.2" y="262.5" width="5" height="19" rx="2.5" fill-opacity="0.7"/>
+    <rect x="481.4" y="267.5" width="5" height="9" rx="2.5" fill-opacity="0.4"/>
+    <rect x="492.6" y="260.5" width="5" height="23" rx="2.5" fill-opacity="0.8"/>
+    <rect x="503.8" y="254.5" width="5" height="35" rx="2.5"/>
+    <rect x="515" y="258" width="5" height="28" rx="2.5"/>
+    <rect x="526.2" y="264.5" width="5" height="15" rx="2.5" fill-opacity="0.55"/>
+    <rect x="537.4" y="257" width="5" height="30" rx="2.5"/>
+    <rect x="548.6" y="262" width="5" height="20" rx="2.5" fill-opacity="0.7"/>
+    <rect x="559.8" y="266.5" width="5" height="11" rx="2.5" fill-opacity="0.45"/>
+  </g>
+
+  <circle cx="350" cy="315" r="3.5" fill="#2E9E5B"/>
+  <text class="s sb" x="360" y="318.5" font-size="9" fill="#2A6B45">Microphone OK · 16 kHz mono</text>
+
+  <rect x="345" y="332" width="228" height="62" rx="8" fill="#FFF6EC" stroke="#F0D5AE"/>
+  <text class="s b" x="357" y="350" font-size="9.5" fill="#8A5A16">Interrupted 00:41</text>
+  <text class="s" x="357" y="364" font-size="8" fill="#7A5A2E">A phone call silenced the microphone.</text>
+  <text class="s" x="357" y="375" font-size="8" fill="#7A5A2E">That time is marked not observed — it is</text>
+  <text class="s" x="357" y="386" font-size="8" fill="#7A5A2E">never counted as silence.</text>
+
+  <rect x="345" y="404" width="228" height="30" rx="6" fill="#F2F7F6" stroke="#CFE3DF"/>
+  <path d="M358 411 l6 2.2 v5.4 c0 3.8 -2.6 7 -6 8.2 c-3.4 -1.2 -6 -4.4 -6 -8.2 v-5.4z" fill="#0F6E63"/>
+  <text class="s sb" x="371" y="423" font-size="9" fill="#0B5F55">Audio is not being saved.</text>
+  <text class="s mut" x="459" y="452" font-size="8.5" text-anchor="middle">Your report is ready when the lesson ends.</text>
+
+  <rect x="345" y="464" width="228" height="40" rx="10" fill="#0F6E63"/>
+  <text class="s b w" x="459" y="489" font-size="12.5" text-anchor="middle">End lesson</text>
+  <rect x="345" y="512" width="228" height="34" rx="10" fill="none" stroke="#C6CEDA"/>
+  <text class="s sb" x="459" y="534" font-size="11" fill="#3B4553" text-anchor="middle">Pause</text>
+
+  <text class="s fade" x="459" y="568" font-size="7.5" text-anchor="middle">Foreground service · persistent notification shown</text>
+  <text class="s fade" x="459" y="582" font-size="7.5" text-anchor="middle">Ring buffer 10 s in RAM · nothing written to disk</text>
+</g>
+
+<!-- ============ PHONE 3 : LESSON SAVED ============ -->
+<rect x="621" y="100" width="272" height="520" rx="22" fill="#1E2430"/>
+<rect x="629" y="108" width="256" height="504" rx="15" fill="#FFFFFF"/>
+<g clip-path="url(#sc3)">
+  <text class="s mut" x="641" y="123" font-size="8.5">08:57</text>
+  <rect x="828" y="116" width="2.6" height="4" fill="#9AA4B2"/><rect x="832.5" y="114" width="2.6" height="6" fill="#9AA4B2"/><rect x="837" y="112" width="2.6" height="8" fill="#C6CEDA"/>
+  <rect x="846" y="113" width="22" height="8" rx="2" fill="none" stroke="#9AA4B2"/><rect x="848" y="115" width="10" height="4" fill="#9AA4B2"/><rect x="868.5" y="115.5" width="1.6" height="3" fill="#9AA4B2"/>
+  <rect x="629" y="128" width="256" height="38" fill="#0F6E63"/>
+  <text class="s b w" x="643" y="152" font-size="12.5">Lesson saved</text>
+
+  <circle cx="757" cy="188" r="17" fill="#D7EFEB"/>
+  <path d="M749 188 l6 6 l11 -12" fill="none" stroke="#0F6E63" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text class="s b ink" x="757" y="224" font-size="11" text-anchor="middle">Saved on this phone</text>
+
+  <rect x="641" y="234" width="76" height="22" rx="5" fill="#F1F4F8"/><text class="s" x="679" y="248.5" font-size="7.5" fill="#3B4553" text-anchor="middle">Elapsed 40:00</text>
+  <rect x="723" y="234" width="82" height="22" rx="5" fill="#E8F1EF"/><text class="s sb" x="764" y="248.5" font-size="7.5" fill="#0B5F55" text-anchor="middle">Observed 39:19</text>
+  <rect x="811" y="234" width="62" height="22" rx="5" fill="#F0F1F3"/><text class="s" x="842" y="248.5" font-size="7.5" fill="#6B7684" text-anchor="middle">Missing 0:41</text>
+
+  <g font-size="8.5">
+    <text class="s" x="641" y="284" fill="#3B4553">I-1  Teacher talk</text><text class="s b ink" x="873" y="284" font-size="9" text-anchor="end">78%</text><line x1="641" y1="292" x2="873" y2="292" stroke="#EEF1F5"/>
+    <text class="s" x="641" y="309" fill="#3B4553">I-2  Response, together</text><text class="s b ink" x="873" y="309" font-size="9" text-anchor="end">0.2 s · n 30</text><line x1="641" y1="317" x2="873" y2="317" stroke="#EEF1F5"/>
+    <text class="s" x="641" y="334" fill="#3B4553">I-2  Response, one child</text><text class="s b ink" x="873" y="334" font-size="9" text-anchor="end">0.6 s · n 12</text><line x1="641" y1="342" x2="873" y2="342" stroke="#EEF1F5"/>
+    <text class="s" x="641" y="359" fill="#3B4553">I-3  Choral share of child talk</text><text class="s b ink" x="873" y="359" font-size="9" text-anchor="end">91%</text><line x1="641" y1="367" x2="873" y2="367" stroke="#EEF1F5"/>
+    <text class="s" x="641" y="384" fill="#3B4553">I-4  Individual answers</text><text class="s b ink" x="873" y="384" font-size="9" text-anchor="end">5</text><line x1="641" y1="392" x2="873" y2="392" stroke="#EEF1F5"/>
+    <text class="s" x="641" y="409" fill="#3B4553">I-5  Turns per minute</text><text class="s b ink" x="873" y="409" font-size="9" text-anchor="end">1.9</text><line x1="641" y1="417" x2="873" y2="417" stroke="#EEF1F5"/>
+    <text class="s" x="641" y="434" fill="#3B4553">I-6  Language amh / sid / eng</text><text class="s b ink" x="873" y="434" font-size="9" text-anchor="end">62 / 31 / 5%</text><line x1="641" y1="442" x2="873" y2="442" stroke="#EEF1F5"/>
+    <text class="s" x="641" y="459" fill="#3B4553">I-7  Minutes with interaction</text><text class="s b ink" x="873" y="459" font-size="9" text-anchor="end">55%</text><line x1="641" y1="467" x2="873" y2="467" stroke="#EEF1F5"/>
+    <text class="s" x="641" y="484" fill="#3B4553">I-8  Silences over 60 s</text><text class="s b ink" x="873" y="484" font-size="9" text-anchor="end">1</text>
+  </g>
+  <text class="s fade" x="641" y="504" font-size="7.5">SNR 11 dB · clipping 0.1% · mean seg confidence 0.84</text>
+
+  <rect x="641" y="514" width="232" height="30" rx="6" fill="#EEF3F9" stroke="#D3DEEB"/>
+  <path d="M654 533 v-9 m0 -9 v3" stroke="#2C4A6B" stroke-width="1.6" stroke-linecap="round"/>
+  <text class="s sb" x="664" y="532.5" font-size="8.5" fill="#2C4A6B">Queued — uploads when you have signal</text>
+
+  <rect x="629" y="572" width="256" height="40" fill="#FAFBFC"/><line x1="629" y1="572" x2="885" y2="572" stroke="#E3E8EF"/>
+  <circle cx="672" cy="585" r="3.5" fill="#C6CEDA"/><text class="s mut" x="672" y="600" font-size="8" text-anchor="middle">Lessons</text>
+  <circle cx="757" cy="585" r="3.5" fill="#0F6E63"/><text class="s b tl" x="757" y="600" font-size="8" text-anchor="middle">Report</text>
+  <circle cx="842" cy="585" r="3.5" fill="#C6CEDA"/><text class="s mut" x="842" y="600" font-size="8" text-anchor="middle">Settings</text>
+</g>
+
+<text class="s b" x="25" y="658" font-size="11" fill="#3B4553">The weekly report — two of three shipped locales — and the teacher's own data controls</text>
+
+<!-- ============ PHONE 4 : WEEKLY REPORT (EN) ============ -->
+<rect x="25" y="666" width="272" height="520" rx="22" fill="#1E2430"/>
+<rect x="33" y="674" width="256" height="504" rx="15" fill="#FFFFFF"/>
+<g clip-path="url(#sc4)">
+  <text class="s mut" x="45" y="689" font-size="8.5">07:40</text>
+  <rect x="232" y="682" width="2.6" height="4" fill="#9AA4B2"/><rect x="236.5" y="680" width="2.6" height="6" fill="#9AA4B2"/><rect x="241" y="678" width="2.6" height="8" fill="#9AA4B2"/>
+  <rect x="250" y="679" width="22" height="8" rx="2" fill="none" stroke="#9AA4B2"/><rect x="252" y="681" width="16" height="4" fill="#9AA4B2"/><rect x="272.5" y="681.5" width="1.6" height="3" fill="#9AA4B2"/>
+  <rect x="33" y="694" width="256" height="38" fill="#0F6E63"/>
+  <text class="s b w" x="47" y="718" font-size="12.5">This week</text>
+
+  <text class="s b ink" x="47" y="754" font-size="10">Week 12 · 3–9 Nov 2026</text>
+  <text class="s mut" x="47" y="767" font-size="7.5">Grade 2 · Mother tongue · 5 lessons · 3 h 07 observed</text>
+
+  <rect x="47" y="776" width="228" height="24" rx="5" fill="#F2F7F6" stroke="#CFE3DF"/>
+  <path d="M60 782 l5.6 2 v5 c0 3.5 -2.4 6.5 -5.6 7.6 c-3.2 -1.1 -5.6 -4.1 -5.6 -7.6 v-5z" fill="#0F6E63"/>
+  <text class="s sb" x="72" y="792" font-size="8.5" fill="#0B5F55">Private — only you can see this</text>
+
+  <text class="s b ink" x="47" y="821" font-size="9.5">Talk balance</text>
+  <rect x="47" y="827" width="178" height="18" fill="#0F6E63"/><rect x="225" y="827" width="50" height="18" fill="#E8A33D"/>
+  <text class="s b w" x="58" y="840" font-size="8.5">78%</text><text class="s b w" x="236" y="840" font-size="8.5">22%</text>
+  <rect x="47" y="853" width="8" height="8" fill="#0F6E63"/><text class="s" x="59" y="860.5" font-size="8" fill="#3B4553">You</text>
+  <rect x="95" y="853" width="8" height="8" fill="#E8A33D"/><text class="s" x="107" y="860.5" font-size="8" fill="#3B4553">Children</text>
+
+  <text class="s b ink" x="47" y="884" font-size="9.5">Response time</text>
+  <text class="s" x="47" y="899" font-size="8.5" fill="#3B4553">Children answering together</text><text class="s b ink" x="275" y="899" font-size="8.5" text-anchor="end">0.2 s · 30 times</text>
+  <text class="s" x="47" y="917" font-size="8.5" fill="#3B4553">One child at a time</text><text class="s fade" x="275" y="917" font-size="7.5" text-anchor="end">not enough this week</text>
+
+  <text class="s b ink" x="47" y="945" font-size="9.5">Individual answers</text><text class="s b ink" x="275" y="945" font-size="9" text-anchor="end">5 · 1.3 per 10 min</text>
+
+  <text class="s b ink" x="47" y="973" font-size="9.5">Together or one at a time</text>
+  <rect x="47" y="979" width="207" height="16" fill="#3E7CB1"/><rect x="254" y="979" width="21" height="16" fill="#A8C4DC"/>
+  <text class="s b w" x="54" y="991" font-size="7.5">91% together</text><text class="s b" x="258" y="991" font-size="7.5" fill="#2C4A6B">9%</text>
+  <text class="s mut" x="47" y="1009" font-size="7.5">Neither is better. This shows the balance.</text>
+
+  <text class="s b ink" x="47" y="1031" font-size="9.5">Language you spoke</text>
+  <rect x="47" y="1037" width="141" height="16" fill="#0F6E63"/><rect x="188" y="1037" width="71" height="16" fill="#3E7CB1"/><rect x="259" y="1037" width="11" height="16" fill="#E8A33D"/><rect x="270" y="1037" width="5" height="16" fill="#9AA4B2"/>
+  <rect x="47" y="1059" width="7" height="7" fill="#0F6E63"/><text class="s" x="58" y="1065.5" font-size="7.5" fill="#3B4553">amh 62</text>
+  <rect x="103" y="1059" width="7" height="7" fill="#3E7CB1"/><text class="s" x="114" y="1065.5" font-size="7.5" fill="#3B4553">sid 31</text>
+  <rect x="154" y="1059" width="7" height="7" fill="#E8A33D"/><text class="s" x="165" y="1065.5" font-size="7.5" fill="#3B4553">eng 5</text>
+  <rect x="200" y="1059" width="7" height="7" fill="#9AA4B2"/><text class="s" x="211" y="1065.5" font-size="7.5" fill="#3B4553">other / unclear 2</text>
+
+  <rect x="47" y="1073" width="228" height="66" rx="8" fill="#FFFFFF" stroke="#0F6E63" stroke-width="1.4"/>
+  <text class="s b tl" x="59" y="1089" font-size="7.5" letter-spacing="0.8">ONE THING TO TRY</text>
+  <text class="s ink" x="59" y="1105" font-size="9">Review how individual and choral</text>
+  <text class="s ink" x="59" y="1117" font-size="9">responses were balanced this week.</text>
+  <text class="s fade" x="59" y="1131" font-size="7">From your own lessons. This is not a score.</text>
+
+  <text class="s fade" x="47" y="1157" font-size="7.5">No score. No ranking. No other teacher's data.</text>
+  <text class="s fade" x="47" y="1169" font-size="7.5">Coaching copy stays disabled until gate G5-E.</text>
+</g>
+
+<!-- ============ PHONE 5 : WEEKLY REPORT (AMHARIC) ============ -->
+<rect x="323" y="666" width="272" height="520" rx="22" fill="#1E2430"/>
+<rect x="331" y="674" width="256" height="504" rx="15" fill="#FFFFFF"/>
+<g clip-path="url(#sc5)">
+  <text class="s mut" x="343" y="689" font-size="8.5">07:40</text>
+  <rect x="530" y="682" width="2.6" height="4" fill="#9AA4B2"/><rect x="534.5" y="680" width="2.6" height="6" fill="#9AA4B2"/><rect x="539" y="678" width="2.6" height="8" fill="#9AA4B2"/>
+  <rect x="548" y="679" width="22" height="8" rx="2" fill="none" stroke="#9AA4B2"/><rect x="550" y="681" width="16" height="4" fill="#9AA4B2"/><rect x="570.5" y="681.5" width="1.6" height="3" fill="#9AA4B2"/>
+  <rect x="331" y="694" width="256" height="38" fill="#0F6E63"/>
+  <text class="eth b w" x="345" y="719" font-size="12.5">የዚህ ሳምንት ሪፖርት</text>
+
+  <text class="eth b ink" x="345" y="755" font-size="10">ሳምንት 12 · ኖቬምበር 3–9</text>
+  <text class="eth mut" x="345" y="768" font-size="7.5">2ኛ ክፍል · አፍ መፍቻ ቋንቋ · 5 ትምህርቶች</text>
+
+  <rect x="345" y="776" width="228" height="24" rx="5" fill="#F2F7F6" stroke="#CFE3DF"/>
+  <path d="M358 782 l5.6 2 v5 c0 3.5 -2.4 6.5 -5.6 7.6 c-3.2 -1.1 -5.6 -4.1 -5.6 -7.6 v-5z" fill="#0F6E63"/>
+  <text class="eth sb" x="370" y="793" font-size="8.5" fill="#0B5F55">የግል — ሌላ ሰው አያየውም</text>
+
+  <text class="eth b ink" x="345" y="822" font-size="9.5">የንግግር ሚዛን</text>
+  <rect x="345" y="827" width="178" height="18" fill="#0F6E63"/><rect x="523" y="827" width="50" height="18" fill="#E8A33D"/>
+  <text class="s b w" x="356" y="840" font-size="8.5">78%</text><text class="s b w" x="534" y="840" font-size="8.5">22%</text>
+  <rect x="345" y="853" width="8" height="8" fill="#0F6E63"/><text class="eth" x="357" y="861" font-size="8" fill="#3B4553">እርስዎ</text>
+  <rect x="403" y="853" width="8" height="8" fill="#E8A33D"/><text class="eth" x="415" y="861" font-size="8" fill="#3B4553">ልጆች</text>
+
+  <text class="eth b ink" x="345" y="885" font-size="9.5">ምላሽ ጊዜ</text>
+  <text class="eth" x="345" y="900" font-size="8.5" fill="#3B4553">ልጆች በአንድ ላይ</text><text class="eth b ink" x="573" y="900" font-size="8.5" text-anchor="end">0.2 ሰከንድ · 30</text>
+  <text class="eth" x="345" y="918" font-size="8.5" fill="#3B4553">አንድ ልጅ</text><text class="eth fade" x="573" y="918" font-size="7.5" text-anchor="end">በቂ መረጃ የለም</text>
+
+  <text class="eth b ink" x="345" y="946" font-size="9.5">የግል ምላሾች</text><text class="eth b ink" x="573" y="946" font-size="9" text-anchor="end">5 · በ10 ደቂቃ 1.3</text>
+
+  <text class="eth b ink" x="345" y="974" font-size="9.5">የቡድን እና የግል ምላሽ</text>
+  <rect x="345" y="979" width="207" height="16" fill="#3E7CB1"/><rect x="552" y="979" width="21" height="16" fill="#A8C4DC"/>
+  <text class="eth b w" x="352" y="991" font-size="7.5">91% በቡድን</text><text class="s b" x="556" y="991" font-size="7.5" fill="#2C4A6B">9%</text>
+  <text class="eth mut" x="345" y="1010" font-size="7.5">አንዱ ከሌላው አይሻልም። ሚዛኑን ያሳያል።</text>
+
+  <text class="eth b ink" x="345" y="1032" font-size="9.5">የተናገሩት ቋንቋ</text>
+  <rect x="345" y="1037" width="141" height="16" fill="#0F6E63"/><rect x="486" y="1037" width="71" height="16" fill="#3E7CB1"/><rect x="557" y="1037" width="11" height="16" fill="#E8A33D"/><rect x="568" y="1037" width="5" height="16" fill="#9AA4B2"/>
+  <rect x="345" y="1059" width="7" height="7" fill="#0F6E63"/><text class="eth" x="356" y="1066" font-size="7.5" fill="#3B4553">አማርኛ 62</text>
+  <rect x="412" y="1059" width="7" height="7" fill="#3E7CB1"/><text class="eth" x="423" y="1066" font-size="7.5" fill="#3B4553">ሲዳምኛ 31</text>
+  <rect x="480" y="1059" width="7" height="7" fill="#E8A33D"/><text class="eth" x="491" y="1066" font-size="7.5" fill="#3B4553">እንግሊዝኛ 5</text>
+
+  <rect x="345" y="1073" width="228" height="66" rx="8" fill="#FFFFFF" stroke="#0F6E63" stroke-width="1.4"/>
+  <text class="eth b tl" x="357" y="1090" font-size="8">አንድ የሚሞከር ነገር</text>
+  <text class="eth ink" x="357" y="1106" font-size="9">የቡድን እና የግል ምላሾች እንዴት</text>
+  <text class="eth ink" x="357" y="1119" font-size="9">እንደተመጣጠኑ ይመልከቱ።</text>
+  <text class="eth fade" x="357" y="1133" font-size="7">ከእርስዎ ትምህርቶች። ነጥብ አይደለም።</text>
+
+  <text class="eth fade" x="345" y="1158" font-size="7.5">ነጥብ የለም። ንጽጽር የለም።</text>
+  <text class="s fade" x="345" y="1170" font-size="7">Same report, Amharic locale — copy is a draft for native review.</text>
+</g>
+
+<!-- ============ PHONE 6 : YOUR DATA / CONSENT ============ -->
+<rect x="621" y="666" width="272" height="520" rx="22" fill="#1E2430"/>
+<rect x="629" y="674" width="256" height="504" rx="15" fill="#FFFFFF"/>
+<g clip-path="url(#sc6)">
+  <text class="s mut" x="641" y="689" font-size="8.5">07:41</text>
+  <rect x="828" y="682" width="2.6" height="4" fill="#9AA4B2"/><rect x="832.5" y="680" width="2.6" height="6" fill="#9AA4B2"/><rect x="837" y="678" width="2.6" height="8" fill="#9AA4B2"/>
+  <rect x="846" y="679" width="22" height="8" rx="2" fill="none" stroke="#9AA4B2"/><rect x="848" y="681" width="16" height="4" fill="#9AA4B2"/><rect x="868.5" y="681.5" width="1.6" height="3" fill="#9AA4B2"/>
+  <rect x="629" y="694" width="256" height="38" fill="#0F6E63"/>
+  <text class="s b w" x="643" y="718" font-size="12.5">Your data</text>
+
+  <rect x="643" y="744" width="228" height="52" rx="6" fill="#F7F9FB" stroke="#E3E8EF"/>
+  <text class="s b ink" x="655" y="763" font-size="9.5">Weekly reports</text>
+  <text class="s mut" x="655" y="777" font-size="7.5">Consented 12 Oct 2026 · required to use the app</text>
+  <rect x="833" y="754" width="26" height="14" rx="7" fill="#0F6E63"/><circle cx="852" cy="761" r="5.5" fill="#FFFFFF"/>
+
+  <rect x="643" y="806" width="228" height="66" rx="6" fill="#F7F9FB" stroke="#E3E8EF"/>
+  <text class="s b ink" x="655" y="825" font-size="9.5">Research Mode</text>
+  <text class="s mut" x="655" y="839" font-size="7.5">Keeps this lesson's audio, encrypted, for the</text>
+  <text class="s mut" x="655" y="850" font-size="7.5">research team. Needs separate written consent</text>
+  <text class="s mut" x="655" y="861" font-size="7.5">and never leaves Ethiopia.</text>
+  <rect x="833" y="816" width="26" height="14" rx="7" fill="#C6CEDA"/><circle cx="840" cy="823" r="5.5" fill="#FFFFFF"/>
+
+  <rect x="643" y="882" width="228" height="52" rx="6" fill="#F7F9FB" stroke="#E3E8EF"/>
+  <text class="s b ink" x="655" y="901" font-size="9.5">Share my report with the director</text>
+  <text class="s mut" x="655" y="915" font-size="7.5">Your choice. You can turn it off again.</text>
+  <rect x="833" y="892" width="26" height="14" rx="7" fill="#C6CEDA"/><circle cx="840" cy="899" r="5.5" fill="#FFFFFF"/>
+
+  <text class="s mut" x="643" y="957" font-size="8.5">App language</text>
+  <rect x="643" y="963" width="58" height="24" rx="6" fill="#0F6E63"/><text class="eth b w" x="672" y="980" font-size="9" text-anchor="middle">አማርኛ</text>
+  <rect x="707" y="963" width="82" height="24" rx="6" fill="none" stroke="#C6CEDA"/><text class="s" x="748" y="979" font-size="8.5" fill="#3B4553" text-anchor="middle">Sidaamu Afoo</text>
+  <rect x="795" y="963" width="56" height="24" rx="6" fill="none" stroke="#C6CEDA"/><text class="s" x="823" y="979" font-size="8.5" fill="#3B4553" text-anchor="middle">English</text>
+
+  <text class="s mut" x="643" y="1012" font-size="8.5">On this phone</text>
+  <text class="s sb ink" x="643" y="1028" font-size="9">14 lessons · 11 uploaded · 3 waiting</text>
+
+  <rect x="643" y="1042" width="228" height="36" rx="8" fill="#FFF5F4" stroke="#D2483F"/>
+  <text class="s b" x="757" y="1064" font-size="9.5" fill="#B33A32" text-anchor="middle">Withdraw and delete everything</text>
+  <text class="s mut" x="643" y="1094" font-size="7.5">Stops recording now, deletes the lessons waiting</text>
+  <text class="s mut" x="643" y="1105" font-size="7.5">here, and deletes your records and reports on the</text>
+  <text class="s mut" x="643" y="1116" font-size="7.5">server. Backup copies expire on a set schedule.</text>
+
+  <text class="s fade" x="643" y="1141" font-size="7">Consent ledger CE-2026-0142 · indicator spec v2 · app 0.4.0</text>
+  <text class="s fade" x="643" y="1158" font-size="7">Echovolve never stores a child's identity, a voice print,</text>
+  <text class="s fade" x="643" y="1169" font-size="7">or any word that was spoken.</text>
+</g>
+
+<!-- ============ FOOTER ============ -->
+<rect x="25" y="1200" width="870" height="56" rx="8" fill="#FFFFFF" stroke="#E3E8EF"/>
+<text class="s b tl" x="39" y="1218" font-size="8" letter-spacing="0.6">DELIBERATELY ABSENT</text>
+<text class="s mut" x="39" y="1231" font-size="7.5">No transcript. No child identity. No overall score.</text>
+<text class="s mut" x="39" y="1241" font-size="7.5">No ranking. No other teacher's data. No live</text>
+<text class="s mut" x="39" y="1251" font-size="7.5">judgement while the lesson is still running.</text>
+<line x1="320" y1="1210" x2="320" y2="1246" stroke="#E3E8EF"/>
+<text class="s b tl" x="336" y="1218" font-size="8" letter-spacing="0.6">LOCALES</text>
+<text class="s mut" x="336" y="1231" font-size="7.5">አማርኛ (Ge'ez) · Sidaamu Afoo (Latin) · English.</text>
+<text class="s mut" x="336" y="1241" font-size="7.5">The Amharic copy above is a draft awaiting native</text>
+<text class="s mut" x="336" y="1251" font-size="7.5">speaker and teacher review (RQ-B4, RQ-B5).</text>
+<line x1="616" y1="1210" x2="616" y2="1246" stroke="#E3E8EF"/>
+<text class="s b tl" x="632" y="1218" font-size="8" letter-spacing="0.6">WHERE THE NUMBERS COME FROM</text>
+<text class="s mut" x="632" y="1231" font-size="7.5">Indicators I-1 to I-8 are defined in</text>
+<text class="s mut" x="632" y="1241" font-size="7.5">docs/DIMTS_ARCHITECTURE_CONTEXT.md §5.</text>
+<text class="s mut" x="632" y="1251" font-size="7.5">Values here are fixtures, not measurements.</text>
+</svg>

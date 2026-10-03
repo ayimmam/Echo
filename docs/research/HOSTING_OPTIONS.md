@@ -1,30 +1,23 @@
 # In-country hosting options — Article 22 compliance
 
-> 2026-09-27 follow-up: this is a dated provider shortlist, not a selected host. The undergraduate STEM trial uses the same in-country privacy boundary as early grades. See [INFRASTRUCTURE_RECHECK.md](INFRASTRUCTURE_RECHECK.md): openEuler service-pack pinning, exact database/driver TLS identity validation (openGauss limitation), provider backup/location terms and restore tests are mandatory selection gates. Prices below were not revalidated in this pass.
+> 2026-09-27 follow-up: this is a dated provider shortlist, not a selected host. The undergraduate STEM trial uses the same in-country privacy boundary as early grades. See [INFRASTRUCTURE_RECHECK.md](INFRASTRUCTURE_RECHECK.md): exact runtime/database compatibility, authenticated connections, provider backup/location terms and restore tests are mandatory selection gates; the October revision below removes the OS-specific baseline. Prices below were not revalidated in this pass.
 
 
 Checked 2026-09-26, prompted by a review of Ethio Telecom's shared-hosting pricing (`myportal.ethiotelecom.et`) against the uploaded copy of Proclamation No. 1321/2016 E.C. (= 1321/2024 G.C.), Article 22 ("Data Sovereignty"): *"Every data controller or data processor shall ensure the storage, on a server or data center located in Ethiopia, of personal data collected or obtained locally."* This matches the Negarit Gazeta text already used in [`CLAIMS_AUDIT.md`](CLAIMS_AUDIT.md) §3 (Art. 22). A copy of the Proclamation is kept at [`../legal/Proclamation-1321-2016EC-Personal-Data-Protection.pdf`](../legal/Proclamation-1321-2016EC-Personal-Data-Protection.pdf).
 
-This answers a narrower question than the rest of the pack: **where can the `infra/openeuler` sovereign-tier server (§8.1, §12) actually be hosted?**
+This answers a narrower question than the rest of the pack: **where can the in-country application and separate research services (§8.1, §12) actually be hosted?**
 
-## The screenshot in question doesn't fit the job
+## 2026-10-02 correction: shared hosting is a conditional candidate
 
-The Ethio Telecom pricing shown (Linux Bronze/Silver/Gold/Platinum, Plesk, ETB 650–5,200/year) is **shared web hosting** — a PHP/MySQL site host with a control panel, not a VPS or bare-metal server with root access. Dimts' sovereign tier needs to run a custom FastAPI app and openGauss/PostgreSQL, which shared Plesk hosting cannot do. Even if Ethio Telecom's data centers are in Ethiopia (they are — see below), this specific product is the wrong tier.
+The earlier rejection of all shared hosting was too broad. Python application support can be sufficient for derived records and reports without root access. The user intends Zergaw Standard and supplied screenshots advertising Ethiopia hosting, Python/SSH, weekly backup, 100 GB and ETB 7,035/year. These are screenshot claims, not verified capacity or a current quote; the cropped “Unlimited” rows do not establish application resources.
 
-## Update 2026-09-26: Zergaw's own shared-hosting tier has the same problem
+Neither the dashboard image nor “Python support” establishes ASGI, WSGI, Passenger, installed databases, scheduler rights or tenant isolation. The user confirmed these are **not yet confirmed**. Do not assume a particular gateway or infer feasibility from storage quota.
 
-The user found Zergaw's shared-hosting page (`zergaw.com/shared-hosting-platform/`), which states **"Hosting Location: Ethiopia"** per plan — even more explicit Article 22 evidence than anything found earlier. But most of its tiers have the same fit problem as the Ethio Telecom screenshot:
+Use [ADR-015](../adr/015-capability-gated-hosting.md) and the [shared-hosting intake](../../infra/in-country/shared-hosting/README.md): managed ASGI permits FastAPI/PostgreSQL; WSGI permits Django with a supported selected database. Verify dependency installation, process/restart and job limits, transaction semantics, private files/secrets, protected DB access, local backups/logs, and measured load. Weekly backup alone fails the proposed daily recovery target. Use a VPS if any required capability or security boundary fails.
 
-| Zergaw plan | Server | Root access | Price | Fits `infra/openeuler`? |
-|---|---|---|---|---|
-| Basic | "None (shared)" | No | ETB 5,481/**year** | No — shared hosting, "Python support" is a WSGI/Passenger app slot, not a machine you control |
-| Standard | "None (shared)" | No | ETB 7,035/year | No |
-| Premium | "None (shared)" | No | ETB 10,139/year | No |
-| **Dedicated** | 2 CPU, 4 GB RAM, dedicated IP | **Yes** | ETB 5,646.55/**month** (≈ ETB 67,760/year) | **Yes** — this is the one that can install openGauss and run FastAPI, WorkManager ingest, and cron jobs as your own daemons |
+Shared hosting never receives research audio, annotation or training workloads. No separate research machine is confirmed. Draft [ADR-016](../adr/016-defence-scope-and-no-recording.md) removes Research Mode/new recording services; [research setup](../../infra/research/README.md) now covers approved existing corpora and observer summaries. Personal-data sync is optional, but any enabled server must pass the same controls; phone-only field storage needs an Article 22 decision. Root access and an openEuler image are not prerequisites for the shared application profile.
 
-The "Dedicated" row is a materially different product from the shared tiers above it, despite being listed on the same pricing page. It overlaps in spec (2 vCPU/4 GB) with a similarly-priced entry on Zergaw's separate Cloud Server (VPS) page (`CS02004`, ETB 5,205/month, quoted in the table below) — confirm with Zergaw sales whether "Dedicated" (shared-hosting page) and the `CS02004` cloud server (VPS page) are the same underlying product, and whether either lets you provision an openEuler image rather than their default OS template.
-
-**Rule of thumb going forward:** on any Ethiopian host's pricing page, "shared hosting" / "Server: none" / a Plesk-or-cPanel-style feature list (subdomains, email accounts, "N databases") means no root and no ability to install openGauss or run your own background services, whatever the location says. Only a line item that names CPU/RAM and says **root/dedicated IP** (VPS, cloud server, dedicated server, bare metal) is a candidate for `infra/openeuler`.
+The historical provider shortlist below is retained as research, not as current pricing, compliance certification or a selected deployment. Reconfirm every commercial and location claim with the provider before selection.
 
 ## Providers that offer rentable infrastructure in Ethiopia
 
@@ -41,8 +34,8 @@ The "Dedicated" row is a materially different product from the shared tiers abov
 - **Article 33 registration.** None of these providers' marketing pages mention helping customers register as a data controller/processor with the Ethiopian Communications Authority. That's still the team's responsibility regardless of host (see `CLAIMS_AUDIT.md` §3, C-7f; `RESEARCH_PLAN.md` WS-F Q1).
 - **Whether renting from a private Ethiopian cloud (Zergaw, teleCloud) satisfies Art. 22** as fully as the government's own G-Cloud. The article only requires the server/data center be *located in Ethiopia* — it doesn't require a government operator — but confirm this reading with the legal advisor alongside the other WS-F questions.
 - **Ethio Telecom and HostHabesha sites were unreachable from this session** (network policy), so their VPS/teleCloud pricing and specs are unverified here. Fetch them directly.
-- **Actual database compatibility.** Zergaw's DBaaS lists PostgreSQL/MySQL/MariaDB, not openGauss by name. openGauss is PostgreSQL-lineage (per `CLAIMS_AUDIT.md` §4, 7j), so a managed *PostgreSQL* instance is a reasonable substitute if openGauss itself isn't offered — this feeds back into ADR-005 (backend/database choice).
+- **Actual database compatibility.** The historical DBaaS list does not establish engines included with Standard. Confirm the exact plan, versions, driver, transaction, migration and connection-security behavior. PostgreSQL is preferred, with supported MySQL/MariaDB conditional on the Django path.
 
 ## Recommendation
 
-For a **budget self-service VPS or managed Postgres with an explicit local-law framing**, contact **Zergaw** first, specifically about their **Dedicated** server or `CS02004` cloud server (both root, 2 vCPU/4 GB) — not the Basic/Standard/Premium shared tiers, which don't give you a machine to install anything on regardless of their stated location. For the strongest **compliance and pitch narrative** ("hosted on Ethiopia's own national data center"), get a quote from **INSA's G-Cloud**. Check **Ethio Telecom teleCloud** too, given the Huawei Cloud Stack overlap with the rest of the competition build. Treat Raxio and UT Solutions as colocation/build options only, not as what you want for W0–W1's spike S6.
+Assess Zergaw Standard first using the capability manifest and HOST/SEC acceptance plan. Its suitability is **unknown**, not rejected or approved. Compare the full cost of daily backups, reliable scheduled jobs, support and capacity with a local VPS if the gates cannot be met. Use one maintained application and one tested database; do not install openGauss merely for a competition technology mapping. Retain alternative providers as fallbacks with fresh contractual and technical evidence.

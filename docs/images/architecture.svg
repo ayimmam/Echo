@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1240" width="1000" height="1240" role="img" aria-label="Echovolve code architecture: the Android edge tier, the in-country pilot tier, the Huawei Cloud demo tier, the data boundary between them, and the shared indicator specification.">
+<title>Echovolve — code architecture</title>
+<desc>Four zones. Zone one is edge/android, the offline-first teacher phone: capture, ring buffer, log-mel features, MindSpore Lite segmentation and language-ID inference, postprocessing, the Kotlin indicator engine, encrypted storage and a sync outbox. Zone two is the in-country pilot tier on openEuler: FastAPI, jobs, database, dashboard, annotation and model training. Zone three is the Huawei Cloud competition demo, holding synthetic and public data only. Zone four is indicators-core, the single indicator specification with a Python reference, a Kotlin port and golden vectors. An amber band between zones two and three marks the data boundary.</desc>
+<style>
+  .s{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif}
+  .ink{fill:#10151E}.mut{fill:#5B6472}.fade{fill:#8A93A1}.w{fill:#FFFFFF}
+  .b{font-weight:700}.sb{font-weight:600}
+  .bx{fill:#FFFFFF;stroke:#DDE2E9;stroke-width:1}
+  .t{font-size:8.5px;font-weight:700;fill:#10151E}
+  .l{font-size:7px;fill:#5B6472}
+</style>
+<defs>
+  <marker id="ar" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#9AA4B2"/></marker>
+  <marker id="arb" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 z" fill="#5B6472"/></marker>
+</defs>
+
+<rect width="1000" height="1240" fill="#F4F6F8"/>
+<text class="s b ink" x="25" y="33" font-size="19">Echovolve — code architecture</text>
+<text class="s mut" x="25" y="52" font-size="9.5">Three tiers, one indicator specification, and a data boundary drawn by Ethiopian law. Directory names match the proposed monorepo layout.</text>
+
+<!-- ================= ZONE 1 : EDGE ================= -->
+<rect x="25" y="68" width="950" height="338" rx="10" fill="#FFFFFF" stroke="#CFE3DF" stroke-width="1.5"/>
+<path d="M25 78 a10 10 0 0 1 10 -10 h930 a10 10 0 0 1 10 10 v20 h-950z" fill="#E8F1EF"/>
+<circle cx="45" cy="83" r="9" fill="#0F6E63"/><text class="s b w" x="45" y="86.5" font-size="10" text-anchor="middle">1</text>
+<text class="s b" x="61" y="87" font-size="11.5" fill="#0B5F55">edge/android/ — the teacher's phone</text>
+<text class="s" x="290" y="87" font-size="8" fill="#4A6A65">Kotlin · Jetpack Compose · minSdk 29 · arm64-v8a · fully functional with no network</text>
+<text class="s sb" x="960" y="87" font-size="7.5" fill="#0B5F55" text-anchor="end">target: RTF ≤ 0.3 · peak RSS ≤ 300 MB · models ≤ 20 MB</text>
+
+<g>
+  <rect class="bx" x="40" y="118" width="118" height="72" rx="6"/>
+  <text class="s t" x="50" y="135">audio/</text><text class="s l" x="50" y="149">AudioRecord</text><text class="s l" x="50" y="160">16 kHz mono PCM16</text><text class="s l" x="50" y="171">foreground service</text><text class="s l" x="50" y="182">started from the UI</text>
+  <rect class="bx" x="172" y="118" width="118" height="72" rx="6"/>
+  <text class="s t" x="182" y="135">audio/RingBuffer</text><text class="s l" x="182" y="149">10 s maximum</text><text class="s l" x="182" y="160">RAM only</text><text class="s l" x="182" y="171">never written to disk</text><text class="s l" x="182" y="182">not re-analysable</text>
+  <rect class="bx" x="304" y="118" width="118" height="72" rx="6"/>
+  <text class="s t" x="314" y="135">pipeline/</text><text class="s l" x="314" y="149">log-mel, 64 bins</text><text class="s l" x="314" y="160">25 ms / 10 ms hop</text><text class="s l" x="314" y="171">streaming CMVN</text><text class="s l" x="314" y="182">Kotlin twin of logmel.py</text>
+  <rect class="bx" x="436" y="118" width="118" height="72" rx="6" stroke="#0F6E63"/>
+  <text class="s t" x="446" y="135">inference/</text><text class="s l" x="446" y="149">seg_student.ms</text><text class="s l" x="446" y="160">5-class posteriors</text><text class="s l" x="446" y="171">per 10 ms frame</text><text class="s l" x="446" y="182">MindSpore Lite 2.10.0</text>
+  <rect class="bx" x="568" y="118" width="118" height="72" rx="6" stroke="#0F6E63"/>
+  <text class="s t" x="578" y="135">inference/</text><text class="s l" x="578" y="149">lid_student.ms</text><text class="s l" x="578" y="160">amh · sid · eng · oth</text><text class="s l" x="578" y="171">3 s teacher windows</text><text class="s l" x="578" y="182">abstains to unknown</text>
+  <rect class="bx" x="700" y="118" width="118" height="72" rx="6"/>
+  <text class="s t" x="710" y="135">pipeline/postprocess</text><text class="s l" x="710" y="149">ordered timeline</text><text class="s l" x="710" y="160">observed vs MISSING</text><text class="s l" x="710" y="171">deterministic smoothing</text><text class="s l" x="710" y="182">original timing kept</text>
+  <rect class="bx" x="832" y="118" width="118" height="72" rx="6" stroke="#54606F"/>
+  <text class="s t" x="842" y="135">indicators-core/kotlin</text><text class="s l" x="842" y="149">I-1 … I-8</text><text class="s l" x="842" y="160">integer 10 ms ticks</text><text class="s l" x="842" y="171">null with a reason</text><text class="s l" x="842" y="182">port of the reference</text>
+  <g stroke="#9AA4B2" stroke-width="1.2" marker-end="url(#ar)">
+    <line x1="159" y1="154" x2="169" y2="154"/><line x1="291" y1="154" x2="301" y2="154"/><line x1="423" y1="154" x2="433" y2="154"/>
+    <line x1="555" y1="154" x2="565" y2="154"/><line x1="687" y1="154" x2="697" y2="154"/><line x1="819" y1="154" x2="829" y2="154"/>
+  </g>
+</g>
+
+<g>
+  <rect class="bx" x="40" y="206" width="252" height="54" rx="6"/>
+  <text class="s t" x="50" y="223">audio/SilencingMonitor.kt</text>
+  <text class="s l" x="50" y="237">AudioRecordingCallback catches a call or another app</text><text class="s l" x="50" y="248">taking the microphone, and emits MISSING spans</text>
+  <rect class="bx" x="306" y="206" width="250" height="54" rx="6"/>
+  <text class="s t" x="316" y="223">app/</text>
+  <text class="s l" x="316" y="237">Compose UI · consent screens · local weekly report</text><text class="s l" x="316" y="248">i18n: አማርኛ · Sidaamu Afoo · English</text>
+  <rect class="bx" x="570" y="206" width="178" height="54" rx="6"/>
+  <text class="s t" x="580" y="223">storage/</text>
+  <text class="s l" x="580" y="237">Room + sqlcipher-android,</text><text class="s l" x="580" y="248">key wrapped by Keystore</text>
+  <rect class="bx" x="762" y="206" width="188" height="54" rx="6"/>
+  <text class="s t" x="772" y="223">sync/</text>
+  <text class="s l" x="772" y="237">WorkManager outbox, durable</text><text class="s l" x="772" y="248">ACKs, UUIDv7 idempotency</text>
+  <path d="M891 190 v8 h-232 v8" fill="none" stroke="#9AA4B2" stroke-width="1.2" marker-end="url(#ar)"/>
+  <line x1="749" y1="233" x2="759" y2="233" stroke="#9AA4B2" stroke-width="1.2" marker-end="url(#ar)"/>
+</g>
+
+<g>
+  <rect class="bx" x="40" y="274" width="252" height="48" rx="6"/>
+  <text class="s t" x="50" y="291">benchmark/</text>
+  <text class="s l" x="50" y="305">RTF · peak RSS · battery harness,</text><text class="s l" x="50" y="316">wrapping the Lite benchmark tool</text>
+  <rect x="306" y="274" width="644" height="48" rx="6" fill="#FAFBFC" stroke="#C6CEDA" stroke-dasharray="4 3"/>
+  <text class="s t" x="316" y="291">Research Mode only — separate written consent, never in Deployment Mode</text>
+  <text class="s l" x="316" y="305">The lesson's audio is encrypted with a per-lesson AES key, transferred to the in-country research store, and deleted from the phone only after a</text>
+  <text class="s l" x="316" y="316">verified receipt. It never reaches the cloud tier, and it is excluded from OS backup and device transfer.</text>
+</g>
+<text class="s mut" x="40" y="346" font-size="8">Deployment Mode writes no raw audio to disk. A span lost to a call, a permission change or a dropped chunk is reported as MISSING — never bridged, smoothed, or counted as silence.</text>
+<text class="s mut" x="40" y="364" font-size="8">What leaves the phone is one LessonRecord v2 JSON per lesson, kilobytes in size: indicators, versions, capture accounting and quality flags. No audio, no embeddings, no child-level data.</text>
+<text class="s b" x="40" y="384" font-size="8" fill="#B33A32">Repository status: edge/android/app is a Compose starter activity. Every other box in this zone is a design target behind gates G0–G2.</text>
+
+<!-- ================= SYNC BAND ================= -->
+<text class="s mut" x="40" y="430" font-size="8.5">Sync is opportunistic, resumable and idempotent. The app is fully usable with no network for days;</text>
+<text class="s mut" x="40" y="444" font-size="8.5">a withdrawal takes precedence over anything still sitting in the outbox.</text>
+<g stroke="#5B6472" stroke-width="1.4" marker-end="url(#arb)"><line x1="700" y1="410" x2="700" y2="460"/></g>
+<text class="s sb" x="692" y="422" font-size="7.5" fill="#3B4553" text-anchor="end">POST /v1/lessons</text>
+<text class="s" x="692" y="434" font-size="7" fill="#5B6472" text-anchor="end">LessonRecord v2 · idempotent on record_id · per-record result</text>
+<text class="s" x="692" y="446" font-size="7" fill="#5B6472" text-anchor="end">TLS 1.2+ · certificate pinning · device-bound token</text>
+<g stroke="#5B6472" stroke-width="1.4" marker-end="url(#arb)"><line x1="716" y1="460" x2="716" y2="410"/></g>
+<text class="s sb" x="726" y="422" font-size="7.5" fill="#3B4553">GET /v1/reports/latest</text>
+<text class="s" x="726" y="434" font-size="7" fill="#5B6472">POST /v1/consent</text>
+<text class="s" x="726" y="446" font-size="7" fill="#5B6472">DELETE /v1/teacher/{pseudo_id}</text>
+
+<!-- ================= ZONE 2 : IN-COUNTRY ================= -->
+<rect x="25" y="466" width="950" height="330" rx="10" fill="#FFFFFF" stroke="#D3DEEB" stroke-width="1.5"/>
+<path d="M25 476 a10 10 0 0 1 10 -10 h930 a10 10 0 0 1 10 10 v20 h-950z" fill="#EEF3F9"/>
+<circle cx="45" cy="481" r="9" fill="#2C4A6B"/><text class="s b w" x="45" y="484.5" font-size="10" text-anchor="middle">2</text>
+<text class="s b" x="61" y="485" font-size="11.5" fill="#2C4A6B">in-country pilot tier — infra/openeuler/</text>
+<text class="s" x="320" y="485" font-size="8" fill="#4A6A7E">one API, one database, one job runner · openEuler 24.03 LTS SP3 candidate</text>
+<text class="s sb" x="960" y="485" font-size="7.5" fill="#2C4A6B" text-anchor="end">Proclamation 1321/2024 Art. 22 — personal data stored in Ethiopia</text>
+
+<g>
+  <rect class="bx" x="40" y="514" width="250" height="70" rx="6" stroke="#2C4A6B"/>
+  <text class="s t" x="50" y="531">server/api/ — Python, FastAPI</text>
+  <text class="s l" x="50" y="546">POST /v1/lessons · GET /v1/reports/latest</text><text class="s l" x="50" y="557">POST /v1/consent · DELETE /v1/teacher/{id}</text><text class="s l" x="50" y="568">scope derived server-side from the enrolment,</text><text class="s l" x="50" y="577">never from a query parameter</text>
+  <rect class="bx" x="304" y="514" width="236" height="70" rx="6"/>
+  <text class="s t" x="314" y="531">server/jobs/</text>
+  <text class="s l" x="314" y="546">weekly report from a versioned rule table</text><text class="s l" x="314" y="557">minimum-group aggregation, 5 distinct teachers</text><text class="s l" x="314" y="568">withdrawal purge, derived data and backups</text><text class="s l" x="314" y="577">same rule table as the offline device report</text>
+  <rect class="bx" x="554" y="514" width="196" height="70" rx="6"/>
+  <text class="s t" x="564" y="531">server/db/migrations/</text>
+  <text class="s l" x="564" y="546">openGauss, conditional on the</text><text class="s l" x="564" y="557">authenticated-TLS gate DB-01</text><text class="s l" x="564" y="568">PostgreSQL is the explicit fallback</text><text class="s l" x="564" y="577">common SQL subset only · ADR-005</text>
+  <rect class="bx" x="764" y="514" width="186" height="70" rx="6"/>
+  <text class="s t" x="774" y="531">dashboard/</text>
+  <text class="s l" x="774" y="546">woreda aggregate view</text><text class="s l" x="774" y="557">suppressed cells, fixed cohorts</text><text class="s l" x="774" y="568">no teacher-level page exists</text><text class="s l" x="774" y="577">same code as the demo page</text>
+  <g stroke="#9AA4B2" stroke-width="1.2" marker-end="url(#ar)">
+    <line x1="291" y1="549" x2="301" y2="549"/><line x1="541" y1="549" x2="551" y2="549"/><line x1="751" y1="549" x2="761" y2="549"/>
+  </g>
+</g>
+
+<g>
+  <rect x="40" y="594" width="910" height="80" rx="8" fill="#FAFBFC" stroke="#C6CEDA" stroke-dasharray="4 3"/>
+  <text class="s b mut" x="52" y="609" font-size="7.5">research and training — private network, separate credentials, never exposed on the public API</text>
+  <rect class="bx" x="52" y="616" width="166" height="50" rx="6"/>
+  <text class="s t" x="61" y="632">Label Studio</text><text class="s l" x="61" y="645">self-hosted annotation</text><text class="s l" x="61" y="656">target Cohen κ ≥ 0.70</text>
+  <rect class="bx" x="232" y="616" width="180" height="50" rx="6"/>
+  <text class="s t" x="241" y="632">ml/teacher/</text><text class="s l" x="241" y="645">PyTorch + Hugging Face</text><text class="s l" x="241" y="656">XLS-R / HuBERT / MMS encoder</text>
+  <rect class="bx" x="426" y="616" width="160" height="50" rx="6"/>
+  <text class="s t" x="435" y="632">ml/distill/</text><text class="s l" x="435" y="645">soft labels on unannotated</text><text class="s l" x="435" y="656">audio, CE + KL loss</text>
+  <rect class="bx" x="600" y="616" width="160" height="50" rx="6"/>
+  <text class="s t" x="609" y="632">ml/student/</text><text class="s l" x="609" y="645">MindSpore · conv-only INT8</text><text class="s l" x="609" y="656">or CRNN with FP16 GRU</text>
+  <rect class="bx" x="774" y="616" width="164" height="50" rx="6" stroke="#0F6E63"/>
+  <text class="s t" x="783" y="632">ml/export/</text><text class="s l" x="783" y="645">MindIR → converter → .ms</text><text class="s l" x="783" y="656">PTQ INT8 · ONNX escape hatch</text>
+  <g stroke="#9AA4B2" stroke-width="1.2" marker-end="url(#ar)">
+    <line x1="219" y1="641" x2="229" y2="641"/><line x1="413" y1="641" x2="423" y2="641"/><line x1="587" y1="641" x2="597" y2="641"/><line x1="761" y1="641" x2="771" y2="641"/>
+  </g>
+</g>
+
+<g>
+  <rect class="bx" x="40" y="686" width="268" height="44" rx="6"/>
+  <text class="s t" x="50" y="702">research_recording</text><text class="s l" x="50" y="715">encrypted audio blobs, Research Mode only,</text><text class="s l" x="50" y="725">consent reference required for every row</text>
+  <rect class="bx" x="322" y="686" width="232" height="44" rx="6"/>
+  <text class="s t" x="332" y="702">consent_event · audit_log</text><text class="s l" x="332" y="715">append-only consent ledger; withdrawal</text><text class="s l" x="332" y="725">revokes every enrolled device</text>
+  <rect class="bx" x="568" y="686" width="220" height="44" rx="6"/>
+  <text class="s t" x="578" y="702">encrypted backups</text><text class="s l" x="578" y="715">in Ethiopia, restore tested, deletion</text><text class="s l" x="578" y="725">replayed on restore</text>
+  <rect class="bx" x="802" y="686" width="148" height="44" rx="6"/>
+  <text class="s t" x="812" y="702">legal obligations</text><text class="s l" x="812" y="715">Art. 33 registration · DPIA</text><text class="s l" x="812" y="725">(Art. 47) · DPO (Art. 40)</text>
+</g>
+<text class="s mut" x="40" y="754" font-size="8">ml/export/ ships seg_student.ms, lid_student.ms and a manifest pinning tensor shapes, class order, feature config, lookahead, quantization scales and hashes. The phone rejects an incompatible bundle atomically.</text>
+<text class="s b" x="40" y="774" font-size="8" fill="#B33A32">Repository status: server/, dashboard/, ml/ and infra/ are empty placeholder directories. Nothing in this zone is built, trained, deployed or benchmarked.</text>
+
+<!-- ================= DATA BOUNDARY ================= -->
+<rect x="25" y="806" width="950" height="56" rx="8" fill="#FFF6EC" stroke="#E8A33D" stroke-width="1.5"/>
+<text class="s b" x="44" y="828" font-size="9.5" fill="#8A5A16">DATA BOUNDARY</text>
+<text class="s" x="44" y="841" font-size="7.5" fill="#8A5A16">ADR-003 / ADR-011</text>
+<text class="s" x="44" y="853" font-size="7.5" fill="#8A5A16">separate credentials both sides</text>
+<line x1="186" y1="816" x2="186" y2="852" stroke="#E8A33D"/>
+<circle cx="208" cy="827" r="7.5" fill="#2E9E5B"/><path d="M204 827 l3 3 l5 -6" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="s" x="224" y="830" font-size="8.5" fill="#3B4553"><tspan class="b">cloud → pilot</tspan> — approved public-corpus data and cloud-trained artefacts may cross, after licence and privacy review</text>
+<circle cx="208" cy="849" r="7.5" fill="#D2483F"/><path d="M205 846 l6 6 m0 -6 l-6 6" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+<text class="s" x="224" y="852" font-size="8.5" fill="#3B4553"><tspan class="b">pilot → cloud</tspan> — no classroom audio, features, posteriors, soft labels, trained weights, logs or identifiers ever cross, in either cohort</text>
+
+<!-- ================= ZONE 3 : CLOUD DEMO ================= -->
+<rect x="25" y="872" width="615" height="258" rx="10" fill="#FFFFFF" stroke="#F0D5AE" stroke-width="1.5"/>
+<path d="M25 882 a10 10 0 0 1 10 -10 h595 a10 10 0 0 1 10 10 v20 h-615z" fill="#FFF6EC"/>
+<circle cx="45" cy="887" r="9" fill="#B8791C"/><text class="s b w" x="45" y="890.5" font-size="10" text-anchor="middle">3</text>
+<text class="s b" x="61" y="891" font-size="10.5" fill="#8A5A16">Huawei Cloud demo — infra/huawei-cloud/</text>
+<text class="s sb" x="628" y="891" font-size="7.5" fill="#8A5A16" text-anchor="end">synthetic and public data only</text>
+<text class="s mut" x="40" y="918" font-size="7.5">Region AF-Johannesburg · required by the 2026–27 Innovation Competition, which mandates a Huawei Cloud deployment and a visual demo page.</text>
+
+<g>
+  <rect class="bx" x="40" y="930" width="272" height="62" rx="6"/>
+  <text class="s t" x="50" y="947">tools/synthetic-lessons/</text>
+  <text class="s l" x="50" y="961">lesson_records.py — seeded synthetic LessonRecords</text><text class="s l" x="50" y="972">audio_mix.py — public speech + MUSAN + RIR + choral</text><text class="s l" x="50" y="983">simulation, for training mixtures</text>
+  <rect class="bx" x="328" y="930" width="272" height="62" rx="6"/>
+  <text class="s t" x="338" y="947">ecs/</text>
+  <text class="s l" x="338" y="961">the same server/ and dashboard/ code as the pilot,</text><text class="s l" x="338" y="972">plus tools/lesson-simulator as the visual demo page</text><text class="s l" x="338" y="983">separate endpoint, credentials, logs and backups</text>
+  <rect class="bx" x="40" y="1004" width="272" height="62" rx="6"/>
+  <text class="s t" x="50" y="1021">rds/</text>
+  <text class="s l" x="50" y="1035">RDS PostgreSQL in the same region and VPC,</text><text class="s l" x="50" y="1046">private connectivity, least-privilege user, SSL</text><text class="s l" x="50" y="1057">GaussDB is an alternative, not a drop-in alias</text>
+  <rect class="bx" x="328" y="1004" width="272" height="62" rx="6"/>
+  <text class="s t" x="338" y="1021">obs/ + modelarts/</text>
+  <text class="s l" x="338" y="1035">public corpora and model artefacts, same region</text><text class="s l" x="338" y="1046">ModelArts does not support encrypted OBS buckets,</text><text class="s l" x="338" y="1057">so this bucket holds approved public objects only</text>
+  <g stroke="#9AA4B2" stroke-width="1.2" marker-end="url(#ar)"><line x1="313" y1="961" x2="325" y2="961"/></g>
+</g>
+<text class="s mut" x="40" y="1088" font-size="7.5">No teacher, school, child or pilot-derived artefact has an entry point into this tier. The demo runs on records that were generated, not collected.</text>
+<text class="s mut" x="40" y="1101" font-size="7.5">The Regional stage re-runs the submitted code and datasets, and shortlisted entries must be open source — so the generator ships with the repository.</text>
+<text class="s b" x="40" y="1118" font-size="7.5" fill="#B33A32">Repository status: infra/huawei-cloud/ is an empty placeholder. No cloud account, region, quota or deployment has been inspected.</text>
+
+<!-- ================= ZONE 4 : SHARED SPEC ================= -->
+<rect x="660" y="872" width="315" height="258" rx="10" fill="#FFFFFF" stroke="#D7DDE5" stroke-width="1.5"/>
+<path d="M660 882 a10 10 0 0 1 10 -10 h295 a10 10 0 0 1 10 10 v20 h-315z" fill="#F1F4F8"/>
+<circle cx="680" cy="887" r="9" fill="#54606F"/><text class="s b w" x="680" y="890.5" font-size="10" text-anchor="middle">4</text>
+<text class="s b" x="696" y="891" font-size="10.5" fill="#3B4553">one spec, two implementations</text>
+<g>
+  <rect class="bx" x="675" y="912" width="285" height="52" rx="6"/>
+  <text class="s t" x="685" y="929">indicators-core/python/</text>
+  <text class="s l" x="685" y="942">the reference implementation: timeline.py ·</text><text class="s l" x="685" y="953">postprocess.py · indicators.py · calibration.py</text>
+  <rect class="bx" x="675" y="970" width="285" height="40" rx="6"/>
+  <text class="s t" x="685" y="987">indicators-core/kotlin/</text>
+  <text class="s l" x="685" y="1000">the device port — pure Kotlin, no Android deps</text>
+  <rect class="bx" x="675" y="1016" width="285" height="46" rx="6" stroke="#54606F"/>
+  <text class="s t" x="685" y="1033">indicators-core/golden/</text>
+  <text class="s l" x="685" y="1046">JSON timelines and expected outputs; both</text><text class="s l" x="685" y="1056">implementations must agree to 1e-6 in CI</text>
+  <rect class="bx" x="675" y="1068" width="285" height="34" rx="6"/>
+  <text class="s t" x="685" y="1084">ml/features/parity/ · tests/acceptance/ · infra/ci/</text>
+  <text class="s l" x="685" y="1096">log-mel fixtures · 18 contract vectors · pipelines</text>
+  <g stroke="#9AA4B2" stroke-width="1.2" marker-end="url(#ar)">
+    
+  </g>
+</g>
+<text class="s mut" x="675" y="1120" font-size="7.5">Compiled into ① · imported by ② · gates every commit.</text>
+
+<!-- ================= LEGEND ================= -->
+<rect x="25" y="1146" width="950" height="66" rx="8" fill="#FFFFFF" stroke="#E3E8EF"/>
+<text class="s b" x="39" y="1165" font-size="8" fill="#0F6E63" letter-spacing="0.6">READING THIS DIAGRAM</text>
+<rect x="39" y="1175" width="16" height="11" rx="2" class="bx"/>
+<text class="s mut" x="61" y="1184" font-size="7.5">solid outline = a proposed module, not built</text>
+<rect x="258" y="1175" width="16" height="11" rx="2" fill="#FAFBFC" stroke="#C6CEDA" stroke-dasharray="3 2"/>
+<text class="s mut" x="280" y="1184" font-size="7.5">dashed = consent-gated, or private network only</text>
+<rect x="520" y="1175" width="16" height="11" rx="2" fill="#FFF6EC" stroke="#E8A33D"/>
+<text class="s mut" x="542" y="1184" font-size="7.5">amber = the boundary Article 22 and ADR-003 draw between personal data and the competition demo</text>
+<text class="s b" x="39" y="1202" font-size="8" fill="#B33A32">As of 2026-09-27 no product code, build, device benchmark or deployment exists in this repository. Every box is a design target and every budget is a target, not a measurement.</text>
+
+<text class="s fade" x="25" y="1232" font-size="7.5">Mirrors docs/research/CODEBASE_STRUCTURE.md and §8 of docs/DIMTS_ARCHITECTURE_CONTEXT.md. Acceptance gates G0–G5 are defined in docs/research/IMPLEMENTATION_REVIEW.md.</text>
+</svg>

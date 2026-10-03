@@ -1,130 +1,75 @@
-# Sample codebase structure — Dimts
+# Codebase structure — Dimts
 
-A revision of the monorepo in architecture §12, reflecting [`CLAIMS_AUDIT.md`](CLAIMS_AUDIT.md) and [`ASSUMPTIONS.md`](ASSUMPTIONS.md). Reviewed 2026-09-27 against [`IMPLEMENTATION_REVIEW.md`](IMPLEMENTATION_REVIEW.md). The folders are scaffolded; only `edge/android/app` is a starter Gradle module. All described product files and other modules remain proposed and require G0–G5. Prepared test harness/fixtures now live in `tests/acceptance`; see the STEM-first plan and infrastructure recheck.
+Updated 2026-10-02. [ADR-015](../adr/015-capability-gated-hosting.md) adopts the structure and security contracts below. Runtime, database and deployment remain conditional on Zergaw's confirmed capabilities. The user authorised scaffolding only, with no product features. Research infrastructure is not yet available; Research Mode is subsequently **removed** by draft [ADR-016](../adr/016-defence-scope-and-no-recording.md); retained directories do not authorise a recording service.
 
-## What changed from §12, and why
+## Current layout and status
 
-| Change | Reason |
-|---|---|
-| **Two deployment targets:** `infra/huawei-cloud/` (competition demo) and `infra/openeuler/` (pilot) | The 2026–27 rules require Huawei Cloud; the law requires in-country storage of personal data (A-C2, A-C3, D-6). |
-| **`tools/synthetic-lessons/`** generates both training mixtures and demo lesson records | The Regional stage re-runs code and datasets, and the demo can't use pilot data (A-C3). |
-| `ml/teacher/` uses **PyTorch/HF**; `ml/student/` uses **MindSpore** | MindNLP is discontinued (A-T8, D-1). |
-| `ml/features/` is our own log-mel code, with a Kotlin twin and parity tests | MindAudio is unmaintained. Feature drift between Python and Kotlin would silently break the model. |
-| `ml/lid/` with an MMS-LID baseline | Sidama LID models and data exist (A-D3). |
-| `ml/student/` supports conv-only (INT8) and CRNN (FP16 GRU) variants | Lite has no INT8 GRU/LSTM (A-T3). |
-| `edge/android/audio/` detects mic silencing and supports an external mic | Android silences capture during calls (A-T7); desk audio may be too noisy (A-T4). |
-| `edge/android/storage/` uses SQLCipher + Keystore | Jetpack Security is deprecated (A-T11). |
-| `indicators-core/` handles **missing** spans | Silenced audio must not count as NON_SPEECH. |
-| `tools/check-elf-alignment/` in CI | The 2.10.0 AAR is 4 KB-aligned; catch it before any Play release (A-T6). |
-| `docs/competition/`, `docs/legal/` | Template 1/2 drafts; Art. 33 registration, DPIA and consent packs. |
-| Research PDFs stay in a **separate private repository** | The competition requires open-sourcing; `docs/research/papers/` holds copyrighted PDFs. |
-
-## Tree
-
-```
-dimts/
-├── README.md                         ← what it is, quick start for the demo (reproducible by judges)
-├── LICENSE                           ← open-source licence (needed for Regional shortlist); e.g. Apache-2.0
-├── .gitignore                        ← includes .DS_Store, *.wav, *.ms, data/, .env
+```text
+Echo/
 ├── docs/
-│   ├── DIMTS_ARCHITECTURE_CONTEXT.md
-│   ├── adr/                          ← ADR-000 template; ADR-001…014 (014 STEM-first trial)
-│   ├── indicator-spec.md             ← mirrors §5; versioned; I-3 framed as balance indicator
-│   ├── indicator-rationale.md        ← RQ-B1 literature matrix
-│   ├── testing/                     ← post-implementation suite/runbook (prepared)
-│   ├── annotation-guide.md           ← class definitions + audio examples; missing/silenced span rule
-│   ├── ethics/                       ← consent + assent forms (amh, sid, eng), IRB approval, breach runbook (Art. 43 + 44)
-│   ├── legal/                        ← Art. 33 registration record, DPIA (Art. 47), legal-advisor Q&A (WS-F)
-│   └── competition/                  ← Template 1 draft, Template 2 slides, demo script, reproduction guide
-│
-├── tests/acceptance/                 ← prepared runner + 18 contract vectors; implementation adapters still needed
-├── indicators-core/                  ← single source of truth for I-1…I-8
-│   ├── python/dimts_indicators/      ← reference implementation (Python ≥ 3.10)
-│   │   ├── timeline.py               ← integer-tick intervals; MISSING metadata separate from five acoustic classes
-│   │   ├── postprocess.py            ← deterministic smoothing, timing preservation, unknown LID
-│   │   ├── indicators.py             ← I-1…I-8, spec_version
-│   │   └── calibration.py            ← E7: confusion-matrix error propagation, intervals
-│   ├── kotlin/                       ← Android port (Gradle module, pure Kotlin, no Android deps)
-│   └── golden/                       ← timelines + expected outputs; both impls must match (1e-6)
-│       ├── 001_basic.json
-│       ├── 014_call_interruption.json   ← MISSING span mid-lesson (Android silencing)
-│       └── 020_choral_drill.json        ← near-zero latencies; I-2 split by response type
-│
-├── ml/
-│   ├── configs/                      ← YAML per experiment (E2…E7)
-│   ├── data/
-│   │   ├── DATASETS.md               ← licence, gating, register, overlap notes (E8)
-│   │   └── manifests/                ← separate STEM instructor/course and early-grade teacher/school splits; NO audio in git
-│   ├── features/
-│   │   ├── logmel.py                 ← 64-bin, 25 ms / 10 ms, streaming normalisation
-│   │   └── parity/                   ← fixtures shared with edge/android/pipeline (Kotlin twin)
-│   ├── synth/ → see tools/synthetic-lessons
-│   ├── teacher/                      ← PyTorch + Hugging Face (XLS-R / MMS / HuBERT) — server only
-│   ├── lid/                          ← MMS-LID-256 baseline (E3), student LID head
-│   ├── student/                      ← MindSpore; variants: tcn_int8/, crnn_fp16gru/, conformer_tiny/
-│   ├── distill/                      ← soft labels from teacher → student (E6)
-│   ├── export/
-│   │   ├── mindir_to_ms.sh           ← MindSpore → MindIR → converter_lite → .ms (+ PTQ full-quant)
-│   │   ├── onnx_to_ms.sh             ← escape hatch: PyTorch → ONNX → .ms
-│   │   └── model_card.py             ← writes model_card.json (feature-config hash, calib-set hash, licence of upstream models)
-│   ├── eval/                         ← frame F1, indicator MAE/ρ, cross-language, teacher-independent splits
-│   └── modelarts/                    ← job specs; AF-Johannesburg; OBS same region; PUBLIC data only
-│
-├── edge/android/                     ← Kotlin, Jetpack Compose; minSdk 29
-│   ├── app/                          ← UI, i18n (amh, sid, eng); report view; consent screens
-│   ├── audio/
-│   │   ├── CaptureService.kt         ← foregroundServiceType="microphone", started only from UI
-│   │   ├── RingBuffer.kt             ← ≤ 10 s, RAM only
-│   │   ├── SilencingMonitor.kt       ← AudioRecordingCallback → emits MISSING spans
-│   │   └── MicSource.kt              ← built-in vs wired/USB lavalier (D-7)
-│   ├── pipeline/                     ← features (Kotlin twin of logmel.py) → seg → LID → postprocess
-│   ├── inference/                    ← MindSpore Lite 2.10.0 AAR (Java API); ONNX Runtime fallback candidate; separate size/performance gate
-│   ├── storage/                      ← Room + modern sqlcipher-android; Keystore-wrapped key, backup/transfer exclusions
-│   ├── sync/                         ← one-time WorkManager outbox + periodic recovery; ownership checks, durable ACK, payload conflicts, revocation precedence
-│   └── benchmark/                    ← RTF / RSS / battery harness (S2); wraps Lite `benchmark` tool
-│
-├── server/                           ← Python FastAPI; same code runs in both deployments
-│   ├── api/                          ← cohort-scoped enrolment/context; /v1/lessons, /v1/reports, /v1/consent, /v1/teacher/{id}
-│   ├── jobs/                         ← weekly reports (rule table), k-anonymity aggregation, purge
-│   ├── db/migrations/                ← SQL kept to the PostgreSQL/openGauss common subset
-│   └── tests/
-│
-├── dashboard/                        ← district view; doubles as the competition "visual demo page"
-│
-├── tools/
-│   ├── synthetic-lessons/            ← ONE generator, two outputs:
-│   │   ├── audio_mix.py              ←   (a) training mixtures: Afrivoice/FLEURS/ALFFA + MUSAN + RIR + choral sim
-│   │   └── lesson_records.py         ←   (b) synthetic LessonRecords + timelines for the cloud demo
-│   ├── lesson-simulator/             ← web page: play a synthetic/public clip → live indicators (demo)
-│   ├── check-elf-alignment/          ← checks all native libraries, ELF/ZIP packaging; runtime test on 16 KB; pilot limited to verified devices
-│   └── demo/                         ← scripted demo accounts, seed data (synthetic only)
-│
-└── infra/
-    ├── huawei-cloud/                 ← COMPETITION DEMO — synthetic/public data only
-    │   ├── README.md                 ← one-command redeploy; region AF-Johannesburg
-    │   ├── ecs/                      ← server + dashboard + simulator containers
-    │   ├── rds/                      ← one chosen DB engine after S6; driver/migration/TLS/restore compatibility proven
-    │   └── obs/                      ← public datasets + approved model artefacts (private access; bucket encryption set per service requirement)
-    ├── openeuler/                    ← PILOT — personal data, Hawassa University
-    │   ├── compose/                  ← server, openGauss, Label Studio, backup
-    │   └── backup/                   ← encrypted, in-country
-    └── ci/                           ← GitHub Actions: golden tests (py + kt), feature parity,
-                                         model-contract check, ELF alignment, secret scan
+│   ├── adr/015-capability-gated-hosting.md
+│   ├── adr/016-defence-scope-and-no-recording.md
+│   ├── security/ARCHITECTURE.md         # trust boundaries and SEC-01–12
+│   ├── testing/                       # product and hosting/security procedures
+│   └── research/                      # STEM-first plan, evidence, contracts
+├── edge/android/                      # app is a Compose starter; other areas placeholders
+├── indicators-core/                   # proposed Python/Kotlin implementations and golden data
+├── ml/                                # research placeholders; no training on shared hosting
+├── server/                            # framework-neutral contracts, no running application
+│   ├── api/                           # future HTTP adapters
+│   ├── domain/                        # authorised use cases and idempotency contracts
+│   ├── security/                      # authentication, scope and redacted audit contracts
+│   ├── config/                        # future fail-closed runtime configuration
+│   ├── db/migrations/                 # selected engine only; currently empty
+│   ├── jobs/                          # bounded scheduled CLI work, DB leases/checkpoints
+│   ├── templates/                     # future rendered reports/dashboard
+│   └── tests/                         # future product tests
+├── dashboard/                         # design boundary; no separate frontend service
+├── infra/
+│   ├── in-country/
+│   │   ├── shared-hosting/            # conditional default, derived records/reports only
+│   │   │   ├── README.md              # capability intake and deployment sequence
+│   │   │   └── capabilities.example.json  # deliberately unconfirmed
+│   │   └── vps/                       # fallback; compose/ and backup/ placeholders moved here
+│   ├── research/                      # separate private in-country setup; not provisioned
+│   ├── huawei-cloud/                  # isolated synthetic demo; ecs/rds/obs placeholders
+│   ├── openeuler/                     # legacy path redirect only
+│   └── ci/                            # future CI definitions
+├── tools/check-hosting/               # executable offline evidence checker
+└── tests/
+    ├── infrastructure/                # executable checker tests, synthetic evidence only
+    └── acceptance/                    # 18 contract vectors and harness; needs product adapters
 ```
 
-## The data boundary
+Other existing ML, Android and tools placeholders remain. Named responsibilities above are not implemented modules. No server entry point, framework dependency, database migration or deployment automation is supplied before host selection; the deployment scaffolding is a capability manifest and runbook. Only the empty OS-specific backup/Compose placeholders moved.
 
-| | `infra/huawei-cloud/` (competition) | `infra/openeuler/` (pilot) |
+## Stack and dependency boundaries
+
+One modular Python application handles the API and rendered pages. HTTP and CLI adapters call authorised domain use cases, which access scoped repositories; neither templates nor jobs bypass authorisation. The web process does not import ML frameworks, run inference, host annotation or train models. See [server contracts](../../server/README.md).
+
+Prefer PostgreSQL. Managed ASGI permits FastAPI/PostgreSQL; WSGI-only hosting permits Django with PostgreSQL or a supported MySQL/MariaDB version. Select and pin one path after provider evidence and tests. Do not build two backends or maintain cross-engine migrations. Scheduled CLI jobs must survive bounded runtimes and retries; no resident worker, Redis, Docker or root access is required for the shared profile. VPS is the fallback if required capabilities or isolation fail. openEuler is optional there; openGauss is not the baseline.
+
+The later feature review adds readiness/pause/discard/context and teacher-selected cards to the Android plan, makes sync optional, reduces the model to a coarse candidate and defers production LID. Kotlin/Compose/encrypted storage and all enabled-sync safety contracts remain. No module/build changes accompany this docs review.
+
+## Data boundaries
+
+| Target | Allowed data / access | Release condition |
 |---|---|---|
-| Data | Synthetic records; corpora/models only after licence and privacy approval | LessonRecords from consenting teachers, Research Mode audio |
-| Personal data | No pilot data; separate credentials/endpoints, seed allowlists and logging controls. Public speech or mixed voices are not automatically non-personal. | Yes. Art. 22(1): stored in Ethiopia. |
-| Who writes | Deploy scripts only | Phones (sync API), annotators (Label Studio) |
-| Data path to the other tier | Approved cloud models → pilot only | None from pilot → cloud, including weights/soft labels; approved artefacts may flow cloud → pilot |
-| Reproducible by judges | Yes (README + generator) | No, and not required |
+| Shared hosting | Derived records, minimal pseudonymous enrolment/consent references and private reports | Provider evidence + HOST/SEC suites + G4-U; no audio/features/training targets |
+| Private research environment | Approved existing acoustic corpora, restricted identity register and live observer totals | Approved access/retention/ethics; **new audio recording/transfer/annotation service removed**, not waiting for provisioning |
+| Huawei Cloud demo | Synthetic records; other assets only after separate provenance/privacy/licence review | Separate identities, secrets, DB and logs; no pilot-derived import |
+
+Research is a separate environment, not another folder in the shared account. All pilot/research personal data, logs, replicas and backups stay in-country under the existing project boundary. The synthetic cloud demo should use the same selected app/engine when available. Neither the undergraduate trial nor a complete capability checklist approves early-grade release.
+
+Draft [ADR-017](../adr/017-research-data-access-and-publication.md) adds the [stakeholder map](STAKEHOLDER_MAP.md) and [research data/access plan](RESEARCH_DATA_MANAGEMENT_PLAN.md). Actual consent/linkage (R0), coded study tables/analysis (R1) and approved anonymous publication files (R2) live in the approved research environment, **not new folders in this repository**. Anteneh's named access and post-graduation continuity are readiness requirements; a checked numeric-form workflow avoids a new research portal/service. No modules are scaffolded by this planning change.
+
+## Verification
+
+[Hosting/security procedures](../testing/HOSTING_SECURITY_TEST_PLAN.md) cover provider selection and future implementation. [Existing product suites](../testing/POST_IMPLEMENTATION_TEST_PLAN.md) still govern device, model, indicator and cohort gates. The checker verifies declared evidence completeness only; it cannot establish provider truth or actual security. See [infra](../../infra/README.md) for commands and profile selection.
 
 ## Contract changes worth making now
 
-**`LessonRecord` v1 → v2 (§10.1), illustrative subset only:** Freeze full schema, null/availability reasons, denominators, consent reference, processing versions and validation at G1. No previous version is implemented. STEM requires a distinct context without O–3 grade, compatible model/labels, and cohort-isolated reports/aggregates (ADR-014).
+**Historical full-scope `LessonRecord` v1 → v2 (§10.1), illustrative subset only:** ADR-016 requires a new coarse-label/spec version, unavailable deferred indicators, initial enumerated context and local-only later exclusion/card state. The example below preserves the earlier proposal; it is not the reduced active schema. Freeze full schema, null/availability reasons, denominators, consent reference, processing versions and validation at G1. No previous version is implemented. STEM requires a distinct context without O–3 grade, compatible model/labels, and cohort-isolated reports/aggregates (ADR-014).
 
 ```jsonc
 {

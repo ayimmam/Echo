@@ -5,7 +5,28 @@
 
 First checked 2026-09-25. Updated 2026-09-26 with the full texts supplied in [`papers/`](papers/). Verdict labels are defined in [`README.md`](README.md). Citations are (Author, year) and resolve in [`BIBLIOGRAPHY.md`](BIBLIOGRAPHY.md). Section numbers (§) refer to the architecture document. Page numbers marked "PDF p." count PDF pages rather than printed page numbers.
 
+## 2026-10-03 feature-review corrections
+
+[FEATURE_REVIEW](FEATURE_REVIEW.md) applies the fixed RAM-only guardrail to all new project capture. Research Mode and the promised recorded/annotated classroom corpus are **removed**. Existing technical-source findings do not establish a working product. New evidence is recorded in the bibliography without duplicating existing papers.
+
+- **Effect units corrected:** Demszky & Liu (2023), Table 2: −0.035 against control mean 0.722 = **−3.5 percentage points / about −4.8% relative**. The old −5 pp claim was wrong. A bundled online-mentor intervention is not causal evidence for an isolated acoustic gauge, nor learning gains in Ethiopia.
+- **Denominator corrected:** I-1 includes exclusive teacher + child + overlap once in observed speech; a transcript-derived teacher/(teacher+student) ratio is analogous, not the same overlap-aware definition.
+- **Current policy remains open:** [Refworld’s “2023” record](https://www.refworld.org/legal/natleginstr/natlegbod/2023/151088) links to a PDF titled April 1994. That document verifies historical §3.5 only.
+- **Legal source improved:** the [Ministry of Justice](https://justice.gov.et/en/law/personal-data-protection-proclamation/) provides the official Gazette. Art. 22 phone-only storage, controller/registration, child consent and applicable DPO/DPIA duties need project-specific answers. ECA’s indexed draft manual is guidance evidence, not a verified final directive.
+- **Device evidence remains absent:** Silero’s ≈2 MB/<1 ms CPU claim is a maintainer benchmark, not a 2 GB Android/battery result. MMS-LID-256’s billion parameters do not demonstrate the planned tiny student. Donnelly’s five segment types differ from the five proposed acoustic voice classes.
+- **Competition:** supplied image rubric inspected again, including Global 40/30/15/10/5. Current portal rules and synthetic-cloud acceptance remain unconfirmed; no per-component mandate for Lite/HMS/ModelArts was found. No primary-source abandoned-product account was verified; non-use and distrust are supported by the TeachFX trial, not a fabricated shutdown story.
+
 ## 0. Findings that change the design
+
+**2026-10-03 research-access follow-up:** [ADR-017](../adr/017-research-data-access-and-publication.md) adds the author's requested publication and stakeholder planning. Evidence/limits checked separately from product validity:
+
+| Claim | Verdict / source | Plan consequence |
+|---|---|---|
+| Coded lesson data or k=5 guarantees anonymity | **CONTRADICTED as a guarantee.** [NIST SP 800-188](https://doi.org/10.6028/NIST.SP.800-188), §§2.2, 3.2–3.6, addresses linkage/disclosure risks and controlled release; k=5 is a project minimum only | R1 stays restricted; R2 is fixed, independently reviewed anonymous output, not renamed microdata |
+| Article 54 automatically authorises any research reuse/export | **CONTRADICTED as a blanket permission.** Official [Gazette](https://justice.gov.et/en/law/personal-data-protection-proclamation/) Art. 54 contains conditional provisions; project-specific interpretation remains open | Separate research consent, institutional agreement and all fixed guardrails retained |
+| Hawassa research coordination establishes this project's ethics route/access rights | **UNVERIFIED inference.** [Research Affairs Directorate](https://www.hu.edu.et/research-affairs-directorate) describes coordination, not project permission | Confirm competent committee, PI/controller/custodian and post-graduation access in writing |
+| A two-year research retention period is legally required, or already approved | **UNVERIFIED; not claimed.** No institutional retention policy obtained | 30 June 2029 and backup expiry 31 July are proposed limits, approved/replaced before consent |
+| The planned sample can yield publishable anonymous language subgroups | **UNTESTED.** Four held-out teachers may not pass even the project five-contributor screen | No automatic sample expansion; restrict unsafe tables and narrow public claims |
 
 These are ordered by how much they change the plan. Details are in the section tables below.
 
@@ -25,7 +46,7 @@ These are ordered by how much they change the plan. Details are in the section t
    - *Afrivoice Ethiopia* (CC-BY-4.0) has about 603 h of Sidama speech (225 h transcribed). WAXAL has `sid_asr`.
    - The no-ASR rule still holds, but on privacy, child-speech, noise and on-device grounds.
 4. **MindSpore Lite has no INT8 kernels for GRU or LSTM (§6 C-2, §9.4, ADR-002).** PARTLY. A CRNN student will not be fully INT8.
-5. **The MindSpore Lite 2.10.0 Android AAR is 4 KB page-aligned (§7.2).** New. This blocks Google Play updates targeting API 35+ from 2027-02-01. It doesn't matter for sideloaded pilot phones.
+5. **The MindSpore Lite 2.10.0 Android AAR is 4 KB page-aligned (§7.2).** New. This blocks Google Play updates targeting API 35+ from 2027-02-01. Sideloading does not repair incompatibility; test the actual phone, all native libraries and APK packaging.
 6. **The legal duties are broader than the document lists (§6 C-7, §11).** From the Gazette text:
    - registration with the Ethiopian Communications Authority (Art. 33);
    - parent or guardian consent for minors' data (Art. 11);
@@ -41,7 +62,7 @@ These are ordered by how much they change the plan. Details are in the section t
 9. **The choral-response indicator has a contested normative direction (§5 I-3).**
    - It is an evidence-based active-response technique (Heward et al., 1989) and part of READ's "we do" structured pedagogy (AIR, 2020).
    - It is also a marker of rote teaching (Pontefract & Hardman, 2005; Hardman et al., 2009).
-10. **Classroom language has never been measured systematically. That strengthens the I-6 novelty claim (§2.4).** VERIFIED from full texts.
+10. **Universal novelty remains UNVERIFIED (§2.4).** The full texts describe their own methods, not the absence of other systems; production I-6 is deferred.
     - Heugh et al. (2007) used about 100 classroom observations recorded as handwritten notes. Their checklist was "used in the first half of the fieldwork, [but] not … in the second".
     - Piper et al. (2016) measured school language use through **children's self-reports**, not observation.
 11. **Separating teacher from child speech is hard, and desk-placed microphones are the weak link.**
@@ -67,10 +88,10 @@ These are ordered by how much they change the plan. Details are in the section t
 | 2.3a | Pre-primary GER 59.8% (2024/25); KG schools +22%; Addis Ababa 145.9%, Somali 17.7%, Afar 26.8%. | **VERIFIED** | ESAA 2024/25 (MoE, 2025): national GER 59.8%, +2 pp, GPI 0.95 (PDF p. 14). Table 2.1: Afar 26.8, Somali 17.7, Harari 102.9, Addis Ababa 145.9. KG schools 18,209 (72% government) vs 14,909 (PDF p. 17). **Indicators exclude Amhara** because "teaching-learning is not fully implemented in most parts of Amhara region for the last two consecutive years"; Tigray is re-included (PDF p. 10). | Cite ESAA directly. State that national figures exclude Amhara. |
 | 2.3b | O-classes and child-to-child modalities serve ~75% of pre-primary children. | **VERIFIED** (via citation), dated | Alemu (2025), full text: "According to MoE (2021), 75% of children enrolled in pre-primary education in the 2021/2022 academic year were attending O-classes and child-to-child programs. Only 25% … kindergartens." | Say "in 2021/22 (ESAA)". Look for a newer split in ESAA 2024/25. |
 | 2.3c | A 2025 mixed-methods study found systemic deficits nationwide. | **PARTLY** | Alemu (2025), full text: rural Amhara and Oromia only. n = 380 valid responses (86.4% response rate). The plain-language summary says 541, which contradicts the methods section. | Say "in rural Amhara and Oromia". |
-| 2.4a | Policy mandates primary instruction in nationality languages. | **PARTLY** | Gobana (2025) says the model is anchored in the 1994 and 2023 Education and Training Policies. Heugh et al. (2007) describe the SNNPR model at the time: mother tongues including Sidama as MOI in the first cycle. The policy texts themselves weren't opened. | Cite the 2023 ETP text. Confirm the current grade span for Sidaamu Afoo MOI. |
+| 2.4a | Policy mandates primary instruction in nationality languages. | **PARTLY** | Gobana (2025) says the model is anchored in the 1994 and 2023 Education and Training Policies. Heugh et al. (2007) describe the SNNPR model at the time: mother tongues including Sidama as MOI in the first cycle. 1994 §3.5 opened in the feature review; current 2023 primary text still unverified. | Cite the 2023 ETP text. Confirm the current grade span for Sidaamu Afoo MOI. |
 | 2.4b | Shortages of trained L1 teachers and materials; teachers not proficient in the language. | **VERIFIED** (Ethiopian source) | Heugh et al. (2007, PDF p. 38): "Many teachers do not have adequate academic literacy skills or proficiency in the language of learning and teaching". SNNPR/Sidama rural schools had "severe shortages of books" and "large class size" (PDF p. 74). MTTCA regional deficits (AIR, 2020). Gobana (2025) is conceptual and cites Trudell (2016). | Cite Heugh et al. and AIR (2020); treat Gobana as secondary. |
-| 2.4c | No one measures, at scale, which language is actually spoken in the classroom. | **VERIFIED** for systematic/automated measurement | Heugh et al. (2007, PDF pp. 5, 16): about 100 observations, note-taking, occasional audio/video; the checklist was abandoned mid-fieldwork. Piper et al. (2016, PDF p. 9): school language use from children's self-report (Kiswahili 79–87%, English 21–26%, mother tongue ~29%). Vujcich (2013): survey. | Claim novelty for **systematic, automated, continuous** measurement. Still run the RQ-C1 search before saying "first". |
-| 2.5a | Acoustic indicators are well-established correlates of instructional quality. | **PARTLY** | **Wait time:** established (Rowe, 1986; Tobin, 1987), US. **Talk ratio:** a teacher-centred factor negatively predicts value-added (Liu & Cohen, 2021). An RCT showed that talk-time feedback **cut mentors' talk share by 5 pp, to 69%** (Demszky & Liu, 2023), using the same definition as I-1. **Choral:** contested. No Ethiopian validation. | Separate "established" from "validated in Ethiopia". |
+| 2.4c | No one measures, at scale, which language is actually spoken in the classroom. | **UNVERIFIED** universal absence | Heugh et al. (2007, PDF pp. 5, 16): about 100 observations, note-taking, occasional audio/video; the checklist was abandoned mid-fieldwork. Piper et al. (2016, PDF p. 9): school language use from children's self-report (Kiswahili 79–87%, English 21–26%, mother tongue ~29%). Vujcich (2013): survey. | Keep novelty a hypothesis pending C1; these sources cannot prove “first”. |
+| 2.5a | Acoustic indicators are well-established correlates of instructional quality. | **PARTLY** | **Wait time:** established (Rowe, 1986; Tobin, 1987), US. **Talk ratio:** a teacher-centred factor negatively predicts value-added (Liu & Cohen, 2021). An RCT showed that talk-time feedback **estimated −3.5 pp** (Table 2, Demszky & Liu, 2023; ~4.8% relative). Its transcript-derived denominator is not identical to overlap-aware I-1; feedback was bundled. **Choral:** contested. No Ethiopian validation. | Separate "established" from "validated in Ethiopia". |
 | 2.5b | Extractable without transcription. | **VERIFIED** | DART ~90% (Owens et al., 2017). Pakistan audio Stallings F1 0.83 (Chanchal & Zualkernan). Chile, smartphone + lavalier, >80% accuracy for the two most common practices (Schlotterbeck et al., 2021). VTC (Lavechin et al., 2020). | Cite as precedents. |
 | 2.5c | Trained observers don't exist at scale in Ethiopia. | **UNVERIFIED** | EGRA 2018 shows some schools have an assigned observer (director, unit leader or department head), but not how many. | RQ-A3; get the Table 16 base rates from AIR's data or report annex. |
 | 2.5d | Recording an adult teacher is ethically much lighter than collecting child speech. | **PARTLY** | Children's voices are still captured (Proclamation 1321/2024, Art. 11). | Treat incidental child audio as minors' data unless the legal advisor rules otherwise. |
@@ -83,10 +104,10 @@ These are ordered by how much they change the plan. Details are in the section t
 |---|---|---|---|---|
 | 5a | I-2 response latency as a wait-time proxy. | **PARTLY** | Wait time I follows a question (Rowe, 1986). I-2 also mixes in instructions and choral drills. | Report I-2 separately for choral and single responses. Don't compare with the 3-s threshold until R-4 exists. |
 | 5b | I-3 choral ratio. | **PARTLY** | See finding 9. | Frame it as a balance indicator. |
-| 5c | I-6 language share is novel. | **VERIFIED** as automated | See 2.4c. | — |
+| 5c | I-6 language share is novel. | **UNVERIFIED** | See corrected 2.4c; no completed systematic search. | Defer product; avoid first-of-kind claim. |
 | 5d | Language-label thresholds. | **Internal inconsistency** | ≥ 2.0 s (§5) vs 3-s windows (§8.3) vs ≥ 3 s evaluation (§14.1). | Decide after E3. |
 | 5e | Error propagation. | **Not addressed** | Gautheron et al. (2025). | Experiment E7. |
-| 5f | I-1 talk ratio definition. | **Consistent with literature** | Demszky and Liu (2023) define talk time as teacher / (teacher + student), the same as I-1. | Cite it. |
+| 5f | I-1 talk ratio definition. | **Analogous, not equivalent** | Demszky & Liu (2023) uses transcript-derived teacher/(teacher+student); I-1 counts overlap once and reports it separately. | State denominator explicitly; no direct transfer of effect size. |
 
 ## 3. §6 Hard constraints
 
@@ -125,7 +146,7 @@ These are ordered by how much they change the plan. Details are in the section t
 | 7l | HarmonyOS NEXT / Android. | Half SECONDARY | — | Cite a Huawei primary source. |
 | 7m | "Every model is trained in MindSpore". | **At risk** | D-1. | Reword to the on-device model. |
 | 7n | "Personal data stays on Ethiopian soil". | **VERIFIED** | Art. 22(1). | Pitch the cloud demo as "synthetic data only". |
-| 7o | *New:* competition needs a Huawei Cloud service. | **VERIFIED** | Finding 1. ECS, RDS and DCS are named as examples. | Deploy the demo stack on ECS + RDS (or GaussDB) in AF-Johannesburg. |
+| 7o | *New:* competition needs a Huawei Cloud service. | **VERIFIED** | Finding 1. ECS, RDS and DCS are named as examples. | One Cloud service initially; confirm region and synthetic eligibility. Managed DB/training services deferred (ADR-016). |
 
 ## 5. §8–§9 System and ML design
 
@@ -149,7 +170,7 @@ These are ordered by how much they change the plan. Details are in the section t
 
 | # | Target | Verdict | Evidence |
 |---|---|---|---|
-| 14a | T-1 macro-F1 ≥ 0.70; CHILD_SINGLE vs CHILD_CHORAL F1 ≥ 0.75. | **Ambitious** | Wang et al. (2025): teacher vs child 69%. Donnelly et al. (2016): F1 0.64–0.78 for 5 segment types, with ASR. Schlotterbeck et al. (2021): >80% on 2 practices. Owens et al. (2017): ~90% on 3 coarse classes. No choral benchmark exists. |
+| 14a | T-1 macro-F1 ≥ 0.70; CHILD_SINGLE vs CHILD_CHORAL F1 ≥ 0.75. | **Ambitious** | Wang et al. (2025): teacher vs child 69%. Donnelly et al. (2016): F1 0.64–0.78 for 5 segment types, with ASR. Schlotterbeck et al. (2021): >80% on 2 practices. Owens et al. (2017): ~90% on 3 coarse classes. No directly comparable classroom choral benchmark was verified. |
 | 14b | Indicator MAE targets. | Not derivable | Set after E7. |
 | 14c | *New:* recording usability. | Benchmark | 89% usable in Jensen et al. (2020). Add "≥ 85% of pilot lessons usable" as a system metric. |
 

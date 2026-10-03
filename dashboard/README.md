@@ -1,0 +1,3 @@
+# Dashboard scope
+
+The initial dashboard is rendered by `server/templates/`; this directory holds future design/UX material, not a separate frontend service. It uses the backend's sessions, authorisation and deployment. A separate SPA and real official/browser reports are explicitly **deferred post-defence** (ADR-016). The synthetic competition deployment uses the same templates with separate synthetic data and credentials. Use the active I-1/I-5 contract with unavailable reasons, capture coverage and a synthetic suppression example; no production language-share chart. No real teacher data or logins enter this demo.

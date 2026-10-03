@@ -1,0 +1,171 @@
+{
+  "profile": "zergaw-shared-derived-v1",
+  "data_kind": "derived_only",
+  "research_mode_enabled": false,
+  "selection": {
+    "runtime": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "framework": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "database": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "python_version": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    }
+  },
+  "checks": {
+    "python_packages_and_venv": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "supported_dependency_versions": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "managed_gateway_and_restart": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "scheduled_cli_jobs": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "database_transactions_and_unique_constraints": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "database_connection_protected": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "tenant_isolation_reviewed": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "private_files_outside_document_root": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "private_secret_injection": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "https_and_proxy_trust_verified": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "primary_database_logs_in_ethiopia": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "backups_and_replicas_in_ethiopia": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "encryption_at_rest_verified": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "daily_encrypted_backup": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "restore_and_deletion_replay_tested": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "redacted_logging_verified": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "resource_load_test_passed": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "retention_and_incident_owners_assigned": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    }
+  },
+  "limits": {
+    "ram_mb": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "cpu_limit": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "process_limit": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "request_timeout_s": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "cron_max_runtime_s": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "database_connection_limit": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "backup_interval_hours": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "rpo_hours": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "restore_hours": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    },
+    "backup_retention_days": {
+      "value": null,
+      "evidence": "",
+      "confirmed_on": null
+    }
+  }
+}
