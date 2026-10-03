@@ -1,0 +1,74 @@
+{
+  "review_status": "DRAFT - candidate scripts to co-design with pilot teachers; Amharic wording unreviewed by a native speaker; Sidaamu Afoo not yet written (null = show English with a [SID-DRAFT] marker)",
+  "cards": [
+    {
+      "id": "explain_after_answer",
+      "title": {
+        "en": "Ask \"How did you know?\" after an answer",
+        "am": "ከመልስ በኋላ «እንዴት አወቅህ?» ብለው ይጠይቁ",
+        "sid": null
+      },
+      "action": {
+        "en": "After a pupil answers, wait a moment and invite them to say how they found it.",
+        "am": "ተማሪ ከመለሰ በኋላ ጥቂት ጠብቀው፣ እንዴት እንዳገኘው እንዲናገር ይጋብዙት።",
+        "sid": null
+      },
+      "example": {
+        "en": "A pupil reads the word aloud. Smile and say: \"Thank you. Which letters helped you read it?\" Wait a few seconds. If the pupil is unsure, point to the first letter and ask again, or invite another pupil to help. Then read the word together once. Try this three times in one lesson.",
+        "am": "አንድ ተማሪ ቃሉን ጮክ ብሎ ያነባል። ፈገግ ብለው «አመሰግናለሁ። ቃሉን ለማንበብ የትኞቹ ፊደላት ረዱህ?» ይበሉ። ጥቂት ሰከንዶች ይጠብቁ። ተማሪው ካመነታ የመጀመሪያውን ፊደል ጠቁመው እንደገና ይጠይቁ፣ ወይም ሌላ ተማሪ እንዲረዳው ይጋብዙ። ከዚያም ቃሉን አንድ ጊዜ በአንድነት ያንብቡ። በአንድ ትምህርት ሦስት ጊዜ ይሞክሩ።",
+        "sid": null
+      },
+      "discussion_prompt": {
+        "en": "Talk with a colleague: when did a pupil's explanation surprise you, and what helped them speak?",
+        "am": "ከባልደረባዎ ጋር ይወያዩ፦ የተማሪ ማብራሪያ መቼ አስገረመዎት? እንዲናገር ምን ረዳው?",
+        "sid": null
+      }
+    },
+    {
+      "id": "show_then_practise",
+      "title": {
+        "en": "Show one example, then let pupils try",
+        "am": "አንድ ምሳሌ አሳይተው ተማሪዎች እንዲሞክሩ ያድርጉ",
+        "sid": null
+      },
+      "action": {
+        "en": "Alternate a short demonstration with a short chance for pupils to practise.",
+        "am": "አጭር ማሳያን ከተማሪዎች አጭር የልምምድ ዕድል ጋር ያፈራርቁ።",
+        "sid": null
+      },
+      "example": {
+        "en": "Write the syllable on the board and read it slowly. Then ask pupils to read it with a partner for half a minute while you walk around and listen. Come back, show the next syllable, and repeat. Aim for three short rounds of showing and practising in one reading lesson.",
+        "am": "ድምፀ ቃሉን ሰሌዳ ላይ ጽፈው ቀስ ብለው ያንብቡ። ከዚያ ተማሪዎች ከጓደኛቸው ጋር ግማሽ ደቂቃ እንዲያነቡ ይጠይቁ፤ እርስዎ እየዞሩ ያዳምጡ። ተመልሰው ቀጣዩን ድምፀ ቃል አሳይተው ይድገሙ። በአንድ የንባብ ትምህርት ሦስት አጭር የማሳየትና የመለማመድ ዙሮችን ያቅዱ።",
+        "sid": null
+      },
+      "discussion_prompt": {
+        "en": "Talk with a colleague: how long did pupils practise before you spoke again?",
+        "am": "ከባልደረባዎ ጋር ይወያዩ፦ እርስዎ እንደገና ከመናገርዎ በፊት ተማሪዎች ለምን ያህል ጊዜ ተለማመዱ?",
+        "sid": null
+      }
+    },
+    {
+      "id": "group_or_volunteer",
+      "title": {
+        "en": "Choose: whole-class answer or one volunteer",
+        "am": "ይምረጡ፦ የመላው ክፍል መልስ ወይስ አንድ በፈቃደኝነት",
+        "sid": null
+      },
+      "action": {
+        "en": "For each activity, decide in advance whether everyone answers together or one pupil answers alone.",
+        "am": "ለእያንዳንዱ እንቅስቃሴ፣ ሁሉም በአንድነት የሚመልሱ ወይም አንድ ተማሪ ብቻ የሚመልስ መሆኑን አስቀድመው ይወስኑ።",
+        "sid": null
+      },
+      "example": {
+        "en": "Before reading a sentence, decide and say: \"This time everyone reads together.\" Lead the class. Then say: \"Now I would like one volunteer to read it alone.\" Notice how each way feels. Use group reading to practise together and a volunteer to hear one pupil. Try both in the same lesson.",
+        "am": "አንድ ዓረፍተ ነገር ከማንበብዎ በፊት ወስነው «በዚህ ጊዜ ሁላችንም በአንድነት እናነባለን» ይበሉ። ክፍሉን ይምሩ። ከዚያ «አሁን አንድ ተማሪ ብቻውን እንዲያነብ እፈልጋለሁ» ይበሉ። እያንዳንዱ መንገድ ምን እንደሚመስል ያስተውሉ። በጋራ ለመለማመድ የቡድን ንባብን፣ አንድን ተማሪ ለመስማት በፈቃደኝነት ንባብን ይጠቀሙ። በአንድ ትምህርት ሁለቱንም ይሞክሩ።",
+        "sid": null
+      },
+      "discussion_prompt": {
+        "en": "Talk with a colleague: which activities suit a group answer, and which suit one pupil?",
+        "am": "ከባልደረባዎ ጋር ይወያዩ፦ የትኞቹ እንቅስቃሴዎች ለቡድን መልስ ይስማማሉ፣ የትኞቹስ ለአንድ ተማሪ?",
+        "sid": null
+      }
+    }
+  ]
+}

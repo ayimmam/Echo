@@ -1,0 +1,13 @@
+{
+  "synthetic": true,
+  "teacher_pseudo_id": "tp_358f0msh01",
+  "display_name": "Demo teacher",
+  "school_id": "SCH-DEMO-A",
+  "school_label": "Demo school A (synthetic)",
+  "grade": "2",
+  "subject": "mother_tongue",
+  "class_size": 58,
+  "preferred_mic": "builtin",
+  "reference_date": "2026-11-06",
+  "disclaimer": "SYNTHETIC DEMO DATA. Seeded label timelines run through the draft reference engine. Not measurements of any classroom, teacher or child. Indicators are unvalidated (gates G1/G5-E)."
+}

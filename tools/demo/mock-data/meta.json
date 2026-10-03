@@ -1,0 +1,9 @@
+{
+  "synthetic": true,
+  "disclaimer": "SYNTHETIC DEMO DATA. Seeded label timelines run through the draft reference engine. Not measurements of any classroom, teacher or child. Indicators are unvalidated (gates G1/G5-E).",
+  "reference_date": "2026-11-06",
+  "schema_version": 3,
+  "indicator_spec_version": 3,
+  "label_schema_version": "coarse-v0-draft",
+  "generator": "tools/demo/generate_mock_data.py"
+}

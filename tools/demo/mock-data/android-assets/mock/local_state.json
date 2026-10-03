@@ -1,0 +1,11 @@
+{
+  "excluded_record_ids": [
+    "01a1a002-cae0-7102-92f9-1e102f7b54af"
+  ],
+  "chosen_card": {
+    "card_id": "explain_after_answer",
+    "chosen_on": "2026-10-29"
+  },
+  "follow_ups": [],
+  "dismissed_card_ids": []
+}
