@@ -22,12 +22,14 @@ no voice print is stored, and no teacher is scored, ranked or compared. The desi
 **coaching, not surveillance**, and it is enforced by the architecture rather than by policy alone.
 
 > [!IMPORTANT]
-> **This repository is at the design stage.** As of this review, product code is a Jetpack
-> Compose starter activity under `edge/android/app`; prepared acceptance/hosting checkers also exist. There is no capture, no inference, no indicator
-> engine, no server, no dashboard and no deployment. Every screen and every box in this README is a
-> design target behind the acceptance gates in
-> [`docs/research/IMPLEMENTATION_REVIEW.md`](docs/research/IMPLEMENTATION_REVIEW.md). All numbers shown
-> in the mockups are illustrative fixtures, not measurements.
+> **This repository is at the design stage.** As of 2026-10-03 it also contains **starter code with
+> synthetic data**: a runnable Android demo UI ([`edge/android`](edge/android/README.md)), a stdlib Python
+> reference for the indicator contract ([`indicators-core/python`](indicators-core/python/README.md)), seeded
+> mock fixtures ([`tools/demo`](tools/demo/README.md)) and a throwaway read-only dashboard stub
+> ([`server/`](server/README.md)). There is still **no microphone capture, no inference, no model, no
+> encrypted storage, no sync, no real server and no deployment**. Every screen, number and box is a design
+> target or a seeded fixture behind the acceptance gates in
+> [`docs/research/IMPLEMENTATION_REVIEW.md`](docs/research/IMPLEMENTATION_REVIEW.md); none is a measurement.
 
 Echovolve is a B.Sc. final-year project at Hawassa University (defence June 2027) and an entry in the
 Huawei ICT Competition 2026–2027, Innovation track. The documents under `docs/` still carry the earlier
@@ -352,10 +354,11 @@ The independent claims audit is deliberately unflattering about anything that ou
 | Area | State |
 |---|---|
 | `docs/` | **Substantial.** Architecture context, a claims audit against primary sources, a research and implementation plan, an assumptions register, ADRs, a STEM trial plan, an infrastructure recheck and a hosting analysis. |
-| `edge/android/app` | **A Compose starter.** `MainActivity.kt` is "Hello Android". `settings.gradle.kts` includes only `:app`; the other Android folders hold `.gitkeep`. Microphone permissions and the foreground service are absent. |
-| `tests/acceptance/` | **Prepared, not wired.** A runner and 18 hand-calculated contract vectors exist; no implementation adapter exists, so nothing product-related has been executed. |
-| `indicators-core/`, `ml/` | **No working product implementation.** |
-| `server/`, `dashboard/`, `infra/`, `tools/` | **Plans, structural scaffolding and offline hosting checker tests.** No implemented product service or live deployment. Existing work is preserved. |
+| `edge/android/app` | **Runnable demo UI on synthetic data** (ADR-016 flow: welcome/consent, readiness check, lesson timer, save/discard, weekly report, practice cards, withdrawal; English, Amharic draft, Sidaamu placeholder). 43 JVM unit tests. No microphone permission, foreground service, model, encrypted storage or sync. `settings.gradle.kts` includes only `:app`; the other Android folders hold `.gitkeep`. |
+| `tests/acceptance/` | **Wired to the Python reference.** The 18 vectors pass through `indicators-core/python/dimts_indicators/adapter.py`. This shows the *draft* reference agrees with the hand-calculated oracles; no Kotlin adapter exists, no device or model was involved, and the semantics the vectors leave open are still unfrozen (G1). |
+| `indicators-core/` | **Stdlib Python reference (draft)** for I-1…I-8 plus a reduced `coarse-v0-draft` schema, with hand-calculated golden cases. **No Kotlin port.** |
+| `ml/` | **No working product implementation.** |
+| `server/`, `dashboard/`, `infra/`, `tools/` | **Plans, scaffolding, the offline hosting checker, a throwaway synthetic read-only dashboard stub (stdlib WSGI, k ≥ 5 suppression) and seeded mock-data generators.** No selected backend framework, database, authentication, ingest or live deployment. |
 | Any accuracy, latency, memory, battery or deployment number | **Not measured.** No build has been verified, no model trained, no device benchmarked, no host purchased, no cloud account inspected. |
 
 ### Acceptance gates
