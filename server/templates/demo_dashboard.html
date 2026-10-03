@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Echovolve - synthetic aggregate preview</title>
+<link rel="stylesheet" href="/static/demo.css">
+</head>
+<body>
+<header>
+  <p class="banner">SYNTHETIC DEMO DATA - not measurements of any classroom or teacher.</p>
+  <h1>Woreda preview (synthetic)</h1>
+  <p class="sub">Early-grade cohort, fixed window $window. Each cell averages every teacher first, then across teachers.
+  Cells with fewer than $k teachers are hidden completely. There is no total row, ranking or drill-down.</p>
+</header>
+<main>
+<table>
+  <thead><tr><th scope="col">Grade</th><th scope="col">Teachers</th><th scope="col">Adult share of speech (I-1)</th><th scope="col">Turns per minute (I-5)</th></tr></thead>
+  <tbody>
+$rows
+  </tbody>
+</table>
+<p class="note">Indicators are unvalidated drafts (gates G1 and G5-E). Language shares and other measures are deferred and
+not shown. Real official accounts and releases are deferred beyond the defence (ADR-016).</p>
+</main>
+</body>
+</html>

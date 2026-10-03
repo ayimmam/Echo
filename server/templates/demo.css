@@ -1,0 +1,10 @@
+:root { color-scheme: light dark; --ink:#1e2430; --bg:#f4f6f8; --card:#fff; --teal:#0f6e63; --amber:#e8a33d; --line:#c6ceda; }
+@media (prefers-color-scheme: dark) { :root { --ink:#e8ecf2; --bg:#12161d; --card:#1b212b; --teal:#4fb5a8; --line:#3b4553; } }
+body { margin:0; font:16px/1.5 system-ui, sans-serif; color:var(--ink); background:var(--bg); }
+header, main { max-width:46rem; margin:0 auto; padding:1rem; }
+.banner { background:var(--amber); color:#1e2430; padding:.5rem .75rem; border-radius:.5rem; font-weight:600; }
+h1 { color:var(--teal); font-size:1.5rem; margin:.5rem 0; }
+.sub, .note { opacity:.85; }
+table { width:100%; border-collapse:collapse; background:var(--card); border-radius:.5rem; overflow:hidden; }
+th, td { text-align:left; padding:.6rem .75rem; border-bottom:1px solid var(--line); }
+td.hidden { font-style:italic; opacity:.7; }

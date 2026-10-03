@@ -1,0 +1,489 @@
+{
+  "synthetic": true,
+  "records": [
+    {
+      "record_id": "01a15295-a020-7340-a140-4eb4f66d4704",
+      "schema_version": 3,
+      "indicator_spec_version": 3,
+      "label_schema_version": "coarse-v0-draft",
+      "cohort": "early_grade",
+      "teacher_pseudo_id": "tp_358f0msh01",
+      "school_id": "SCH-DEMO-A",
+      "grade": "2",
+      "subject": "mother_tongue",
+      "started_on": "2026-10-19",
+      "start_time": "08:15",
+      "duration_s": 2400,
+      "capture": {
+        "observed_s": 2400.0,
+        "missing_s": 0.0,
+        "coverage": 1.0,
+        "mic": "builtin",
+        "class_size_estimate": 58
+      },
+      "context": {
+        "activity": "demonstration",
+        "adult_conditions": "single_adult_no_playback"
+      },
+      "indicators": {
+        "I1_adult_talk_ratio": {
+          "available": true,
+          "value": 0.595
+        },
+        "I5_turns_per_minute": {
+          "available": true,
+          "value": 2.1
+        }
+      },
+      "deferred_indicators": [
+        "I2",
+        "I3",
+        "I4",
+        "I6",
+        "I7",
+        "I8"
+      ],
+      "synthetic": true
+    },
+    {
+      "record_id": "01a157e9-c2e0-7007-ba21-f41fc6be25f5",
+      "schema_version": 3,
+      "indicator_spec_version": 3,
+      "label_schema_version": "coarse-v0-draft",
+      "cohort": "early_grade",
+      "teacher_pseudo_id": "tp_358f0msh01",
+      "school_id": "SCH-DEMO-A",
+      "grade": "2",
+      "subject": "mother_tongue",
+      "started_on": "2026-10-20",
+      "start_time": "09:05",
+      "duration_s": 2460,
+      "capture": {
+        "observed_s": 2460.0,
+        "missing_s": 0.0,
+        "coverage": 1.0,
+        "mic": "builtin",
+        "class_size_estimate": 58
+      },
+      "context": {
+        "activity": "mixed",
+        "adult_conditions": "single_adult_no_playback"
+      },
+      "indicators": {
+        "I1_adult_talk_ratio": {
+          "available": true,
+          "value": 0.591
+        },
+        "I5_turns_per_minute": {
+          "available": true,
+          "value": 1.8
+        }
+      },
+      "deferred_indicators": [
+        "I2",
+        "I3",
+        "I4",
+        "I6",
+        "I7",
+        "I8"
+      ],
+      "synthetic": true
+    },
+    {
+      "record_id": "01a16208-b420-7e2c-a723-5ac3c19b9c85",
+      "schema_version": 3,
+      "indicator_spec_version": 3,
+      "label_schema_version": "coarse-v0-draft",
+      "cohort": "early_grade",
+      "teacher_pseudo_id": "tp_358f0msh01",
+      "school_id": "SCH-DEMO-A",
+      "grade": "2",
+      "subject": "mother_tongue",
+      "started_on": "2026-10-22",
+      "start_time": "08:15",
+      "duration_s": 2340,
+      "capture": {
+        "observed_s": 2340.0,
+        "missing_s": 0.0,
+        "coverage": 1.0,
+        "mic": "builtin",
+        "class_size_estimate": 58
+      },
+      "context": {
+        "activity": "pupil_practice",
+        "adult_conditions": "single_adult_no_playback"
+      },
+      "indicators": {
+        "I1_adult_talk_ratio": {
+          "available": true,
+          "value": 0.662
+        },
+        "I5_turns_per_minute": {
+          "available": true,
+          "value": 2.31
+        }
+      },
+      "deferred_indicators": [
+        "I2",
+        "I3",
+        "I4",
+        "I6",
+        "I7",
+        "I8"
+      ],
+      "synthetic": true
+    },
+    {
+      "record_id": "01a167a1-8100-7990-be74-29a3710b8c13",
+      "schema_version": 3,
+      "indicator_spec_version": 3,
+      "label_schema_version": "coarse-v0-draft",
+      "cohort": "early_grade",
+      "teacher_pseudo_id": "tp_358f0msh01",
+      "school_id": "SCH-DEMO-A",
+      "grade": "2",
+      "subject": "mother_tongue",
+      "started_on": "2026-10-23",
+      "start_time": "10:20",
+      "duration_s": 2400,
+      "capture": {
+        "observed_s": 2400.0,
+        "missing_s": 0.0,
+        "coverage": 1.0,
+        "mic": "builtin",
+        "class_size_estimate": 58
+      },
+      "context": {
+        "activity": "mixed",
+        "adult_conditions": "single_adult_no_playback"
+      },
+      "indicators": {
+        "I1_adult_talk_ratio": {
+          "available": true,
+          "value": 0.624
+        },
+        "I5_turns_per_minute": {
+          "available": true,
+          "value": 2.15
+        }
+      },
+      "deferred_indicators": [
+        "I2",
+        "I3",
+        "I4",
+        "I6",
+        "I7",
+        "I8"
+      ],
+      "synthetic": true
+    },
+    {
+      "record_id": "01a17bc8-8020-757d-93c7-54ecb3b83c93",
+      "schema_version": 3,
+      "indicator_spec_version": 3,
+      "label_schema_version": "coarse-v0-draft",
+      "cohort": "early_grade",
+      "teacher_pseudo_id": "tp_358f0msh01",
+      "school_id": "SCH-DEMO-A",
+      "grade": "2",
+      "subject": "mother_tongue",
+      "started_on": "2026-10-27",
+      "start_time": "08:15",
+      "duration_s": 2400,
+      "capture": {
+        "observed_s": 2400.0,
+        "missing_s": 0.0,
+        "coverage": 1.0,
+        "mic": "builtin",
+        "class_size_estimate": 58
+      },
+      "context": {
+        "activity": "mixed",
+        "adult_conditions": "single_adult_no_playback"
+      },
+      "indicators": {
+        "I1_adult_talk_ratio": {
+          "available": true,
+          "value": 0.601
+        },
+        "I5_turns_per_minute": {
+          "available": true,
+          "value": 2.02
+        }
+      },
+      "deferred_indicators": [
+        "I2",
+        "I3",
+        "I4",
+        "I6",
+        "I7",
+        "I8"
+      ],
+      "synthetic": true
+    },
+    {
+      "record_id": "01a18642-fee0-72e6-a096-0008bdbb0323",
+      "schema_version": 3,
+      "indicator_spec_version": 3,
+      "label_schema_version": "coarse-v0-draft",
+      "cohort": "early_grade",
+      "teacher_pseudo_id": "tp_358f0msh01",
+      "school_id": "SCH-DEMO-A",
+      "grade": "2",
+      "subject": "mother_tongue",
+      "started_on": "2026-10-29",
+      "start_time": "09:05",
+      "duration_s": 2280,
+      "capture": {
+        "observed_s": 1500.0,
+        "missing_s": 780.0,
+        "coverage": 0.6579,
+        "mic": "builtin",
+        "class_size_estimate": 58
+      },
+      "context": {
+        "activity": "mixed",
+        "adult_conditions": "single_adult_no_playback"
+      },
+      "indicators": {
+        "I1_adult_talk_ratio": {
+          "available": true,
+          "value": 0.691
+        },
+        "I5_turns_per_minute": {
+          "available": true,
+          "value": 2.24
+        }
+      },
+      "deferred_indicators": [
+        "I2",
+        "I3",
+        "I4",
+        "I6",
+        "I7",
+        "I8"
+      ],
+      "synthetic": true
+    },
+    {
+      "record_id": "01a18b3b-9420-7805-bf9c-958d39cdbeaa",
+      "schema_version": 3,
+      "indicator_spec_version": 3,
+      "label_schema_version": "coarse-v0-draft",
+      "cohort": "early_grade",
+      "teacher_pseudo_id": "tp_358f0msh01",
+      "school_id": "SCH-DEMO-A",
+      "grade": "2",
+      "subject": "mother_tongue",
+      "started_on": "2026-10-30",
+      "start_time": "08:15",
+      "duration_s": 2400,
+      "capture": {
+        "observed_s": 2400.0,
+        "missing_s": 0.0,
+        "coverage": 1.0,
+        "mic": "builtin",
+        "class_size_estimate": 58
+      },
+      "context": {
+        "activity": "mixed",
+        "adult_conditions": "other_adult_or_playback"
+      },
+      "indicators": {
+        "I1_adult_talk_ratio": {
+          "available": false,
+          "reason": "adult_context_not_confirmed"
+        },
+        "I5_turns_per_minute": {
+          "available": false,
+          "reason": "adult_context_not_confirmed"
+        }
+      },
+      "deferred_indicators": [
+        "I2",
+        "I3",
+        "I4",
+        "I6",
+        "I7",
+        "I8"
+      ],
+      "synthetic": true
+    },
+    {
+      "record_id": "01a19aae-a820-78bb-82d3-284b4e6e02fd",
+      "schema_version": 3,
+      "indicator_spec_version": 3,
+      "label_schema_version": "coarse-v0-draft",
+      "cohort": "early_grade",
+      "teacher_pseudo_id": "tp_358f0msh01",
+      "school_id": "SCH-DEMO-A",
+      "grade": "2",
+      "subject": "mother_tongue",
+      "started_on": "2026-11-02",
+      "start_time": "08:15",
+      "duration_s": 2400,
+      "capture": {
+        "observed_s": 2400.0,
+        "missing_s": 0.0,
+        "coverage": 1.0,
+        "mic": "builtin",
+        "class_size_estimate": 58
+      },
+      "context": {
+        "activity": "mixed",
+        "adult_conditions": "single_adult_no_playback"
+      },
+      "indicators": {
+        "I1_adult_talk_ratio": {
+          "available": true,
+          "value": 0.617
+        },
+        "I5_turns_per_minute": {
+          "available": true,
+          "value": 2.02
+        }
+      },
+      "deferred_indicators": [
+        "I2",
+        "I3",
+        "I4",
+        "I6",
+        "I7",
+        "I8"
+      ],
+      "synthetic": true
+    },
+    {
+      "record_id": "01a1a002-cae0-7102-92f9-1e102f7b54af",
+      "schema_version": 3,
+      "indicator_spec_version": 3,
+      "label_schema_version": "coarse-v0-draft",
+      "cohort": "early_grade",
+      "teacher_pseudo_id": "tp_358f0msh01",
+      "school_id": "SCH-DEMO-A",
+      "grade": "2",
+      "subject": "mother_tongue",
+      "started_on": "2026-11-03",
+      "start_time": "09:05",
+      "duration_s": 2220,
+      "capture": {
+        "observed_s": 2220.0,
+        "missing_s": 0.0,
+        "coverage": 1.0,
+        "mic": "builtin",
+        "class_size_estimate": 58
+      },
+      "context": {
+        "activity": "mixed",
+        "adult_conditions": "single_adult_no_playback"
+      },
+      "indicators": {
+        "I1_adult_talk_ratio": {
+          "available": true,
+          "value": 0.721
+        },
+        "I5_turns_per_minute": {
+          "available": true,
+          "value": 2.05
+        }
+      },
+      "deferred_indicators": [
+        "I2",
+        "I3",
+        "I4",
+        "I6",
+        "I7",
+        "I8"
+      ],
+      "synthetic": true
+    },
+    {
+      "record_id": "01a1a4fb-6020-765d-a5aa-b3715a57f681",
+      "schema_version": 3,
+      "indicator_spec_version": 3,
+      "label_schema_version": "coarse-v0-draft",
+      "cohort": "early_grade",
+      "teacher_pseudo_id": "tp_358f0msh01",
+      "school_id": "SCH-DEMO-A",
+      "grade": "2",
+      "subject": "mother_tongue",
+      "started_on": "2026-11-04",
+      "start_time": "08:15",
+      "duration_s": 2400,
+      "capture": {
+        "observed_s": 2400.0,
+        "missing_s": 0.0,
+        "coverage": 1.0,
+        "mic": "builtin",
+        "class_size_estimate": 58
+      },
+      "context": {
+        "activity": "pupil_practice",
+        "adult_conditions": "single_adult_no_playback"
+      },
+      "indicators": {
+        "I1_adult_talk_ratio": {
+          "available": true,
+          "value": 0.551
+        },
+        "I5_turns_per_minute": {
+          "available": true,
+          "value": 2.1
+        }
+      },
+      "deferred_indicators": [
+        "I2",
+        "I3",
+        "I4",
+        "I6",
+        "I7",
+        "I8"
+      ],
+      "synthetic": true
+    },
+    {
+      "record_id": "01a1aa94-2d00-7ff4-9ec0-d69fa626ed87",
+      "schema_version": 3,
+      "indicator_spec_version": 3,
+      "label_schema_version": "coarse-v0-draft",
+      "cohort": "early_grade",
+      "teacher_pseudo_id": "tp_358f0msh01",
+      "school_id": "SCH-DEMO-A",
+      "grade": "2",
+      "subject": "mother_tongue",
+      "started_on": "2026-11-05",
+      "start_time": "10:20",
+      "duration_s": 2460,
+      "capture": {
+        "observed_s": 2460.0,
+        "missing_s": 0.0,
+        "coverage": 1.0,
+        "mic": "wired_lavalier",
+        "class_size_estimate": 58
+      },
+      "context": {
+        "activity": "mixed",
+        "adult_conditions": "single_adult_no_playback"
+      },
+      "indicators": {
+        "I1_adult_talk_ratio": {
+          "available": true,
+          "value": 0.592
+        },
+        "I5_turns_per_minute": {
+          "available": true,
+          "value": 2.07
+        }
+      },
+      "deferred_indicators": [
+        "I2",
+        "I3",
+        "I4",
+        "I6",
+        "I7",
+        "I8"
+      ],
+      "synthetic": true
+    }
+  ]
+}

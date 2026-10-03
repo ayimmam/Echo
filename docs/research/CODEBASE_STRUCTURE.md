@@ -43,6 +43,10 @@ Echo/
 
 Other existing ML, Android and tools placeholders remain. Named responsibilities above are not implemented modules. No server entry point, framework dependency, database migration or deployment automation is supplied before host selection; the deployment scaffolding is a capability manifest and runbook. Only the empty OS-specific backup/Compose placeholders moved.
 
+## Starter pass — 2026-10-03
+
+Starter code with **synthetic data** was added at the user's request; ADR-015's "no product features" note above is superseded for these items only. Added: `edge/android/app` demo UI; `indicators-core/python/dimts_indicators/` (reference + adapter + tests) and `indicators-core/golden/coarse-v0-draft.json`; `tools/synthetic-lessons/synth_timeline.py`; `tools/demo/` generator and `mock-data/` (shared with the Android assets via Gradle); `server/api/demo_wsgi.py`, `server/domain/aggregation.py`, `server/config/demo_settings.py`, `server/templates/demo_*` and `server/tests/`; `tests/demo/`. The stub is framework-neutral and **does not select** FastAPI or Django.
+
 ## Stack and dependency boundaries
 
 One modular Python application handles the API and rendered pages. HTTP and CLI adapters call authorised domain use cases, which access scoped repositories; neither templates nor jobs bypass authorisation. The web process does not import ML frameworks, run inference, host annotation or train models. See [server contracts](../../server/README.md).

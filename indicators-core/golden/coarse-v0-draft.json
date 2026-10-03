@@ -1,0 +1,81 @@
+[
+  {
+    "id": "GOLD-C-01",
+    "rationale": "Alternating adult/child lesson. Speech: adult 30+20+10=60 s, child 10+10=20 s, so I1=60/80=0.75. Role changes at ticks 3000, 4000, 7000, 8000 = 4 over 2 observed minutes, so I5=2.0. Each 60 s bin holds two changes, so I7=1.0. Longest silence is 30 s, so I8=0.",
+    "request": {
+      "operation": "indicators", "contract": "acceptance-v1", "indicator_spec_version": 3,
+      "cohort": "early_grade", "tick_ms": 10, "duration_ticks": 12000,
+      "timeline": [
+        {"start_tick": 0, "end_tick": 3000, "label": "ADULT"},
+        {"start_tick": 3000, "end_tick": 4000, "label": "CHILD_UNSPECIFIED"},
+        {"start_tick": 4000, "end_tick": 6000, "label": "ADULT"},
+        {"start_tick": 6000, "end_tick": 7000, "label": "NON_SPEECH"},
+        {"start_tick": 7000, "end_tick": 8000, "label": "CHILD_UNSPECIFIED"},
+        {"start_tick": 8000, "end_tick": 9000, "label": "ADULT"},
+        {"start_tick": 9000, "end_tick": 12000, "label": "NON_SPEECH"}
+      ]
+    },
+    "expected": {"observed_s": 120.0, "missing_s": 0.0, "I1": 0.75, "I5": 2.0, "I7": 1.0, "I8": 0}
+  },
+  {
+    "id": "GOLD-C-02",
+    "rationale": "A 15 s interruption. Observed 105 s, missing 15 s. Speech: adult 20+15=35 s, child 10+10=20 s, so I1=35/55=7/11. MISSING resets the span: changes at 2000 and 6000 only (nothing bridges 3000-4500), so I5=2/1.75=8/7. Bin 0 contains missing time and is ineligible; bin 1 holds the change at 6000, so I7=1.0. Silence is 50 s, so I8=0.",
+    "request": {
+      "operation": "indicators", "contract": "acceptance-v1", "indicator_spec_version": 3,
+      "cohort": "early_grade", "tick_ms": 10, "duration_ticks": 12000,
+      "timeline": [
+        {"start_tick": 0, "end_tick": 2000, "label": "ADULT"},
+        {"start_tick": 2000, "end_tick": 3000, "label": "CHILD_UNSPECIFIED"},
+        {"start_tick": 3000, "end_tick": 4500, "label": "MISSING"},
+        {"start_tick": 4500, "end_tick": 6000, "label": "ADULT"},
+        {"start_tick": 6000, "end_tick": 7000, "label": "CHILD_UNSPECIFIED"},
+        {"start_tick": 7000, "end_tick": 12000, "label": "NON_SPEECH"}
+      ]
+    },
+    "expected": {"observed_s": 105.0, "missing_s": 15.0, "I1": 0.6363636363636364, "I5": 1.1428571428571428, "I7": 1.0, "I8": 0}
+  },
+  {
+    "id": "GOLD-C-03",
+    "rationale": "Overlap counts in the speech denominator but is never attributed to the adult and does not break a turn. Speech: adult 30 s, overlap 5 s, child 5 s, so I1=30/40=0.75. One change (adult to child, skipping overlap) at tick 9500 over 3 minutes, so I5=1/3. Only bin 1 has it, so I7=1/3. Silent runs of exactly 60 s and 80 s are both long, so I8=2.",
+    "request": {
+      "operation": "indicators", "contract": "acceptance-v1", "indicator_spec_version": 3,
+      "cohort": "early_grade", "tick_ms": 10, "duration_ticks": 18000,
+      "timeline": [
+        {"start_tick": 0, "end_tick": 6000, "label": "NON_SPEECH"},
+        {"start_tick": 6000, "end_tick": 9000, "label": "ADULT"},
+        {"start_tick": 9000, "end_tick": 9500, "label": "OVERLAP"},
+        {"start_tick": 9500, "end_tick": 10000, "label": "CHILD_UNSPECIFIED"},
+        {"start_tick": 10000, "end_tick": 18000, "label": "NON_SPEECH"}
+      ]
+    },
+    "expected": {"observed_s": 180.0, "I1": 0.75, "I5": 0.3333333333333333, "I7": 0.3333333333333333, "I8": 2}
+  },
+  {
+    "id": "GOLD-C-04",
+    "rationale": "Coarse schema cannot yield single/choral or language indicators: they are unavailable (null), never zero.",
+    "request": {
+      "operation": "indicators", "contract": "acceptance-v1", "indicator_spec_version": 3,
+      "cohort": "early_grade", "tick_ms": 10, "duration_ticks": 6000,
+      "timeline": [{"start_tick": 0, "end_tick": 6000, "label": "ADULT"}]
+    },
+    "expected": {
+      "I1": 1.0, "I3": null, "I6": null, "I5": 0.0, "I7": 0.0, "I8": 0,
+      "I2": {"single": {"n": 0, "median": null}, "choral": {"n": 0, "median": null}},
+      "I4": {"count": 0, "per_10min": null},
+      "unavailable": {
+        "I2": "requires_single_vs_choral_labels", "I3": "requires_single_vs_choral_labels",
+        "I4": "requires_single_vs_choral_labels", "I6": "requires_language_identification"
+      }
+    }
+  },
+  {
+    "id": "GOLD-C-05",
+    "rationale": "Original five-class labels are rejected under the coarse spec; schemas are never silently reinterpreted.",
+    "request": {
+      "operation": "indicators", "contract": "acceptance-v1", "indicator_spec_version": 3,
+      "cohort": "early_grade", "tick_ms": 10, "duration_ticks": 6000,
+      "timeline": [{"start_tick": 0, "end_tick": 6000, "label": "TEACHER", "lang": "eng"}]
+    },
+    "expected": {"error": "label_schema_mismatch"}
+  }
+]
