@@ -1,6 +1,6 @@
 # Undergraduate STEM pilot load profile
 
-Updated 2026-10-02 from the user's workload clarification. This is a post-implementation test input specification, not a measured capacity claim.
+Updated 2026-10-06 with the two-purpose sharing plan; workload inputs remain the user's 2026-10-02 clarification. This is a post-implementation test input specification, not a measured capacity claim.
 
 | Input | Current evidence / status |
 |---|---|
@@ -19,9 +19,12 @@ The user clarified “3 devices per day and 3 sessions/day for a week.” Device
 
 For one final derived record per session, three sessions per device per day yields `3 × N = 9` new records daily. After `D = 7` offline days, the first reconnect contains `3 × N × D = 63` unique records plus retries: 21 records per device. If three sessions/day meant a total across all devices, actual weekly volume is 21; retain the 63-record case as the conservative test envelope. Update this formula if the final API intentionally divides sessions into multiple records. Generate unique instructor/device identities and scoped records for each classroom; duplicate retry IDs retain identical canonical content, while conflict cases deliberately change content.
 
+Under [ADR-018](../adr/018-measurement-evidence-and-sharing.md), both sharing preferences default ON. With both purposes authorized and ready, the conservative envelope produces **9 private-summary deliveries plus 9 research deliveries per day; 63 plus 63 = 126 delivery records per week**, before retries, control messages, observer forms or surveys. There are still only 63 unique lessons. The private summary goes to the conditional shared-hosting backend; the allowlisted research projection goes to the separate approved research intake. Test each destination independently and both together on the phone; do not assign all 126 deliveries to Zergaw or infer capacity from these small record counts. If three sessions/day means three total, the corresponding envelope is 21 lessons and 42 deliveries/week.
+
 1. Synchronise all `N` enrolled synthetic devices at a start barrier, each with its own `3 × D = 21` backlog. Exercise the actual bounded batching and retry policy rather than sending an unlimited request stream.
 2. Measure unique durable records, ACK latency, backlog drain time, failed/retried requests and duplicate/conflict responses. Account for every accepted/rejected record, including a disconnect immediately after commit.
 3. Repeat within the agreed provider load-test envelope with report/purge jobs active and delayed network reconnects. Do not treat HTTP success alone as proof of durable ingest; verify the database and generated reports.
 4. Check peak process/RAM/CPU/DB connections and scheduled-job runtime against measured plan quotas. Preserve resource headroom agreed before the test. If capacity fails, reduce the documented supported load or select another host; do not silently lower the test load.
+5. Repeat with both purpose outboxes populated, then with each destination unavailable in turn. Verify bounded retries, independent progress and accounting, and priority for withdrawal/deletion controls over stale queued data. Apply the [sharing acceptance procedures](EVIDENCE_SHARING_UI_TEST_PLAN.md) to opt-out during the reconnect burst. A success receipt for one destination must not acknowledge the other.
 
 Session duration affects phone capture, thermal/battery stability and offline storage tests independently of the shared backend. Prepare a 90-minute device endurance run and a three-session (4.5-hour capture) daily-use run, with the existing inference/memory/privacy targets; confirm duration before using these as the field acceptance target. Do not claim these pass from a 40-minute benchmark. **Removed:** research audio storage/transfer budget and Research Mode (ADR-016). All capture is RAM-only, including extended tests; only derived records may sync. This load profile applies when sync is enabled and does not force a live backend into the offline defence slice.

@@ -24,6 +24,10 @@ Default planning sample: at least 3 instructors across 2 STEM courses, 6 session
 - **Deferred production LID:** language vocabulary remains amh/sid/eng/oth with unknown abstention unless E3 establishes a versioned change. STEM English/code-switching performance provides no Sidaamu Afoo coverage when absent. Report per-language sample sizes and unknown rate.
 - Split P1 by instructor/course/room as feasible and keep entire sessions together. Separate P1 from P2 manifests, annotations, calibration, metric tables and reports. Never pool STEM with early-grade test metrics or use an early-grade test partition for adaptation. Any P1 → P2 transfer experiment is declared and independently tested.
 
+## Context transfer check (2026-10-05)
+
+[Tanner’s reply](TANNER_DART_EQUIP_FOLLOWUP.md) limits DART to acoustic patterns and flags background noise/smaller-class failures. Include available class-size, placement, noise and room contrasts in the technical report; missing conditions stay untested. Observe activity independently where approved, retaining class-level totals only. Neither live acoustic agreement nor a successful seven-day STEM trial establishes pedagogy, child-label accuracy or a teacher’s usual practice. Keep the current VAD/system scope and no-recording rule.
+
 ## Technical exit thresholds
 
 Run the suites in [POST_IMPLEMENTATION_TEST_PLAN.md](../testing/POST_IMPLEMENTATION_TEST_PLAN.md). For each supported reference device: end-to-end RTF ≤0.3, peak RSS ≤300 MB, bounded backlog with recorded p95 emission latency, ≤10 percentage points battery loss over the controlled 40-minute run, and no unaccounted audio intervals. Extended STEM sessions require measured completion and bounded resources; do not extrapolate a linear battery limit.

@@ -26,6 +26,7 @@ import org.ethioware.echo.domain.Phase
 import org.ethioware.echo.domain.formatClock
 import org.ethioware.echo.ui.components.CardTone
 import org.ethioware.echo.ui.components.ConfirmDialog
+import org.ethioware.echo.ui.components.DangerButton
 import org.ethioware.echo.ui.components.DemoBanner
 import org.ethioware.echo.ui.components.EchoCard
 import org.ethioware.echo.ui.components.LevelMeter
@@ -52,6 +53,7 @@ fun LessonScreen(vm: EchoViewModel) {
     val session = vm.session ?: return
     val totals = session.totals(now)
     var askLeave by rememberSaveable { mutableStateOf(false) }
+    var askDiscard by rememberSaveable { mutableStateOf(false) }
     BackHandler { askLeave = true }
 
     if (askLeave) {
@@ -62,6 +64,16 @@ fun LessonScreen(vm: EchoViewModel) {
             dismissText = t(S.LESSON_KEEP_GOING),
             onConfirm = { askLeave = false; vm.endLesson() },
             onDismiss = { askLeave = false },
+        )
+    }
+    if (askDiscard) {
+        ConfirmDialog(
+            title = t(S.DISCARD_TITLE),
+            body = t(S.DISCARD_BODY),
+            confirmText = t(S.DISCARD_CONFIRM),
+            onConfirm = { askDiscard = false; vm.discardSession() },
+            onDismiss = { askDiscard = false },
+            destructive = true,
         )
     }
 
@@ -101,7 +113,7 @@ fun LessonScreen(vm: EchoViewModel) {
                         warn = session.phase != Phase.RUNNING,
                     )
                 }
-                LevelMeter(now, active = session.phase == Phase.RUNNING, description = t(S.LESSON_MIC_OK))
+                LevelMeter(active = session.phase == Phase.RUNNING, description = t(S.LESSON_MIC_OK))
                 if (session.phase == Phase.INTERRUPTED) {
                     EchoCard(tone = CardTone.Warm) {
                         Text(
@@ -127,18 +139,21 @@ fun LessonScreen(vm: EchoViewModel) {
                     )
                 }
             }
-            Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                if (session.phase == Phase.PAUSED) {
-                    SecondaryButton(t(S.LESSON_RESUME), onClick = { vm.resumeLesson() }, modifier = Modifier.weight(1f))
-                } else {
-                    SecondaryButton(
-                        t(S.LESSON_PAUSE),
-                        onClick = { vm.pauseLesson() },
-                        modifier = Modifier.weight(1f),
-                        enabled = session.phase == Phase.RUNNING,
-                    )
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    if (session.phase == Phase.PAUSED) {
+                        SecondaryButton(t(S.LESSON_RESUME), onClick = { vm.resumeLesson() }, modifier = Modifier.weight(1f))
+                    } else {
+                        SecondaryButton(
+                            t(S.LESSON_PAUSE),
+                            onClick = { vm.pauseLesson() },
+                            modifier = Modifier.weight(1f),
+                            enabled = session.phase == Phase.RUNNING,
+                        )
+                    }
+                    PrimaryButton(t(S.LESSON_END), onClick = { vm.endLesson() }, modifier = Modifier.weight(1f))
                 }
-                PrimaryButton(t(S.LESSON_END), onClick = { vm.endLesson() }, modifier = Modifier.weight(1f))
+                DangerButton(t(S.END_DISCARD), onClick = { askDiscard = true })
             }
         }
     }

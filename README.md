@@ -1,8 +1,10 @@
 # Echovolve (ድምጽ)
 
+> **Implementation update — 2026-10-09:** The Android synthetic demo now implements the Today / Reflection / Settings flow, a first-use button guide, a fixed light theme, local lesson reflection, independent default-ON sharing preferences, explicit synthetic measurement provenance and fail-closed metric display. The demo has no microphone, model, authorisation service, transfer adapter or real hosting; its preferences send nothing. See [Android demo status](edge/android/README.md), [ADR-018](docs/adr/018-measurement-evidence-and-sharing.md) and the [contracts](docs/contracts/).
+
 > **Infrastructure update — 2026-10-02:** The [current repository structure](docs/research/CODEBASE_STRUCTURE.md), [ADR-015](docs/adr/015-capability-gated-hosting.md), [security architecture](docs/security/ARCHITECTURE.md) and [deployment scaffolding](infra/README.md) supersede the earlier infrastructure illustration and OS/database choices below. Zergaw shared hosting is conditional on provider evidence; FastAPI/ASGI or Django/WSGI and the database remain unselected. The later feature review removes persisted-audio Research Mode; ADR-015’s conditional hosting/security work is preserved. This repository pass adds contracts/scaffolding and checker tests, not product features.
 
-> **Feature scope — 2026-10-03:** [FEATURE_REVIEW](docs/research/FEATURE_REVIEW.md) and draft [ADR-016](docs/adr/016-defence-scope-and-no-recording.md) set the June 2027 planning baseline: Grade 2 reading, offline reflection, conditional I-1/I-5, no persisted research audio. Other indicators and live official reporting are explicitly deferred. No product code was implemented by this review.
+> **Feature scope — 2026-10-03 (planning baseline):** [FEATURE_REVIEW](docs/research/FEATURE_REVIEW.md) and draft [ADR-016](docs/adr/016-defence-scope-and-no-recording.md) set the June 2027 planning baseline: Grade 2 reading, offline reflection, conditional I-1/I-5, no persisted research audio. Other indicators and live official reporting are explicitly deferred. The implementation status below reflects work added after that review.
 
 > **Stakeholders and research output — 2026-10-03:** the [participation map](docs/research/STAKEHOLDER_MAP.md), [research data/access plan](docs/research/RESEARCH_DATA_MANAGEMENT_PLAN.md) and draft [ADR-017](docs/adr/017-research-data-access-and-publication.md) add a thesis/manuscript deliverable and Anteneh's named, approved research access in Ethiopia. Coded study records remain restricted; anonymous publication outputs need separate disclosure review. No stakeholder appointment, institutional permission or account has been granted by these plans.
 
@@ -22,14 +24,14 @@ no voice print is stored, and no teacher is scored, ranked or compared. The desi
 **coaching, not surveillance**, and it is enforced by the architecture rather than by policy alone.
 
 > [!IMPORTANT]
-> **This repository is at the design stage.** As of 2026-10-03 it also contains **starter code with
-> synthetic data**: a runnable Android demo UI ([`edge/android`](edge/android/README.md)), a stdlib Python
-> reference for the indicator contract ([`indicators-core/python`](indicators-core/python/README.md)), seeded
-> mock fixtures ([`tools/demo`](tools/demo/README.md)) and a throwaway read-only dashboard stub
-> ([`server/`](server/README.md)). There is still **no microphone capture, no inference, no model, no
-> encrypted storage, no sync, no real server and no deployment**. Every screen, number and box is a design
-> target or a seeded fixture behind the acceptance gates in
-> [`docs/research/IMPLEMENTATION_REVIEW.md`](docs/research/IMPLEMENTATION_REVIEW.md); none is a measurement.
+> **This repository remains at the design and synthetic-demo stage.** It contains a runnable Android
+> offline reflection prototype, a stdlib Python indicator reference, deterministic mock fixtures and a
+> read-only synthetic dashboard. The Android app stores local demo state without encryption; it opens no
+> microphone and runs no inference. There is no released model, authorisation service, data transfer,
+> production backend or deployment. Every displayed measurement is synthetic. For executable local build,
+> installation and manual testing steps, see the [synthetic demo runbook](docs/testing/DEMO_DEPLOYMENT_AND_MANUAL_TESTING.md). Field capture, model
+> release, sync and hosting remain behind the evidence and provider gates in
+> [`docs/research/IMPLEMENTATION_REVIEW.md`](docs/research/IMPLEMENTATION_REVIEW.md).
 
 Echovolve is a B.Sc. final-year project at Hawassa University (defence June 2027) and an entry in the
 Huawei ICT Competition 2026–2027, Innovation track. The documents under `docs/` still carry the earlier
@@ -107,9 +109,11 @@ choices. One optional Tried / Not yet / Not useful / Skip follow-up appears at t
 Values never choose a weakness or a target ratio. The exact eligibility rule is in
 [review A1](docs/research/FEATURE_REVIEW.md#a1--one-practice-one-action-one-response).
 
-Opt-in derived-data sync to an Ethiopian server is a later, security-gated slice. Local-only field use
-also needs a written Article 22 interpretation. Real director/browser accounts and district releases
-are **deferred post-defence**; the competition page uses synthetic aggregates. No report waits for a network.
+Derived-data sync to an Ethiopian server remains a later, security-gated slice. ADR-018 sets separate
+default-ON preferences for newly eligible enrolments, but the current demo has no authorisation or
+transfer service. Local-only field use also needs a written Article 22 interpretation. Real
+director/browser accounts and district releases are **deferred post-defence**; the competition page
+uses synthetic aggregates. No report waits for a network.
 
 **What Echovolve deliberately does not do**
 
@@ -354,12 +358,12 @@ The independent claims audit is deliberately unflattering about anything that ou
 | Area | State |
 |---|---|
 | `docs/` | **Substantial.** Architecture context, a claims audit against primary sources, a research and implementation plan, an assumptions register, ADRs, a STEM trial plan, an infrastructure recheck and a hosting analysis. |
-| `edge/android/app` | **Runnable demo UI on synthetic data** (ADR-016 flow: welcome/consent, readiness check, lesson timer, save/discard, weekly report, practice cards, withdrawal; English, Amharic draft, Sidaamu placeholder). 43 JVM unit tests. No microphone permission, foreground service, model, encrypted storage or sync. `settings.gradle.kts` includes only `:app`; the other Android folders hold `.gitkeep`. |
+| `edge/android/app` | **Runnable demo UI on synthetic data**: Today / Reflection / Settings, readiness preview, lesson timer with stop/discard, independent sharing preferences, per-metric provenance checks, weekly reflection, practice cards and local withdrawal. No microphone permission, foreground service, model, encrypted storage, authorisation service or sync transport; preferences never send data. English, Amharic draft and Sidaamu placeholder. `settings.gradle.kts` includes only `:app`; the other Android folders hold `.gitkeep`. |
 | `tests/acceptance/` | **Wired to the Python reference.** The 18 vectors pass through `indicators-core/python/dimts_indicators/adapter.py`. This shows the *draft* reference agrees with the hand-calculated oracles; no Kotlin adapter exists, no device or model was involved, and the semantics the vectors leave open are still unfrozen (G1). |
 | `indicators-core/` | **Stdlib Python reference (draft)** for I-1…I-8 plus a reduced `coarse-v0-draft` schema, with hand-calculated golden cases. **No Kotlin port.** |
 | `ml/` | **No working product implementation.** |
 | `server/`, `dashboard/`, `infra/`, `tools/` | **Plans, scaffolding, the offline hosting checker, a throwaway synthetic read-only dashboard stub (stdlib WSGI, k ≥ 5 suppression) and seeded mock-data generators.** No selected backend framework, database, authentication, ingest or live deployment. |
-| Any accuracy, latency, memory, battery or deployment number | **Not measured.** No build has been verified, no model trained, no device benchmarked, no host purchased, no cloud account inspected. |
+| Any accuracy, latency, memory, battery or deployment number | **Not measured.** The debug APK and JVM suite built locally on 2026-10-09; a clean target-device build, model training, device benchmark, host purchase and cloud account inspection remain unverified. |
 
 ### Acceptance gates
 
@@ -490,7 +494,7 @@ not count.
 | **Teacher capability framed as "significant and addressable", not "the binding constraint"** | AIR (2020) ranks home resources first, school resources second, teacher competency third. Yisihak & Damtew (2024) is a 30-teacher, five-school case study whose authors state its generalisability is limited. |
 | **"Frequent and private", not "teachers get no feedback"** | AIR (2019, pp. 53–54) shows observation exists in some schools and is positively associated with reading (d = 0.23–0.28; d = 0.18 for three times a semester vs. never). Jensen et al. (2020) describe feedback elsewhere as infrequent and more evaluative than developmental. |
 | **Feedback can move practice at all** | Kraft et al. (2018) meta-analysis of coaching; Demszky & Liu (2023) bundled-feedback trial estimating −3.5 pp talk share (Table 2); Demszky et al. (2024, 2025) on uptake and questioning quality; Hattie & Timperley (2007) on what makes feedback work; Popova et al. (2021) on the gap between evidence and practice in teacher development. |
-| **Acoustic indicators without any transcription** | Owens et al. (2017), ~90% on three coarse classes from classroom sound alone across 1,486 sessions; Schlotterbeck et al. (2021), >80% on two practices from a lavalier into a teacher's own smartphone, at roughly 7 minutes of processing per hour of audio; Donnelly et al. (2016), F1 0.64–0.78 on five segment types with teacher-independent validation; Chanchal & Zualkernan, F1 0.83 in semi-rural Pakistan with phones; Zualkernan & Khan (2020) and Shapsough & Zualkernan (2017) on low-cost classroom audio devices. |
+| **Task-specific acoustic measurement precedents** | [Tanner’s clarification](docs/research/TANNER_DART_EQUIP_FOLLOWUP.md): DART did not validate pedagogical meaningfulness. Owens et al. (2017), ~90% on three coarse classes from classroom sound alone across 1,486 sessions; Schlotterbeck et al. (2021), >80% on two practices from a lavalier into a teacher's own smartphone, at roughly 7 minutes of processing per hour of audio; Donnelly et al. (2016), F1 0.64–0.78 on five segment types with teacher-independent validation; Chanchal & Zualkernan, F1 0.83 in semi-rural Pakistan with phones; Zualkernan & Khan (2020) and Shapsough & Zualkernan (2017) on low-cost classroom audio devices. |
 | **Frame classification, not clustering diarization** (ADR-001) | Lavechin et al. (2020), a frame-level voice-type classifier that beats LENA; Donnelly et al. (2016) for five-class segment labelling; Wang et al. (2025), whose best classroom system reached 69% on teacher-versus-child, which is why §9's targets are labelled ambitious. |
 | **I-1 defined as teacher ÷ (teacher + child)** | Demszky & Liu (2023) use exactly this denominator; Liu & Cohen (2021) find a teacher-centred factor negatively predicts value-added. |
 | **I-2 split by response type, and not called wait time** | Rowe (1986) and Tobin (1987) established wait time — but wait time I follows a question, and an acoustic system cannot see questions. The 3-second threshold stays out of the product until prosody-based question detection (R-4) exists. |

@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "indicators-core" / "python"))
 
-from dimts_indicators.reporting import week_eligibility, week_start  # noqa: E402
+from dimts_indicators.reporting import week_eligibility, week_metric_eligibility, week_start  # noqa: E402
 
 MOCK = ROOT / "tools/demo/mock-data"
 ANDROID = MOCK / "android-assets/mock"
@@ -53,7 +53,7 @@ class MockData(unittest.TestCase):
 
     def test_records_follow_reduced_adr016_contract(self):
         for r in load(ANDROID / "lessons.json")["records"]:
-            self.assertEqual((r["schema_version"], r["label_schema_version"]), (3, "coarse-v0-draft"))
+            self.assertEqual((r["schema_version"], r["label_schema_version"]), (4, "coarse-v0-draft"))
             self.assertEqual(set(r["indicators"]), {"I1_adult_talk_ratio", "I5_turns_per_minute"})
             self.assertEqual(r["deferred_indicators"], ["I2", "I3", "I4", "I6", "I7", "I8"])
             self.assertAlmostEqual(r["capture"]["coverage"], r["capture"]["observed_s"] / r["duration_s"], places=3)
@@ -71,6 +71,24 @@ class MockData(unittest.TestCase):
             weeks.setdefault(week_start(date.fromisoformat(r["started_on"])), []).append(r)
         verdict = {w.isoformat(): week_eligibility(rs, excluded)["eligible"] for w, rs in sorted(weeks.items())}
         self.assertEqual(verdict, {"2026-10-19": True, "2026-10-26": False, "2026-11-02": True})
+
+    def test_metric_eligibility_is_independent(self):
+        records = load(ANDROID / "lessons.json")["records"]
+        excluded = set(load(ANDROID / "local_state.json")["excluded_record_ids"])
+        current = [
+            r for r in records
+            if week_start(date.fromisoformat(r["started_on"])) == date(2026, 11, 2)
+            and r["record_id"] not in excluded
+        ]
+        for row in current[:2]:
+            row["indicators"]["I1_adult_talk_ratio"].update(
+                {"available": False, "value": None, "reason": "insufficient_speech"}
+            )
+        i1 = week_metric_eligibility(current, "I1", allow_synthetic_preview=True)
+        i5 = week_metric_eligibility(current, "I5", allow_synthetic_preview=True)
+        self.assertFalse(i1["available"])
+        self.assertTrue(i5["available"])
+        self.assertEqual((i1["eligible_lessons"], i5["eligible_lessons"]), (1, 3))
 
     def test_cohort_has_hidden_and_shown_cells(self):
         grades = {}

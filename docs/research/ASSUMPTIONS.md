@@ -80,7 +80,7 @@ Evidence register dated 2026-09-26; planning caveats updated 2026-09-27. Status 
 | ID | Assumption | Origin | Status | Evidence | Test / owner | If wrong |
 |---|---|---|---|---|---|---|
 | A-D1 | A fixed 5-class frame classifier beats clustering diarization for this task. | ARCH ADR-001 | 🟡 Plausible | VTC (Lavechin et al., 2020); diarization weak in classrooms (Wang et al., 2025) | E2 | — |
-| A-D2 | No ASR is needed for any indicator. | ARCH C-1 | ✅ Holds | Precedents: DART, Schlotterbeck et al., Chanchal & Zualkernan | — | — |
+| A-D2 | No ASR is needed for any indicator. | ARCH C-1 | 🟡 Scoped: no-ASR is a guardrail, not proof all indicators are observable | Some acoustic precedents; [Tanner clarification](TANNER_DART_EQUIP_FOLLOWUP.md) denies pedagogical validation for DART | Validate each measure/condition separately; keep question/meaning-dependent claims deferred | Narrow or suppress unsupported measures without relaxing no-ASR |
 | A-D3 | Sidaamu Afoo speech data is scarce. | ARCH D-4 | ❌ Changed | Afrivoice about 603 h (225 h transcribed); WAXAL `sid_asr`; MMS `sid` | **Replacement:** adult Sidama resources exist, with gating/licences/overlap unresolved. This establishes neither child/choral labels nor a tiny classroom LID model. Production LID is deferred. | — |
 | A-D4 | LID works on teacher segments ≥ 2 s. | ARCH §5 | ❓ Untested | Short-segment LID is hard; the thresholds conflict across §5, §8.3 and §14.1 | E3 | Raise to 3–5 s; more "unknown" labels |
 | A-D5 | CHILD_SINGLE and CHILD_CHORAL are acoustically separable. | ARCH §9 | ❓ Untested — **critical** | No directly comparable classroom single/choral benchmark was verified in this review. Speaker-count estimation is the nearest precedent (Stöter et al., 2018). | E4 | 4-class fallback (§18) |
@@ -165,3 +165,13 @@ Author request recorded in [ADR-017](../adr/017-research-data-access-and-publica
 | RA-6 | **Proposed, not institutional policy:** R0/R1 retained through 30 June 2029; 30-day rolling backups, final expiry 31 July; live withdrawal purge ≤7 days | Controller approves finite values before consent; test RD-05/08 and replace dates where university rules require | Revise agreement/participant materials before collection; never imply a statutory two-year requirement |
 | RA-7 | **Explicit scope:** structured research responses can be collected without speech-derived text or child identifiers | Participant-selected fixed forms and school-held consent logistics; PI/ethics review | Revise accessible form/protocol; no interview transcription or project child roster |
 | RA-8 | **Planning estimate:** stakeholder/access administration and manuscript package fit 30 + 30 hours within existing field/writing budgets | Lead tracks actual effort and external observer/reviewer availability | Cut optional sync/LID/I-5 before increasing unfunded scope; publication acceptance remains uncertain |
+
+## 2026-10-06 implementation assumptions (ADR-018)
+
+| ID | Assumption / decision | Required evidence | If unresolved |
+|---|---|---|---|
+| EV-1 | Model/spec/feature identity and scoped released evidence can be enforced consistently in Python/Kotlin and at server admission | EVID cases; controlled release registry and conformance fixtures | No affected real metric shown/exported as released |
+| UX-1 | Today/Reflection/Settings reduces teacher effort and makes both opt-outs discoverable | UI cases and local language/accessibility review | Revise navigation/copy before field use |
+| SH-1 | Default-ON sharing preferences can use separately established prior consent via approved enrolment | Institution-approved workflow, scoped authorisation receipts and refusal tests | No transfer; preselected defaults cannot stand in for consent |
+| SH-2 | Private sync and electronic R1 intake can be funded/operated within the revised schedule | Provider/private-environment readiness and new task estimate | Mark sharing unavailable and explicitly revisit delivery scope; no silent overseas/manual substitute |
+| SH-3 | Research intake can admit only minimal study fields and handle withdrawal independently from private sync | SHARE/RD/SEC tests, purpose-scoped projections/ledgers | Keep research path closed even if private sync is ready |

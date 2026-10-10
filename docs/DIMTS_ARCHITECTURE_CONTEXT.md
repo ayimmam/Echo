@@ -1,5 +1,7 @@
 # Dimts (ድምጽ) — Architecture Context Document
 
+> **2026-10-06 current contracts:** [ADR-018](adr/018-measurement-evidence-and-sharing.md) and [focused review](research/FOCUSED_ARCHITECTURE_REVIEW.md) govern measurement provenance/release policy, simpler UI and default-ON private sync plus research contribution after prior purpose authorisation. Opt-out controls live in Settings. This is a plan-only amendment; original no-recording and Grade 2 scope persists.
+
 > **2026-10-02 infrastructure revision:** [ADR-015](adr/015-capability-gated-hosting.md), [current structure](research/CODEBASE_STRUCTURE.md) and [security contracts](security/ARCHITECTURE.md) govern deployment. Zergaw capabilities are unconfirmed. Research Mode was subsequently **removed** by draft ADR-016; the conditional hosting/security work remains. This pass adds structure/contracts and an offline evidence checker, not product features.
 
 > **Purpose of this file.** Single source of truth for designing the codebase. Hand it to any teammate, reviewer, or coding agent before they write code. It contains the problem, the constraints, the specs, the Huawei technology mapping, the proposed architecture, and the open decisions. It does **not** contain final code.
@@ -58,7 +60,7 @@ Dimts is a proposed offline acoustic reflection aid for Ethiopian teachers, with
 ### 2.5 Why classroom *audio*, and why teacher-facing
 
 - Human classroom observation is broader than acoustic analysis and requires trained observers; current Ethiopian observer availability must be measured, not assumed absent (EGRA and Teach, feature review §2.1–2.2).
-- Some coarse acoustic activity measures are feasible without transcription; they are not a validated instructional-quality score. Response latency cannot identify questions and choral response has no universal preferred direction ([feature review](research/FEATURE_REVIEW.md#21-feedback-what-changed-and-what-did-not)).
+- Some coarse acoustic activity measures are feasible without transcription; they are not a validated instructional-quality score. [Tanner’s DART clarification](research/TANNER_DART_EQUIP_FOLLOWUP.md) requires separate acoustic-reference, activity-context and teacher-interpretation evidence; a sound pattern alone cannot establish learning or equitable participation. Response latency cannot identify questions and choral response has no universal preferred direction ([feature review](research/FEATURE_REVIEW.md#21-feedback-what-changed-and-what-did-not)).
 - Teacher consent alone is insufficient for classroom capture that includes children. All transient capture must follow the ethics and consent decisions in WS-F; recorded Research Mode is removed.
 
 ### 2.6 Why no ASR
@@ -363,7 +365,7 @@ No audio, no embeddings, no timestamps finer than lesson start, no student-level
 Cohort extension: institution and course/session context for STEM, enrolment cohort, cohort-scoped report keys and dataset provenance. District aggregates consume early-grade records only.
 
 ### 10.3 Identity
-- Local use has one protected local teacher profile and no remote-login dependency. If opt-in sync is enabled, the teacher enrols with a code issued by the research team; server returns an opaque `teacher_pseudo_id`. Real names stored only in a separate, access-restricted enrolment table (or on paper) [DECISION: ADR-007].
+- Local use has one protected local teacher profile and no remote-login dependency. For authorised default-ON sync (independently disabled in Settings), the teacher enrols with a code issued by the research team; server returns an opaque `teacher_pseudo_id`. Real names stored only in a separate, access-restricted enrolment table (or on paper) [DECISION: ADR-007].
 
 ---
 
@@ -394,6 +396,8 @@ The [current structure](research/CODEBASE_STRUCTURE.md) owns the repository map 
 **Backend (ADR-005 as constrained by ADR-015):** one Python application and rendered pages; FastAPI/PostgreSQL for confirmed managed ASGI, or Django with a supported selected database for WSGI-only hosting. No framework or database selected until provider evidence. No ML packages in the shared backend. Cron-driven bounded jobs replace a resident worker requirement.
 
 ---
+
+Current implementation contracts: [measurement/evidence](contracts/MEASUREMENT_EVIDENCE.md) and [sharing/UI](contracts/SHARING_AND_UI.md). Source compatibility, field-release approval and sharing authorisation are different decisions. Default ON is a preference for new enrolled users; no transmission occurs without prior purpose-specific authorisation. Three user destinations are Today, Reflection (including history), and Settings.
 
 ## 13. Interfaces
 
@@ -549,6 +553,8 @@ Prepare Q&A answers for: accuracy in very noisy classes; teacher surveillance co
 
 | ADR-016 | Defence scope and no recording | [Draft current planning baseline](adr/016-defence-scope-and-no-recording.md); conditional I-1/I-5, teacher choice, RAM-only throughout |
 | ADR-017 | Research participation, author access and anonymous publication | [Draft author-requested scope](adr/017-research-data-access-and-publication.md); separate research consent, R0/R1/R2 tiers, finite retention and publication review |
+
+| ADR-018 | Evidence/provenance, simpler UI and sharing defaults | [Planning revision](adr/018-measurement-evidence-and-sharing.md); two automatic authorised purposes, Settings opt-outs |
 
 ADR template: `Context · Decision · Alternatives considered · Consequences · Status · Date`.
 

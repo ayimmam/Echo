@@ -6,6 +6,9 @@ Research audit and plan for the Dimts (ድምጽ) proposal described in `DIMTS_A
 
 | File | What it is |
 |---|---|
+| [`FOCUSED_ARCHITECTURE_REVIEW.md`](FOCUSED_ARCHITECTURE_REVIEW.md) | Focused paper/repository review, inspected commits, adopted conventions, UI/sharing revisions and limits (2026-10-06). |
+| [`../adr/018-measurement-evidence-and-sharing.md`](../adr/018-measurement-evidence-and-sharing.md) | Current evidence/provenance, three-destination UI and authorised automatic sharing contracts. |
+| [`TANNER_DART_EQUIP_FOLLOWUP.md`](TANNER_DART_EQUIP_FOLLOWUP.md) | User-supplied DART author clarification, EQUIP comparison, and independent acoustic/context/interpretation validation procedures (2026-10-05). |
 | [`FEATURE_REVIEW.md`](FEATURE_REVIEW.md) | Whole-product feature scores, external evidence, five additions, cuts, two critique/search/revision passes and June 2027 scope. Draft ADR-016 governs removed recording paths and deferred components. |
 | [`STAKEHOLDER_MAP.md`](STAKEHOLDER_MAP.md) | Full proposed participation map: intensity, phases, contributions, consent/decision rights, data access and engagement owners. |
 | [`RESEARCH_DATA_MANAGEMENT_PLAN.md`](RESEARCH_DATA_MANAGEMENT_PLAN.md) | Thesis/manuscript output, named author access, R0/R1/R2 separation, minimal study fields, anonymous release review and retention; draft ADR-017. |

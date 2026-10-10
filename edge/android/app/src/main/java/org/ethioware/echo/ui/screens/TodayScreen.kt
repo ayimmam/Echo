@@ -17,6 +17,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
@@ -39,6 +43,7 @@ import org.ethioware.echo.ui.i18n.S
 @Composable
 fun TodayScreen(vm: EchoViewModel) {
     val t = LocalT.current
+    var showSetup by rememberSaveable { mutableStateOf(false) }
     Column(Modifier.verticalScroll(rememberScrollState())) {
         ScreenHeader(t(S.TODAY_TITLE))
         Column(Modifier.padding(horizontal = 16.dp, vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -46,31 +51,36 @@ fun TodayScreen(vm: EchoViewModel) {
                 Text(t(S.TODAY_LESSON_TYPE), style = MaterialTheme.typography.titleMedium)
                 Muted(t(S.TODAY_FIRST_NOTE))
             }
-            EchoCard {
-                Text(t(S.TODAY_CLASS_SIZE), style = MaterialTheme.typography.titleSmall)
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    OutlinedButton(
-                        onClick = { vm.changeClassSize(vm.classSize - 1) },
-                        modifier = Modifier.size(52.dp).semantics { contentDescription = "-" },
-                    ) { Text("−", style = MaterialTheme.typography.titleLarge) }
-                    Text(
-                        vm.classSize.toString(),
-                        style = MaterialTheme.typography.headlineSmall,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.width(88.dp),
-                    )
-                    OutlinedButton(
-                        onClick = { vm.changeClassSize(vm.classSize + 1) },
-                        modifier = Modifier.size(52.dp).semantics { contentDescription = "+" },
-                    ) { Text("+", style = MaterialTheme.typography.titleLarge) }
+            SecondaryButton(t(S.TODAY_SETUP), onClick = { showSetup = !showSetup })
+            if (showSetup) {
+                EchoCard {
+                    Text(t(S.TODAY_CLASS_SIZE), style = MaterialTheme.typography.titleSmall)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        OutlinedButton(
+                            onClick = { vm.changeClassSize(vm.classSize - 1) },
+                            modifier = Modifier.size(52.dp).semantics { contentDescription = "−" },
+                        ) { Text("−", style = MaterialTheme.typography.titleLarge) }
+                        Text(
+                            vm.classSize.toString(),
+                            style = MaterialTheme.typography.headlineSmall,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.width(88.dp),
+                        )
+                        OutlinedButton(
+                            onClick = { vm.changeClassSize(vm.classSize + 1) },
+                            modifier = Modifier.size(52.dp).semantics { contentDescription = "+" },
+                        ) { Text("+", style = MaterialTheme.typography.titleLarge) }
+                    }
+                    Spacer(Modifier.size(4.dp))
+                    Text(t(S.TODAY_MIC), style = MaterialTheme.typography.titleSmall)
+                    ChoiceRow(t(S.MIC_BUILTIN), vm.mic == Mic.BUILTIN, { vm.selectMic(Mic.BUILTIN) })
+                    ChoiceRow(t(S.MIC_WIRED), vm.mic == Mic.WIRED, { vm.selectMic(Mic.WIRED) })
                 }
-                Spacer(Modifier.size(4.dp))
-                Text(t(S.TODAY_MIC), style = MaterialTheme.typography.titleSmall)
-                ChoiceRow(t(S.MIC_BUILTIN), vm.mic == Mic.BUILTIN, { vm.selectMic(Mic.BUILTIN) })
-                ChoiceRow(t(S.MIC_WIRED), vm.mic == Mic.WIRED, { vm.selectMic(Mic.WIRED) })
             }
-            SecondaryButton(t(S.TODAY_CHECK), onClick = { vm.startReadiness() })
-            PrimaryButton(t(S.TODAY_START), onClick = { vm.startLesson() })
+            PrimaryButton(
+                t(if (vm.readinessComplete) S.TODAY_START else S.TODAY_CHECK),
+                onClick = { if (vm.readinessComplete) vm.startLesson() else vm.startReadiness() },
+            )
             EchoCard(tone = CardTone.Calm) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Filled.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
@@ -79,11 +89,7 @@ fun TodayScreen(vm: EchoViewModel) {
                 }
                 Text(t(S.PRIVACY_BODY), style = MaterialTheme.typography.bodyMedium)
             }
-            if (vm.syncEnabled && vm.queuedIds.isNotEmpty()) {
-                StatusChip(t(S.SYNC_WAITING, vm.queuedIds.size), warn = true)
-            } else {
-                StatusChip(t(S.SYNC_OFF_STATUS), modifier = Modifier.fillMaxWidth())
-            }
+            StatusChip(t(S.SHARING_STATUS_DEMO), modifier = Modifier.fillMaxWidth())
             Spacer(Modifier.size(8.dp))
         }
     }

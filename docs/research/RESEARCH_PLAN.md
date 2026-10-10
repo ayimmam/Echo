@@ -1,5 +1,7 @@
 # Research and implementation plan — Dimts (reviewed proposal, v1.4 — bounded scope, STEM first, publication access)
 
+> **2026-10-06 focused revision:** [ADR-018](../adr/018-measurement-evidence-and-sharing.md) and [source review](FOCUSED_ARCHITECTURE_REVIEW.md) govern evidence/provenance, three-destination UI and automatic sync/research contributions after separate prior authorisation. Both preferences default ON for new enrolments; opt-out controls live in Settings. No product code is changed. Re-estimate automatic study intake before scheduling implementation; earlier optional-sync cost assumptions do not cover it.
+
 > **2026-10-02 update:** [ADR-015](../adr/015-capability-gated-hosting.md) changes hosting selection to a capability-gated shared-hosting candidate with VPS fallback. Runtime/DB and research machine are unconfirmed. Draft ADR-016 **removes** recorded Research Mode and the new classroom corpus; it does not await infrastructure. Approved live aggregate observation replaces recording-dependent field work. Undergraduate STEM remains first, followed by separate early-grade gates; scaffolding is not gate sign-off.
 
 Scope reviewed 2026-10-02–03; repository implementation baseline remains unverified. [FEATURE_REVIEW](FEATURE_REVIEW.md) records all ratings, evidence and two revision passes; [ADR-016](../adr/016-defence-scope-and-no-recording.md) records the architectural change. Implementation must follow the ordered gates in [`IMPLEMENTATION_REVIEW.md`](IMPLEMENTATION_REVIEW.md); none is recorded as passed. This plan builds on [`CLAIMS_AUDIT.md`](CLAIMS_AUDIT.md), which is now updated with the full texts in [`papers/`](papers/). Related files:
@@ -29,7 +31,7 @@ Week labels follow the revised milestone calendar in §5 (first planning block s
    - Only 39% of mother-tongue teachers are Proficient-or-above, and Sidaamu Afoo teachers sit in the 22–33% band (AIR, 2020).
 2. **Observation-based feedback is associated with better reading, but it is patchy.** Where a school has someone who observes mother-tongue classes, and observes more often, pupils read better (AIR, 2019, pp. 53–54). Local frequency and availability remain to be established; the app’s benefit is a hypothesis. "No feedback at all" overstates it.
 3. **Continuous automated classroom-language measurement remains a novelty hypothesis.** Earlier work used handwritten observation notes (Heugh et al., 2007) or children's self-reports (Piper et al., 2016). Run C1 before making a first-of-kind claim; these studies alone cannot prove absence of other systems.
-4. **Audio-only classroom analytics work at coarse grain.** Reported results: ~90% (Owens et al., 2017), >80% (Schlotterbeck et al., 2021), F1 0.64–0.78 (Donnelly et al., 2016). Fine-grained teacher-vs-child separation is still hard: 69% in Wang et al. (2025).
+4. **Audio-only classroom analytics have task-specific coarse precedents.** [Tanner’s supplied reply](TANNER_DART_EQUIP_FOLLOWUP.md) expressly limits DART’s interpretation; classification accuracy cannot establish instructional meaning. Reported results: ~90% (Owens et al., 2017), >80% (Schlotterbeck et al., 2021), F1 0.64–0.78 (Donnelly et al., 2016). Fine-grained teacher-vs-child separation is still hard: 69% in Wang et al. (2025).
 5. **Talk-time feedback changes behaviour.** In an RCT, a bundled automated-feedback intervention estimated −3.5 percentage points (Table 2 coefficient −0.035; about −4.8% relative to control mean 0.722), not −5 pp (Demszky & Liu, 2023). The population was online 1:1 mentors; this is not an isolated acoustic-gauge effect or Ethiopian literacy evidence. No such evidence exists for choral ratio or language share yet.
 6. **The competition has changed shape.**
    - 2026–27 requires an AI application deployed on **Huawei Cloud** with a **visual demo page**.
@@ -85,6 +87,7 @@ The reduced thesis question: *Can a RAM-only low-end phone produce repeatable co
 | B4 | Feedback design | Open | Kraft et al. (2018); Demszky et al. (2023, 2025); Jensen et al. (2020); Hattie & Timperley (2007). | Report copy rules | W4 |
 | B5 | Surveillance perception | Open | Birnhack & Perry-Hazan (2021): nearly all teachers weigh their own privacy. Co-design with 2 teachers. | Consent copy | W3 |
 | B6 | I-3 as a balance indicator | **Deferred post-defence** | Heward et al. (1989) vs Pontefract & Hardman (2005). | I-3 reporting rule | W2 |
+| B7 | Separate acoustic agreement from activity meaning | Open; added 2026-10-05 | [Tanner/EQUIP follow-up](TANNER_DART_EQUIP_FOLLOWUP.md): blinded live aggregate activity context, counterexamples/confounds and structured interpretation checks; no student IDs or recording. | Supported-claim/condition matrix and failure report; adapted guide is not validated EQUIP | Before held-out use |
 
 ### WS-C: Prior systems and novelty (Lead + ML)
 
@@ -94,7 +97,7 @@ The reduced thesis question: *Can a RAM-only low-end phone produce repeatable co
 
 | System | Input → output | Setting | Result | Take-away for Dimts |
 |---|---|---|---|---|
-| DART (Owens et al., 2017) | Volume/variance → single, multiple or no voice | 1,486 US college sessions | ~90% | Closest no-ASR precedent; coarse classes |
+| DART (Owens et al., 2017) | Volume/variance → single, multiple or no voice | 1,486 US college sessions | Reported ~90% coarse classification; no pedagogical validity established by this figure | Low-cost acoustic precedent only; [Tanner clarification](TANNER_DART_EQUIP_FOLLOWUP.md), context/noise transfer tests required |
 | Schlotterbeck et al. (2021) | Lavalier + smartphone; amplitude, mel and MFCC statistics → COPUS practices | 42 lessons, 19 teachers, Chile | >80% accuracy (2 practices); 7 min per hour of audio | Smartphone workflow precedent; no target-device performance proof; compare child as well as teacher audibility |
 | Chanchal & Zualkernan (ED626900) | Mel spectrograms → Stallings categories | Semi-rural Pakistan, phones | F1 0.83; 0.72–0.81 with 5–20% labels | Semi-supervised learning with few labels |
 | Donnelly et al. (2016) | Teacher audio, speech/rest, ASR, acoustic features → 5 segment types | 76 classes, 11 teachers | F1 0.64–0.78, teacher-independent | Validate across teachers, not frames |
@@ -137,6 +140,8 @@ The reduced thesis question: *Can a RAM-only low-end phone produce repeatable co
 | **S10** | **Competition cloud stack:** same selected application and DB engine where available, independent synthetic data/credentials; One service initially (ECS candidate) after region/quota verification; managed DB, OBS/ModelArts training and Redis are deferred. Reproducible deployment after runtime decision. | W5 |
 | S11 | Sync ownership, ACK/conflict/retry, withdrawal and restore-purge tests per G4-U; repeat changed paths for G4-E; cohort isolation and disclosure tests before G5-E | Before pilot/release |
 | S12 | If personal-data sync is enabled: capability evidence and all applicable HOST/SEC tests, numeric retention, daily backup/RPO≤24 h/RTO≤8 h, named operator and restore/deletion evidence. No research audio host/service. Local-only field use requires an Article 22 decision. | Before server/field enablement; not G0 offline blocker |
+
+**Additional G1 work from ADR-018:** freeze source/evidence and sharing schemas, per-metric release/aggregation rules, purpose-specific consent/revocation, prospective-only enablement, and three-screen navigation. Sys/ML prepare reproducible run manifests and streaming parity/reset procedures. Lead/custodian approve the R1 projection and prior-enrolment authorisation workflow; no field transfer until the applicable readiness gates pass. Acceptance IDs EVID/REPRO/UI/SHARE live in [the new suite](../testing/EVIDENCE_SHARING_UI_TEST_PLAN.md).
 
 ### WS-F: Legal and ethics (Lead)
 
@@ -188,7 +193,7 @@ The author requests a research output in addition to the defence and competition
 | H5 | Independent R2 disclosure review, actual data-availability statement, thesis + submission-ready feasibility manuscript draft and contribution record | Apr–June 2027 |
 | H6 | Funded custodian and documented access after graduation; proposed R1/R0 expiry 30 June 2029 and final backup expiry 31 July, approved before consent; publication revisions or closure | Agree before field work; verify June handover |
 
-The four-teacher validation floor may be insufficient for anonymous result release. Analyse permitted strata privately, publish only safe results and narrow claims or seek a resourced/approved larger sample before collection; do not mix STEM and early grades to meet a disclosure threshold. The June build needs no research portal, recording path or new cloud service. The minimum transfer is a two-person checked numeric study form, not a report screenshot or database dump.
+The four-teacher validation floor may be insufficient for anonymous result release. Analyse permitted strata privately, publish only safe results and narrow claims or seek a resourced/approved larger sample before collection; do not mix STEM and early grades to meet a disclosure threshold. The June plan retains no recording path or public research portal. ADR-018 adds a narrow protected in-country electronic study intake for automatic approved projections; two-person checked numeric forms remain a disclosed fallback. This addition needs a fresh implementation/security estimate and ready infrastructure; neither screenshots nor whole-report/database copies are allowed.
 
 ---
 
@@ -204,7 +209,7 @@ The four-teacher validation floor may be insufficient for anonymous result relea
 | **D-6** (new) | Competition cloud tier vs data sovereignty | Two deployments from one codebase: `infra/huawei-cloud` (demo, synthetic data, AF-Johannesburg) and `infra/in-country` (conditional pilot, personal data, Ethiopia). There is no pilot-to-cloud path, including features, soft labels, weights, logs and backups. Public voices/mixtures need explicit approval; synthetic records are the demo default (ASSUMPTIONS A-C3). |
 | **D-7** (new) | Microphone | Decide from E1 in STEM, then recheck in early-grade rooms. Do not assume a lavalier helps child audibility: retain only a placement that improves the required adult/child measure without bias. |
 | D-8 / ADR-014 | First testing population | Undergraduate STEM first (user directed); isolate adult roles/data/results; later early-grade validation remains required. |
-| D-9 / ADR-017 | Author research access and publication | Named access to consented R1 within Ethiopia; R2 anonymous aggregates after independent review; institutional access/retention agreement before collection. No personal-data export or automatic report sharing. |
+| D-9 / ADR-017 | Author research access and publication | Named access to consented R1 within Ethiopia; R2 anonymous aggregates after independent review; institutional access/retention agreement before collection. No overseas personal-data export or whole-report sharing. ADR-018 permits automatic minimal study projections after authorisation. |
 
 ---
 
@@ -225,7 +230,7 @@ The exact Preliminary deadline within Nov–Dec 2026 is not yet known. The plan 
 | W27–32 | Apr 16 – May | Held-out analysis, negative results, thesis writing, usability findings and limits | Global if eligible, date to confirm |
 | Defence | June 2027 | Defence preparation/revisions; post-defence handover or approved data/service closure | No new feature promises |
 
-**Capacity assumption:** 3 students ×10 h/week ×30 productive weeks ≈900 person-hours. Envelopes: capture/privacy 170; core/report/localisation 100; ML/export 150; ethics/co-design/field 120; optional sync 50; synthetic cloud/reproduction 60; thesis/pitch 140; contingency 110. Within existing envelopes, reserve 30 ethics/field hours for stakeholder/data-access administration and 30 writing hours for curation, disclosure and manuscript packaging; no extra 60 hours or new service is assumed. Confirm availability, including observer and review time. Cut sync, LID experiments then I-5 when hours/gates slip, never privacy or evidence standards. A 50-hour sync stop limit is not a proven secure-service estimate. All real-data operations need a named post-defence operator or planned closure.
+**Capacity assumption:** 3 students ×10 h/week ×30 productive weeks ≈900 person-hours. Historical envelopes: capture/privacy 170; core/report/localisation 100; ML/export 150; ethics/co-design/field 120; optional sync 50; synthetic cloud/reproduction 60; thesis/pitch 140; contingency 110. That allocation reserved 30 ethics/field hours for stakeholder/data-access administration and 30 writing hours for curation, disclosure and manuscript packaging within the existing totals. It predates ADR-018's automatic research intake and two-purpose controls; their combined estimate is pending. Confirm availability, including observer and review time. The historical 50-hour sync stop limit is not a proven secure-service estimate and does not cover both sharing paths. Re-estimate before G1 implementation scheduling; reduce deferred experiments/I-5 or explicitly revise delivery resources/scope if the requested sharing cannot fit. Do not silently drop a sharing path or claim automatic sharing while delivering only manual forms. Preserve privacy and evidence standards. All real-data operations need a named post-defence operator or planned closure.
 
 ---
 

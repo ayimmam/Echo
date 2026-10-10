@@ -1,5 +1,7 @@
 # Codebase structure — Dimts
 
+> **2026-10-09 implementation note:** the Android demo now has Today / Reflection / Settings, independent persisted sharing preferences, a v4 provenance envelope and fail-closed per-metric release checks. The Python reference has matching evidence decisions and the synthetic dashboard rejects non-synthetic or incompatible records. No model metric is released, and there is still no capture, authorisation, upload, selected backend or live deployment. The dated October 2 tree below is historical.
+
 Updated 2026-10-02. [ADR-015](../adr/015-capability-gated-hosting.md) adopts the structure and security contracts below. Runtime, database and deployment remain conditional on Zergaw's confirmed capabilities. The user authorised scaffolding only, with no product features. Research infrastructure is not yet available; Research Mode is subsequently **removed** by draft [ADR-016](../adr/016-defence-scope-and-no-recording.md); retained directories do not authorise a recording service.
 
 ## Current layout and status
@@ -53,7 +55,17 @@ One modular Python application handles the API and rendered pages. HTTP and CLI 
 
 Prefer PostgreSQL. Managed ASGI permits FastAPI/PostgreSQL; WSGI-only hosting permits Django with PostgreSQL or a supported MySQL/MariaDB version. Select and pin one path after provider evidence and tests. Do not build two backends or maintain cross-engine migrations. Scheduled CLI jobs must survive bounded runtimes and retries; no resident worker, Redis, Docker or root access is required for the shared profile. VPS is the fallback if required capabilities or isolation fail. openEuler is optional there; openGauss is not the baseline.
 
-The later feature review adds readiness/pause/discard/context and teacher-selected cards to the Android plan, makes sync optional, reduces the model to a coarse candidate and defers production LID. Kotlin/Compose/encrypted storage and all enabled-sync safety contracts remain. No module/build changes accompany this docs review.
+The later feature review adds readiness/pause/discard/context and teacher-selected cards to the Android plan, makes sync optional in the October 3 baseline (the October 6 preference is automatic after authorisation), reduces the model to a coarse candidate and defers production LID. Kotlin/Compose/encrypted storage and all enabled-sync safety contracts remain. No module/build changes accompany this docs review.
+
+## Remaining implementation layout
+
+The 2026-10-09 pass added `indicators-core/python/dimts_indicators/evidence.py`, matching Android `domain/MetricEvidence.kt`, independent weekly I-1/I-5 eligibility, and record envelope v4 with provenance version 1. The synthetic dashboard now accepts only provenance-checked synthetic records and suppresses incompatible evidence paths. Android has Today / Reflection / Settings navigation, local lesson history, independent sharing preferences and no-transfer status. The release registry is empty; these pieces do not make the demo a field product.
+
+Remaining work stays in the existing packages and build modules. Add shared conformance fixtures for Python/Android policy, then load a signed release registry only after G0/G1/G5 evidence. Add purpose-scoped authorization, grants/revocations, durable outboxes and server admission only when the approved destinations and institutional workflows exist. Do not send from the demo.
+
+Use existing `ml/configs`, `ml/export`, `ml/eval` and `edge/android/benchmark` for experiment/model/evaluation manifests and run reports. Define their schemas in [measurement contracts](../contracts/MEASUREMENT_EVIDENCE.md); no new tracking service is required. Pin actual resolved environments separately for training, reference tests and the selected backend.
+
+Plan two purpose-scoped outboxes in Android sync and corresponding admission use cases under `server/domain/`; adapters remain under `server/api/`. Private summary sync targets the selected in-country app. A narrow study intake uses the same selected Python stack on the approved separate research environment, with independent credentials and an R1 allowlist. [Sharing/UI contract](../contracts/SHARING_AND_UI.md) owns defaults, permissions and withdrawal. No second framework, public research portal or whole-report export is added. Add future evidence, sharing and UI conformance tests to existing test areas.
 
 ## Data boundaries
 
@@ -65,7 +77,7 @@ The later feature review adds readiness/pause/discard/context and teacher-select
 
 Research is a separate environment, not another folder in the shared account. All pilot/research personal data, logs, replicas and backups stay in-country under the existing project boundary. The synthetic cloud demo should use the same selected app/engine when available. Neither the undergraduate trial nor a complete capability checklist approves early-grade release.
 
-Draft [ADR-017](../adr/017-research-data-access-and-publication.md) adds the [stakeholder map](STAKEHOLDER_MAP.md) and [research data/access plan](RESEARCH_DATA_MANAGEMENT_PLAN.md). Actual consent/linkage (R0), coded study tables/analysis (R1) and approved anonymous publication files (R2) live in the approved research environment, **not new folders in this repository**. Anteneh's named access and post-graduation continuity are readiness requirements; a checked numeric-form workflow avoids a new research portal/service. No modules are scaffolded by this planning change.
+Draft [ADR-017](../adr/017-research-data-access-and-publication.md) adds the [stakeholder map](STAKEHOLDER_MAP.md) and [research data/access plan](RESEARCH_DATA_MANAGEMENT_PLAN.md). Actual consent/linkage (R0), coded study tables/analysis (R1) and approved anonymous publication files (R2) live in the approved research environment, **not new folders in this repository**. Anteneh's named access and post-graduation continuity are readiness requirements; a checked numeric-form workflow remains a disclosed fallback; ADR-018 now plans a protected electronic study intake for automatic contributions, with no new public portal. No modules are scaffolded by this planning change.
 
 ## Verification
 

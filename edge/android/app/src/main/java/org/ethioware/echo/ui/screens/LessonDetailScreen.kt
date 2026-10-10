@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.ethioware.echo.EchoViewModel
 import org.ethioware.echo.data.Measure
+import org.ethioware.echo.domain.MetricEvidencePolicy
 import org.ethioware.echo.domain.formatClock
 import org.ethioware.echo.domain.percent
 import org.ethioware.echo.ui.components.CardTone
@@ -76,7 +77,7 @@ fun LessonDetailScreen(vm: EchoViewModel, id: String) {
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 EchoCard(tone = CardTone.Calm) {
-                    StatusChip(if (id in vm.queuedIds) t(S.DETAIL_QUEUED) else t(S.DETAIL_SAVED_LOCAL))
+                    StatusChip(t(S.DETAIL_SAVED_LOCAL))
                     Text("${t.date(lesson.startedOn)} · ${lesson.startTime}", style = MaterialTheme.typography.titleSmall)
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                         StatBlock(t(S.LESSON_ELAPSED), formatClock(lesson.durationS), Modifier.weight(1f))
@@ -87,9 +88,9 @@ fun LessonDetailScreen(vm: EchoViewModel, id: String) {
                 }
                 if (excluded) StatusChip(t(S.DETAIL_EXCLUDED), warn = true)
                 EchoCard {
-                    MeasureBlock(t(S.M_I1), t(S.M_I1_HELP), lesson.i1) { "${percent(it)}%" }
+                    MeasureBlock(t(S.M_I1), t(S.M_I1_HELP), lesson.i1.forDisplay(lesson, "I1")) { "${percent(it)}%" }
                     Divider()
-                    MeasureBlock(t(S.M_I5), t(S.M_I5_HELP), lesson.i5) { "%.1f".format(t.javaLocale, it) }
+                    MeasureBlock(t(S.M_I5), t(S.M_I5_HELP), lesson.i5.forDisplay(lesson, "I5")) { "%.1f".format(t.javaLocale, it) }
                     Muted(t(S.ILLUSTRATIVE))
                 }
                 EchoCard {
@@ -105,6 +106,11 @@ fun LessonDetailScreen(vm: EchoViewModel, id: String) {
             }
         }
     }
+}
+
+private fun Measure.forDisplay(lesson: org.ethioware.echo.data.LessonRecord, metricId: String): Measure {
+    val decision = MetricEvidencePolicy.decide(lesson, metricId, this, allowSyntheticPreview = true)
+    return if (decision.available) this else Measure.unavailable(decision.reason ?: "unavailable")
 }
 
 /** A measure is shown with its value, or with the plain reason it is not shown. Never a zero. */

@@ -12,6 +12,7 @@ import org.ethioware.echo.data.LocalState
 import org.ethioware.echo.data.Measure
 import org.ethioware.echo.data.Mic
 import org.ethioware.echo.domain.IneligibleReason
+import org.ethioware.echo.domain.MetricEvidencePolicy
 import org.ethioware.echo.domain.answerFollowUp
 import org.ethioware.echo.domain.chooseCard
 import org.ethioware.echo.domain.lessonIneligibleReason
@@ -76,6 +77,7 @@ class RulesTest {
         val b = TestSupport.bundle()
         fun week(d: String) = summariseWeek(
             LocalDate.parse(d), b.lessons, b.localState.excludedIds, b.profile.grade, b.profile.subject, 3,
+            allowSyntheticPreview = true,
         )
         val w43 = week("2026-10-19")
         val w44 = week("2026-10-26")
@@ -85,6 +87,19 @@ class RulesTest {
         assertTrue(w45.observationsReady); assertEquals(3, w45.eligible.size); assertEquals(4, w45.lessons.size)
         assertNotNull(w45.i1Mean)
         assertEquals(w45.eligible.mapNotNull { it.i1.value }.average(), w45.i1Mean!!, 1e-12)
+    }
+
+    @Test
+    fun `synthetic metrics need an explicit preview and matching record provenance`() {
+        val lesson = TestSupport.bundle().lessons.first { it.i1.available }
+        assertTrue(MetricEvidencePolicy.decide(lesson, "I1", lesson.i1, allowSyntheticPreview = true).available)
+        assertFalse(MetricEvidencePolicy.decide(lesson, "I1", lesson.i1, allowSyntheticPreview = false).available)
+
+        val relabelledAsModel = lesson.i1.copy(origin = org.ethioware.echo.data.MeasurementOrigin.MODEL)
+        assertEquals(
+            "synthetic_preview_only",
+            MetricEvidencePolicy.decide(lesson, "I1", relabelledAsModel, allowSyntheticPreview = true).reason,
+        )
     }
 
     @Test

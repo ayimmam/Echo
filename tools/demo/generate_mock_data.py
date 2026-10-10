@@ -26,7 +26,7 @@ from dimts_indicators.timeline import parse_timeline  # noqa: E402
 from synth_timeline import generate_timeline  # noqa: E402
 
 OUT = ROOT / "tools" / "demo" / "mock-data"
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 SPEC_VERSION = 3
 LABEL_SCHEMA = "coarse-v0-draft"
 REFERENCE_DATE = "2026-11-06"  # Friday: the fixed "today" of the demo
@@ -61,15 +61,22 @@ def make_record(rng, *, teacher, school, started, duration_s, adult_share, mic="
 
     confirmed = adult_conditions == CONFIRMED_ADULT_CONTEXT
     def indicator(key, value, digits):
+        provenance = {
+            "origin": "synthetic",
+            "method_version": SPEC_VERSION,
+            "label_schema_version": LABEL_SCHEMA,
+            "source_manifest": "tools/demo/mock-data/meta.json",
+        }
         if not confirmed:
-            return {"available": False, "reason": "adult_context_not_confirmed"}
+            return {"available": False, "reason": "adult_context_not_confirmed", **provenance}
         if value is None:
-            return {"available": False, "reason": "insufficient_speech"}
-        return {"available": True, "value": round(value, digits)}
+            return {"available": False, "reason": "insufficient_speech", **provenance}
+        return {"available": True, "value": round(value, digits), **provenance}
 
     return {
         "record_id": uuid7(rng, started),
         "schema_version": SCHEMA_VERSION,
+        "measurement_provenance_version": 1,
         "indicator_spec_version": SPEC_VERSION,
         "label_schema_version": LABEL_SCHEMA,
         "cohort": "early_grade",

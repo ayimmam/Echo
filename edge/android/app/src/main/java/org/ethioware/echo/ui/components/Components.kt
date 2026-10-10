@@ -54,8 +54,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import kotlin.math.abs
-import kotlin.math.sin
 import kotlinx.coroutines.delay
 import org.ethioware.echo.ui.i18n.LocalT
 import org.ethioware.echo.ui.i18n.S
@@ -277,11 +275,11 @@ fun StatusChip(text: String, modifier: Modifier = Modifier, warn: Boolean = fals
 fun Divider() = HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
 /**
- * Simulated input-level bars. Purely decorative in the demo build: no microphone is opened, so the
- * bars are a function of time. When [active] is false they sit flat.
+ * Static demo bars. No microphone is open, so a moving level meter would imply evidence the app does
+ * not have. The surrounding label explains that this is only a preview.
  */
 @Composable
-fun LevelMeter(nowMs: Long, active: Boolean, modifier: Modifier = Modifier, description: String) {
+fun LevelMeter(active: Boolean, modifier: Modifier = Modifier, description: String) {
     val barColor = MaterialTheme.colorScheme.primary
     val idle = MaterialTheme.colorScheme.outlineVariant
     Canvas(
@@ -290,10 +288,10 @@ fun LevelMeter(nowMs: Long, active: Boolean, modifier: Modifier = Modifier, desc
         val bars = 28
         val gap = 6.dp.toPx()
         val w = (size.width - gap * (bars - 1)) / bars
-        val t = nowMs / 1000.0
+        val heights = floatArrayOf(.18f, .24f, .36f, .52f, .66f, .42f, .28f, .5f, .7f, .46f, .3f, .55f, .72f, .4f)
         for (i in 0 until bars) {
-            val wave = if (active) 0.25 + 0.55 * abs(sin(t * 2.3 + i * 0.55) * sin(t * 0.9 + i * 0.21)) else 0.08
-            val h = (size.height * wave).toFloat().coerceAtLeast(4.dp.toPx())
+            val wave = if (active) heights[i % heights.size] else 0.08f
+            val h = (size.height * wave).coerceAtLeast(4.dp.toPx())
             drawRoundRect(
                 color = if (active) barColor else idle,
                 topLeft = Offset(i * (w + gap), (size.height - h) / 2),

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -20,9 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.ethioware.echo.EchoViewModel
@@ -30,6 +33,7 @@ import org.ethioware.echo.Screen
 import org.ethioware.echo.data.FollowUpAnswer
 import org.ethioware.echo.data.PracticeCard
 import org.ethioware.echo.domain.percent
+import org.ethioware.echo.domain.formatClock
 import org.ethioware.echo.ui.components.CardTone
 import org.ethioware.echo.ui.components.Divider
 import org.ethioware.echo.ui.components.EchoCard
@@ -55,6 +59,7 @@ fun ReportScreen(vm: EchoViewModel) {
     val isCurrent = vm.reportWeek == vm.currentWeek
     var lastAnswer by remember { mutableStateOf<FollowUpAnswer?>(null) }
     var choosing by remember { mutableStateOf(false) }
+    var showHistory by rememberSaveable { mutableStateOf(false) }
 
     Column(Modifier.verticalScroll(rememberScrollState())) {
         ScreenHeader(t(S.REPORT_TITLE))
@@ -85,21 +90,29 @@ fun ReportScreen(vm: EchoViewModel) {
             EchoCard {
                 if (week.lessons.isEmpty()) {
                     Muted(t(S.REPORT_NO_LESSONS))
-                } else if (week.observationsReady) {
+                } else {
                     Text(t(S.REPORT_OBS_TITLE), style = MaterialTheme.typography.titleMedium)
-                    MeasureBlock(t(S.M_I1), t(S.M_I1_HELP), org.ethioware.echo.data.Measure.of(week.i1Mean ?: 0.0)) { "${percent(it)}%" }
-                    Divider()
-                    MeasureBlock(t(S.M_I5), t(S.M_I5_HELP), org.ethioware.echo.data.Measure.of(week.i5Mean ?: 0.0)) {
-                        "%.1f".format(t.javaLocale, it)
+                    if (week.i1Ready && week.i1Mean != null) {
+                        MeasureBlock(t(S.M_I1), t(S.M_I1_HELP), org.ethioware.echo.data.Measure.of(week.i1Mean)) { "${percent(it)}%" }
+                        Muted(t(S.REPORT_METRIC_N, week.i1Eligible.size, week.i1Eligible.map { it.startedOn }.toSet().size, percent(week.i1Coverage ?: 0.0)))
+                    } else {
+                        Text(t(S.M_I1), style = MaterialTheme.typography.titleSmall)
+                        Muted(metricUnavailableText(t(S.REPORT_METRIC_NOT_READY, week.i1Eligible.size, week.i1Eligible.map { it.startedOn }.toSet().size), t(S.REPORT_UNRELEASED), week.i1Reason))
                     }
                     Divider()
-                    Muted(t(S.REPORT_OBS_N, week.eligible.size, week.eligibleDays, percent(week.meanCoverage ?: 0.0)))
+                    if (week.i5Ready && week.i5Mean != null) {
+                        MeasureBlock(t(S.M_I5), t(S.M_I5_HELP), org.ethioware.echo.data.Measure.of(week.i5Mean)) {
+                            "%.1f".format(t.javaLocale, it)
+                        }
+                        Muted(t(S.REPORT_METRIC_N, week.i5Eligible.size, week.i5Eligible.map { it.startedOn }.toSet().size, percent(week.i5Coverage ?: 0.0)))
+                    } else {
+                        Text(t(S.M_I5), style = MaterialTheme.typography.titleSmall)
+                        Muted(metricUnavailableText(t(S.REPORT_METRIC_NOT_READY, week.i5Eligible.size, week.i5Eligible.map { it.startedOn }.toSet().size), t(S.REPORT_UNRELEASED), week.i5Reason))
+                    }
+                    Divider()
                     Muted(t(S.REPORT_NO_BAND))
                     Muted(t(S.REPORT_OBS_SCOPE))
-                    Muted(t(S.ILLUSTRATIVE))
-                } else {
-                    Text(t(S.REPORT_NOT_ENOUGH_TITLE), style = MaterialTheme.typography.titleMedium)
-                    Muted(t(S.REPORT_NOT_ENOUGH_BODY, week.eligible.size))
+                    if (week.i1Ready || week.i5Ready) Muted(t(S.ILLUSTRATIVE))
                 }
             }
             EchoCard {
@@ -125,10 +138,35 @@ fun ReportScreen(vm: EchoViewModel) {
                     }
                 }
             }
+
+            SectionTitle(t(S.REPORT_HISTORY))
+            SecondaryButton(
+                if (showHistory) t(S.REPORT_HISTORY_HIDE) else t(S.REPORT_HISTORY_SHOW, week.lessons.size),
+                onClick = { showHistory = !showHistory },
+            )
+            if (showHistory) {
+                if (week.lessons.isEmpty()) Muted(t(S.LESSONS_EMPTY))
+                week.lessons.forEach { lesson ->
+                    val excluded = lesson.id in vm.localState.excludedIds
+                    EchoCard(
+                        modifier = Modifier.clickable(role = Role.Button) { vm.push(Screen.LessonDetail(lesson.id)) },
+                    ) {
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                            Text(t.date(lesson.startedOn), style = MaterialTheme.typography.titleSmall)
+                            Text(lesson.startTime.toString(), style = MaterialTheme.typography.titleSmall)
+                        }
+                        Muted(t(S.LESSONS_ROW_META, formatClock(lesson.capture.observedS.toInt()), formatClock(lesson.durationS)))
+                        if (excluded) StatusChip(t(S.TAG_EXCLUDED), warn = true)
+                    }
+                }
+            }
             Spacer(Modifier.height(8.dp))
         }
     }
 }
+
+private fun metricUnavailableText(notReady: String, unreleased: String, reason: String?): String =
+    if (reason == "insufficient_observation" || reason == "insufficient_speech") notReady else unreleased
 
 @Composable
 private fun FollowUpCard(vm: EchoViewModel, card: PracticeCard, onAnswered: (FollowUpAnswer) -> Unit) {

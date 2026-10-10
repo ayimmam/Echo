@@ -4,7 +4,8 @@
   "records": [
     {
       "record_id": "01a152cc-8ea0-7673-833c-2970e7bae92c",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -29,11 +30,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.746
+          "value": 0.746,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -48,7 +57,8 @@
     },
     {
       "record_id": "01a152cc-8ea0-7673-8430-484ba6ba676b",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -73,11 +83,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.767
+          "value": 0.767,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.02
+          "value": 2.02,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -92,7 +110,8 @@
     },
     {
       "record_id": "01a152d1-2280-7e35-8b4d-5d820f2f5a6f",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -117,11 +136,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.468
+          "value": 0.468,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.83
+          "value": 1.83,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -136,7 +163,8 @@
     },
     {
       "record_id": "01a152fa-5560-7b97-bf00-0032ce1a508a",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -161,11 +189,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -180,7 +216,8 @@
     },
     {
       "record_id": "01a152fa-5560-7e04-bf2a-7b0c88c2ef2d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -205,11 +242,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.632
+          "value": 0.632,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.95
+          "value": 1.95,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -224,7 +269,8 @@
     },
     {
       "record_id": "01a15303-7d20-7b1a-a089-a28ca2ae2fd0",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -249,11 +295,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -268,7 +322,8 @@
     },
     {
       "record_id": "01a15308-1100-7412-be22-0312ce3eea91",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -293,11 +348,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.45
+          "value": 0.45,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -312,7 +375,8 @@
     },
     {
       "record_id": "01a157bb-fc20-7b15-bfea-a597de90cc2a",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -337,11 +401,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.487
+          "value": 0.487,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -356,7 +428,8 @@
     },
     {
       "record_id": "01a157c0-9000-74a5-b210-2bd2bdf60496",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -381,11 +454,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -400,7 +481,8 @@
     },
     {
       "record_id": "01a157c0-9000-7e7a-b39d-ba7d77216e9e",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -425,11 +507,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.659
+          "value": 0.659,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.09
+          "value": 2.09,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -444,7 +534,8 @@
     },
     {
       "record_id": "01a157c0-9000-7e85-b515-d944e498c3e1",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -469,11 +560,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.657
+          "value": 0.657,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.86
+          "value": 1.86,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -488,7 +587,8 @@
     },
     {
       "record_id": "01a157e9-c2e0-7447-b894-1d0198f8dd7e",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -513,11 +613,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.582
+          "value": 0.582,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.89
+          "value": 1.89,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -532,7 +640,8 @@
     },
     {
       "record_id": "01a157e9-c2e0-79a3-923f-ed2e18f120e7",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -557,11 +666,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -576,7 +693,8 @@
     },
     {
       "record_id": "01a157f2-eaa0-7c36-af54-7e77576c90f9",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -601,11 +719,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.775
+          "value": 0.775,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -620,7 +746,8 @@
     },
     {
       "record_id": "01a157f7-7e80-7c4f-8857-d5c3c18ce49d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -645,11 +772,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.468
+          "value": 0.468,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.06
+          "value": 2.06,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -664,7 +799,8 @@
     },
     {
       "record_id": "01a15829-d920-7133-91e7-bf9b7510f8d7",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -689,11 +825,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.685
+          "value": 0.685,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.89
+          "value": 1.89,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -708,7 +852,8 @@
     },
     {
       "record_id": "01a15829-d920-75ef-9f41-d6bb9ab3b780",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -733,11 +878,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.55
+          "value": 0.55,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.21
+          "value": 2.21,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -752,7 +905,8 @@
     },
     {
       "record_id": "01a15829-d920-7904-a561-498e79a61f13",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -777,11 +931,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.7
+          "value": 0.7,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.91
+          "value": 1.91,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -796,7 +958,8 @@
     },
     {
       "record_id": "01a15829-d920-7c4a-84d5-bbe91afa6f26",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -821,11 +984,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.653
+          "value": 0.653,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.98
+          "value": 1.98,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -840,7 +1011,8 @@
     },
     {
       "record_id": "01a15829-d920-7fc7-a039-e216e4bdad9b",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -865,11 +1037,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.771
+          "value": 0.771,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.06
+          "value": 2.06,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -884,7 +1064,8 @@
     },
     {
       "record_id": "01a1582e-6d00-7861-a047-9d85c0bbe6ed",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -909,11 +1090,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.588
+          "value": 0.588,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.1
+          "value": 2.1,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -928,7 +1117,8 @@
     },
     {
       "record_id": "01a15cd9-3060-7633-b919-100adf70ea34",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -953,11 +1143,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.746
+          "value": 0.746,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.85
+          "value": 1.85,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -972,7 +1170,8 @@
     },
     {
       "record_id": "01a15cd9-3060-7cc7-b230-5d666e73e1fb",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -997,11 +1196,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1016,7 +1223,8 @@
     },
     {
       "record_id": "01a15cd9-3060-7ccb-94e9-d983e99aac9b",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1041,11 +1249,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.561
+          "value": 0.561,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.13
+          "value": 2.13,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1060,7 +1276,8 @@
     },
     {
       "record_id": "01a15ce2-5820-7186-aadb-78734af0ae3d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1085,11 +1302,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.66
+          "value": 0.66,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.97
+          "value": 1.97,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1104,7 +1329,8 @@
     },
     {
       "record_id": "01a15d10-1ee0-71a2-ba9c-aa9c52bcf549",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1129,11 +1355,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1148,7 +1382,8 @@
     },
     {
       "record_id": "01a15d19-46a0-7845-beef-e99eff5420f3",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1173,11 +1408,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.44
+          "value": 0.44,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.94
+          "value": 1.94,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1192,7 +1435,8 @@
     },
     {
       "record_id": "01a15d19-46a0-7e87-9ff2-bfc40c42af6f",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1217,11 +1461,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.642
+          "value": 0.642,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.98
+          "value": 1.98,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1236,7 +1488,8 @@
     },
     {
       "record_id": "01a15d1d-da80-7a5c-8b89-28bae3c78458",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1261,11 +1514,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.796
+          "value": 0.796,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.79
+          "value": 1.79,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1280,7 +1541,8 @@
     },
     {
       "record_id": "01a15d47-0d60-77ff-b0f0-88e1a0c523e7",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1305,11 +1567,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.655
+          "value": 0.655,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.88
+          "value": 1.88,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1324,7 +1594,8 @@
     },
     {
       "record_id": "01a15d50-3520-7fb2-810d-56ed7c15c752",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1349,11 +1620,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.483
+          "value": 0.483,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.83
+          "value": 1.83,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1368,7 +1647,8 @@
     },
     {
       "record_id": "01a15d54-c900-79cd-9ceb-5de840e0a6ed",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1393,11 +1673,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.636
+          "value": 0.636,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.15
+          "value": 2.15,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1412,7 +1700,8 @@
     },
     {
       "record_id": "01a161ff-8c60-7864-892f-76e5279f8ef4",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1437,11 +1726,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.546
+          "value": 0.546,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.92
+          "value": 1.92,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1456,7 +1753,8 @@
     },
     {
       "record_id": "01a16208-b420-75e6-9581-128ca0ad8fc6",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1481,11 +1779,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.789
+          "value": 0.789,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1500,7 +1806,8 @@
     },
     {
       "record_id": "01a16208-b420-7f7a-8212-9e3244a2a1e5",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1525,11 +1832,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1544,7 +1859,8 @@
     },
     {
       "record_id": "01a1620d-4800-746e-b65f-04cdb247987e",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1569,11 +1885,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1588,7 +1912,8 @@
     },
     {
       "record_id": "01a1620d-4800-76db-92a4-159d1f222b81",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1613,11 +1938,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.489
+          "value": 0.489,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.84
+          "value": 1.84,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1632,7 +1965,8 @@
     },
     {
       "record_id": "01a16236-7ae0-7dbe-9a1d-ed5c302ac24f",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1657,11 +1991,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.644
+          "value": 0.644,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.1
+          "value": 2.1,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1676,7 +2018,8 @@
     },
     {
       "record_id": "01a16236-7ae0-7f31-934c-e5925da7999d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1701,11 +2044,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.675
+          "value": 0.675,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.15
+          "value": 2.15,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1720,7 +2071,8 @@
     },
     {
       "record_id": "01a1623f-a2a0-78ff-a2b4-9fc7b1694f06",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1745,11 +2097,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.628
+          "value": 0.628,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.95
+          "value": 1.95,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1764,7 +2124,8 @@
     },
     {
       "record_id": "01a16244-3680-7ec6-8ce2-dd52c98eed29",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1789,11 +2150,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.557
+          "value": 0.557,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.85
+          "value": 1.85,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1808,7 +2177,8 @@
     },
     {
       "record_id": "01a16276-9120-7062-b58d-c0fa5916b101",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1833,11 +2203,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.607
+          "value": 0.607,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.15
+          "value": 2.15,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1852,7 +2230,8 @@
     },
     {
       "record_id": "01a1627b-2500-7214-bda3-135defa13ed8",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1877,11 +2256,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.83
+          "value": 0.83,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1896,7 +2283,8 @@
     },
     {
       "record_id": "01a1627b-2500-77b3-a4ed-4ccc99f54930",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1921,11 +2309,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.687
+          "value": 0.687,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.12
+          "value": 2.12,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1940,7 +2336,8 @@
     },
     {
       "record_id": "01a16725-e860-757a-9681-2e3c036a726b",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -1965,11 +2362,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.55
+          "value": 0.55,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -1984,7 +2389,8 @@
     },
     {
       "record_id": "01a16725-e860-7cef-9c10-f8c372af6e31",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2009,11 +2415,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.746
+          "value": 0.746,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.06
+          "value": 2.06,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2028,7 +2442,8 @@
     },
     {
       "record_id": "01a1672f-1020-7b44-931d-2bf4386dd49e",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2053,11 +2468,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.537
+          "value": 0.537,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.08
+          "value": 2.08,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2072,7 +2495,8 @@
     },
     {
       "record_id": "01a1672f-1020-7c7e-9508-d033051a79b0",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2097,11 +2521,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.673
+          "value": 0.673,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.03
+          "value": 2.03,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2116,7 +2548,8 @@
     },
     {
       "record_id": "01a1672f-1020-7da6-9d69-6ceacd2dac9e",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2141,11 +2574,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.481
+          "value": 0.481,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.03
+          "value": 2.03,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2160,7 +2601,8 @@
     },
     {
       "record_id": "01a1675c-d6e0-70d6-ae00-89a52d58c15d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2185,11 +2627,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.541
+          "value": 0.541,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.89
+          "value": 1.89,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2204,7 +2654,8 @@
     },
     {
       "record_id": "01a1675c-d6e0-73a1-a621-79fbc4dfacdb",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2229,11 +2680,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.482
+          "value": 0.482,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.03
+          "value": 2.03,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2248,7 +2707,8 @@
     },
     {
       "record_id": "01a1675c-d6e0-770a-a94b-dc80517b0d26",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2273,11 +2733,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.578
+          "value": 0.578,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.11
+          "value": 2.11,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2292,7 +2760,8 @@
     },
     {
       "record_id": "01a16765-fea0-7277-9068-7a879c96587b",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2317,11 +2786,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.603
+          "value": 0.603,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.08
+          "value": 2.08,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2336,7 +2813,8 @@
     },
     {
       "record_id": "01a16765-fea0-75e6-b957-6b58d511cce6",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2361,11 +2839,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.502
+          "value": 0.502,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.95
+          "value": 1.95,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2380,7 +2866,8 @@
     },
     {
       "record_id": "01a16793-c560-73e9-9035-8435b9a53a90",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2405,11 +2892,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.522
+          "value": 0.522,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.91
+          "value": 1.91,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2424,7 +2919,8 @@
     },
     {
       "record_id": "01a1679c-ed20-7747-ae59-e0e5a5007ae1",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2449,11 +2945,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2468,7 +2972,8 @@
     },
     {
       "record_id": "01a1679c-ed20-7ac4-9c89-da9227e2d52d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2493,11 +2998,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.627
+          "value": 0.627,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.19
+          "value": 2.19,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2512,7 +3025,8 @@
     },
     {
       "record_id": "01a1679c-ed20-7aea-a504-d777bf083378",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2537,11 +3051,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.51
+          "value": 0.51,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.14
+          "value": 2.14,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2556,7 +3078,8 @@
     },
     {
       "record_id": "01a167a1-8100-7629-beb3-a997698d821c",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2581,11 +3104,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.653
+          "value": 0.653,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.9
+          "value": 1.9,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2600,7 +3131,8 @@
     },
     {
       "record_id": "01a17698-fc60-723e-bcf2-fdf6a351398b",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2625,11 +3157,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.539
+          "value": 0.539,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.85
+          "value": 1.85,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2644,7 +3184,8 @@
     },
     {
       "record_id": "01a176a6-b800-7aed-81b2-2bbc36ee1a00",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2669,11 +3210,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.739
+          "value": 0.739,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.83
+          "value": 1.83,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2688,7 +3237,8 @@
     },
     {
       "record_id": "01a176a6-b800-7e57-8159-d56fbe84164e",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2713,11 +3263,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.494
+          "value": 0.494,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.93
+          "value": 1.93,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2732,7 +3290,8 @@
     },
     {
       "record_id": "01a176cf-eae0-76eb-9dec-b53e573fc1dd",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2757,11 +3316,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.583
+          "value": 0.583,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.19
+          "value": 2.19,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2776,7 +3343,8 @@
     },
     {
       "record_id": "01a176cf-eae0-76f8-a0f9-aacd19b809ef",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2801,11 +3369,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.622
+          "value": 0.622,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.97
+          "value": 1.97,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2820,7 +3396,8 @@
     },
     {
       "record_id": "01a176d9-12a0-7754-a43b-6b638bbf17f4",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2845,11 +3422,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.606
+          "value": 0.606,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.85
+          "value": 1.85,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2864,7 +3449,8 @@
     },
     {
       "record_id": "01a176d9-12a0-7c8b-ad7d-95ae83505d57",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2889,11 +3475,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.717
+          "value": 0.717,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.62
+          "value": 1.62,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2908,7 +3502,8 @@
     },
     {
       "record_id": "01a176dd-a680-7292-b1e1-db9a664e2ab0",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2933,11 +3528,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.674
+          "value": 0.674,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2952,7 +3555,8 @@
     },
     {
       "record_id": "01a176dd-a680-7648-8575-e42055b45143",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -2977,11 +3581,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.52
+          "value": 0.52,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.15
+          "value": 2.15,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -2996,7 +3608,8 @@
     },
     {
       "record_id": "01a17706-d960-744a-94c7-d40f7fec1447",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3021,11 +3634,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.576
+          "value": 0.576,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.84
+          "value": 1.84,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3040,7 +3661,8 @@
     },
     {
       "record_id": "01a17706-d960-771d-843d-1764c6c166eb",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3065,11 +3687,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.667
+          "value": 0.667,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.02
+          "value": 2.02,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3084,7 +3714,8 @@
     },
     {
       "record_id": "01a17706-d960-7822-9185-6fa4f56d8c5c",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3109,11 +3740,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.593
+          "value": 0.593,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.15
+          "value": 2.15,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3128,7 +3767,8 @@
     },
     {
       "record_id": "01a17710-0120-7b1d-be07-8b4cf920fbf5",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3153,11 +3793,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.64
+          "value": 0.64,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.08
+          "value": 2.08,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3172,7 +3820,8 @@
     },
     {
       "record_id": "01a17714-9500-74b8-8490-5013a34b5512",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3197,11 +3846,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.492
+          "value": 0.492,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.78
+          "value": 1.78,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3216,7 +3873,8 @@
     },
     {
       "record_id": "01a17714-9500-7953-98d6-55af31135de9",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3241,11 +3899,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.636
+          "value": 0.636,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.95
+          "value": 1.95,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3260,7 +3926,8 @@
     },
     {
       "record_id": "01a17bbf-5860-7d75-8e52-d33184ebe762",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3285,11 +3952,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.6
+          "value": 0.6,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.9
+          "value": 1.9,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3304,7 +3979,8 @@
     },
     {
       "record_id": "01a17bcd-1400-712f-9acf-cbf6482ffe80",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3329,11 +4005,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.566
+          "value": 0.566,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.37
+          "value": 2.37,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3348,7 +4032,8 @@
     },
     {
       "record_id": "01a17bcd-1400-7b25-ba0b-b08e9a87034e",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3373,11 +4058,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.573
+          "value": 0.573,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.12
+          "value": 2.12,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3392,7 +4085,8 @@
     },
     {
       "record_id": "01a17bcd-1400-7f37-8fbb-779ec8955843",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3417,11 +4111,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.522
+          "value": 0.522,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.06
+          "value": 2.06,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3436,7 +4138,8 @@
     },
     {
       "record_id": "01a17c04-0280-773f-924e-f63c99a653cd",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3461,11 +4164,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.628
+          "value": 0.628,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3480,7 +4191,8 @@
     },
     {
       "record_id": "01a17c2d-3560-7478-8788-9ef8d7298590",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3505,11 +4217,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.617
+          "value": 0.617,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.09
+          "value": 2.09,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3524,7 +4244,8 @@
     },
     {
       "record_id": "01a17c2d-3560-7957-a70b-ce7fed9a99d0",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3549,11 +4270,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.552
+          "value": 0.552,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.92
+          "value": 1.92,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3568,7 +4297,8 @@
     },
     {
       "record_id": "01a17c36-5d20-772a-a689-74a6cc24edec",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3593,11 +4323,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.661
+          "value": 0.661,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.26
+          "value": 2.26,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3612,7 +4350,8 @@
     },
     {
       "record_id": "01a180e5-b460-7c40-b71e-302fbc4a1bac",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3637,11 +4376,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.682
+          "value": 0.682,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3656,7 +4403,8 @@
     },
     {
       "record_id": "01a180ee-dc20-7564-b283-b9155c84da08",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3681,11 +4429,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3700,7 +4456,8 @@
     },
     {
       "record_id": "01a180f3-7000-7479-81bc-e7295b55e5b7",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3725,11 +4482,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.467
+          "value": 0.467,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.09
+          "value": 2.09,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3744,7 +4509,8 @@
     },
     {
       "record_id": "01a180f3-7000-753c-ab69-973168b3e3aa",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3769,11 +4535,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3788,7 +4562,8 @@
     },
     {
       "record_id": "01a180f3-7000-796e-a408-c37aa0b99b45",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3813,11 +4588,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.5
+          "value": 0.5,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.97
+          "value": 1.97,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3832,7 +4615,8 @@
     },
     {
       "record_id": "01a180f3-7000-7fe7-ae5b-07dce3ac99b2",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3857,11 +4641,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.613
+          "value": 0.613,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.07
+          "value": 2.07,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3876,7 +4668,8 @@
     },
     {
       "record_id": "01a1811c-a2e0-7219-b111-55d138f6f19b",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3901,11 +4694,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.584
+          "value": 0.584,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.95
+          "value": 1.95,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3920,7 +4721,8 @@
     },
     {
       "record_id": "01a1811c-a2e0-786a-9fef-1472fdebb2ff",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3945,11 +4747,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.572
+          "value": 0.572,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -3964,7 +4774,8 @@
     },
     {
       "record_id": "01a18125-caa0-7ebc-9488-dbd73ab1ea90",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -3989,11 +4800,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.636
+          "value": 0.636,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4008,7 +4827,8 @@
     },
     {
       "record_id": "01a18153-9160-7309-9d03-13686d99c06d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4033,11 +4853,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.753
+          "value": 0.753,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.06
+          "value": 2.06,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4052,7 +4880,8 @@
     },
     {
       "record_id": "01a18153-9160-78db-ae87-0b45f36e4838",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4077,11 +4906,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.581
+          "value": 0.581,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4096,7 +4933,8 @@
     },
     {
       "record_id": "01a18153-9160-7977-80b9-240fb91c7b46",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4121,11 +4959,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.671
+          "value": 0.671,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.12
+          "value": 2.12,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4140,7 +4986,8 @@
     },
     {
       "record_id": "01a18153-9160-7cfd-a94c-3169ebb86f07",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4165,11 +5012,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.716
+          "value": 0.716,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.27
+          "value": 2.27,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4184,7 +5039,8 @@
     },
     {
       "record_id": "01a1815c-b920-775b-a970-522fed6b648d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4209,11 +5065,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.6
+          "value": 0.6,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.85
+          "value": 1.85,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4228,7 +5092,8 @@
     },
     {
       "record_id": "01a1815c-b920-7ea6-9a54-db6aec057b02",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4253,11 +5118,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.556
+          "value": 0.556,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4272,7 +5145,8 @@
     },
     {
       "record_id": "01a1815c-b920-7ee0-9a99-93d16ab5ba4c",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4297,11 +5171,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.46
+          "value": 0.46,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.24
+          "value": 2.24,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4316,7 +5198,8 @@
     },
     {
       "record_id": "01a18161-4d00-7fbb-99aa-57482433d472",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4341,11 +5224,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.606
+          "value": 0.606,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.92
+          "value": 1.92,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4360,7 +5251,8 @@
     },
     {
       "record_id": "01a1860c-1060-7fa6-9c07-36ff701266aa",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4385,11 +5277,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.763
+          "value": 0.763,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.95
+          "value": 1.95,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4404,7 +5304,8 @@
     },
     {
       "record_id": "01a18615-3820-79c3-a5d8-56fc58ae161a",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4429,11 +5330,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.794
+          "value": 0.794,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.02
+          "value": 2.02,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4448,7 +5357,8 @@
     },
     {
       "record_id": "01a18642-fee0-7a0b-be29-cab73a7ec771",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4473,11 +5383,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.725
+          "value": 0.725,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.88
+          "value": 1.88,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4492,7 +5410,8 @@
     },
     {
       "record_id": "01a18642-fee0-7ad4-b29d-2d4284468e44",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4517,11 +5436,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.673
+          "value": 0.673,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.21
+          "value": 2.21,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4536,7 +5463,8 @@
     },
     {
       "record_id": "01a1864c-26a0-72f3-9e12-e2c447c8317c",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4561,11 +5489,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.571
+          "value": 0.571,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4580,7 +5516,8 @@
     },
     {
       "record_id": "01a1864c-26a0-7d3c-b21a-d6782b185dfe",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4605,11 +5542,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.521
+          "value": 0.521,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.97
+          "value": 1.97,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4624,7 +5569,8 @@
     },
     {
       "record_id": "01a18679-ed60-7539-8a36-8b6f6f29bbf9",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4649,11 +5595,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.449
+          "value": 0.449,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4668,7 +5622,8 @@
     },
     {
       "record_id": "01a18687-a900-75f0-907b-9f4936dec772",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4693,11 +5648,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.64
+          "value": 0.64,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.95
+          "value": 1.95,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4712,7 +5675,8 @@
     },
     {
       "record_id": "01a18687-a900-7831-a8e9-a82a041f8d71",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4737,11 +5701,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4756,7 +5728,8 @@
     },
     {
       "record_id": "01a18b3b-9420-71ea-945e-50b08dda8775",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4781,11 +5754,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.83
+          "value": 0.83,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4800,7 +5781,8 @@
     },
     {
       "record_id": "01a18b40-2800-7465-90ca-3b13851f6c65",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4825,11 +5807,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.674
+          "value": 0.674,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.07
+          "value": 2.07,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4844,7 +5834,8 @@
     },
     {
       "record_id": "01a18b69-5ae0-7791-aba0-c7df907a0432",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4869,11 +5860,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.575
+          "value": 0.575,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.93
+          "value": 1.93,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4888,7 +5887,8 @@
     },
     {
       "record_id": "01a18b72-82a0-757e-bf9c-7fc79d28f527",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4913,11 +5913,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.62
+          "value": 0.62,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.14
+          "value": 2.14,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4932,7 +5940,8 @@
     },
     {
       "record_id": "01a18b72-82a0-77ee-9742-b8b746516bca",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -4957,11 +5966,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.753
+          "value": 0.753,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.01
+          "value": 2.01,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -4976,7 +5993,8 @@
     },
     {
       "record_id": "01a18b72-82a0-7ef9-8707-b610b605366c",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5001,11 +6019,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.475
+          "value": 0.475,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.86
+          "value": 1.86,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5020,7 +6046,8 @@
     },
     {
       "record_id": "01a18ba0-4960-709b-a04e-54fa22845588",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5045,11 +6072,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.763
+          "value": 0.763,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.93
+          "value": 1.93,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5064,7 +6099,8 @@
     },
     {
       "record_id": "01a18ba9-7120-708a-918f-3a7ab7e94763",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5089,11 +6125,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.467
+          "value": 0.467,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.09
+          "value": 2.09,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5108,7 +6152,8 @@
     },
     {
       "record_id": "01a18ba9-7120-7be8-acfb-df6c7b14dd58",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5133,11 +6178,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.544
+          "value": 0.544,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5152,7 +6205,8 @@
     },
     {
       "record_id": "01a18bae-0500-7be6-83db-1d0da8b83b1b",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5177,11 +6231,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.545
+          "value": 0.545,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.97
+          "value": 1.97,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5196,7 +6258,8 @@
     },
     {
       "record_id": "01a19aa5-8060-7422-8b07-1b6a3b93920d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5221,11 +6284,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.822
+          "value": 0.822,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5240,7 +6311,8 @@
     },
     {
       "record_id": "01a19aa5-8060-75d8-aecd-8e5e24f3a961",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5265,11 +6337,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.859
+          "value": 0.859,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.94
+          "value": 1.94,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5284,7 +6364,8 @@
     },
     {
       "record_id": "01a19aae-a820-7b80-9c65-54971267d467",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5309,11 +6390,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.454
+          "value": 0.454,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.9
+          "value": 1.9,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5328,7 +6417,8 @@
     },
     {
       "record_id": "01a19ab3-3c00-72b2-8f42-e31070fe98a0",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5353,11 +6443,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.603
+          "value": 0.603,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.03
+          "value": 2.03,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5372,7 +6470,8 @@
     },
     {
       "record_id": "01a19ab3-3c00-7ac4-b045-2faabf88cbde",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5397,11 +6496,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.502
+          "value": 0.502,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.14
+          "value": 2.14,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5416,7 +6523,8 @@
     },
     {
       "record_id": "01a19adc-6ee0-748e-bd82-08e52a4f550f",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5441,11 +6549,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.555
+          "value": 0.555,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.08
+          "value": 2.08,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5460,7 +6576,8 @@
     },
     {
       "record_id": "01a19b1c-8520-7683-8141-dd9a3dc2ec73",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5485,11 +6602,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.57
+          "value": 0.57,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.09
+          "value": 2.09,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5504,7 +6629,8 @@
     },
     {
       "record_id": "01a19b1c-8520-7dbc-95a9-2a5552c81f73",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5529,11 +6655,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.784
+          "value": 0.784,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.15
+          "value": 2.15,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5548,7 +6682,8 @@
     },
     {
       "record_id": "01a19b21-1900-7358-a7e6-2f39ba2a4a04",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5573,11 +6708,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.595
+          "value": 0.595,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.88
+          "value": 1.88,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5592,7 +6735,8 @@
     },
     {
       "record_id": "01a19fd5-0420-751a-bd04-0d4fd547eda4",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5617,11 +6761,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.504
+          "value": 0.504,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.82
+          "value": 1.82,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5636,7 +6788,8 @@
     },
     {
       "record_id": "01a19fd9-9800-7523-8cb4-01c8105370fc",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5661,11 +6814,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.625
+          "value": 0.625,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.84
+          "value": 1.84,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5680,7 +6841,8 @@
     },
     {
       "record_id": "01a19fd9-9800-7ae7-ba15-ed864fdd63bf",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5705,11 +6867,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.778
+          "value": 0.778,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.79
+          "value": 1.79,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5724,7 +6894,8 @@
     },
     {
       "record_id": "01a19fd9-9800-7b01-9517-bfcb845562fa",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5749,11 +6920,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.546
+          "value": 0.546,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.17
+          "value": 2.17,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5768,7 +6947,8 @@
     },
     {
       "record_id": "01a1a00b-f2a0-7526-9481-201ec43ff134",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5793,11 +6973,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.581
+          "value": 0.581,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5812,7 +7000,8 @@
     },
     {
       "record_id": "01a1a010-8680-7aa4-a006-021420caa52e",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5837,11 +7026,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.532
+          "value": 0.532,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.88
+          "value": 1.88,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5856,7 +7053,8 @@
     },
     {
       "record_id": "01a1a039-b960-7cf2-b899-910afaedbed1",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5881,11 +7079,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.642
+          "value": 0.642,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5900,7 +7106,8 @@
     },
     {
       "record_id": "01a1a042-e120-70a7-9169-e68962de87d8",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5925,11 +7132,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.594
+          "value": 0.594,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5944,7 +7159,8 @@
     },
     {
       "record_id": "01a1a042-e120-757e-a24e-0c00cc86dc43",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -5969,11 +7185,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.63
+          "value": 0.63,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.1
+          "value": 2.1,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -5988,7 +7212,8 @@
     },
     {
       "record_id": "01a1a4f2-3860-7022-9774-28b3967553a0",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6013,11 +7238,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.477
+          "value": 0.477,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.16
+          "value": 2.16,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6032,7 +7265,8 @@
     },
     {
       "record_id": "01a1a4f2-3860-789a-8e22-b4411e2c510e",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6057,11 +7291,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6076,7 +7318,8 @@
     },
     {
       "record_id": "01a1a4ff-f400-72da-9cee-e20d876d5ef2",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6101,11 +7344,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.529
+          "value": 0.529,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.89
+          "value": 1.89,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6120,7 +7371,8 @@
     },
     {
       "record_id": "01a1a4ff-f400-7824-abe7-5659572ae94f",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6145,11 +7397,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.708
+          "value": 0.708,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.15
+          "value": 2.15,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6164,7 +7424,8 @@
     },
     {
       "record_id": "01a1a529-26e0-754c-be08-a85772bbe732",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6189,11 +7450,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.584
+          "value": 0.584,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.81
+          "value": 1.81,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6208,7 +7477,8 @@
     },
     {
       "record_id": "01a1a529-26e0-7570-98d6-c09761591455",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6233,11 +7503,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.529
+          "value": 0.529,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.1
+          "value": 2.1,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6252,7 +7530,8 @@
     },
     {
       "record_id": "01a1a536-e280-778f-8cd9-f681c4a3635c",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6277,11 +7556,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6296,7 +7583,8 @@
     },
     {
       "record_id": "01a1a536-e280-7a0d-8e2f-2a25f1c518db",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6321,11 +7609,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.667
+          "value": 0.667,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6340,7 +7636,8 @@
     },
     {
       "record_id": "01a1a560-1560-7dfc-bc8a-d0fb201f7eae",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6365,11 +7662,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.55
+          "value": 0.55,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.18
+          "value": 2.18,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6384,7 +7689,8 @@
     },
     {
       "record_id": "01a1a569-3d20-7b77-acc7-7a170c991207",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6409,11 +7715,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.484
+          "value": 0.484,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.08
+          "value": 2.08,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6428,7 +7742,8 @@
     },
     {
       "record_id": "01a1aa18-9460-7224-a889-6922de03bea2",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6453,11 +7768,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.558
+          "value": 0.558,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.11
+          "value": 2.11,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6472,7 +7795,8 @@
     },
     {
       "record_id": "01a1aa18-9460-722f-9a90-af9326ac104d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6497,11 +7821,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.744
+          "value": 0.744,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.07
+          "value": 2.07,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6516,7 +7848,8 @@
     },
     {
       "record_id": "01a1aa21-bc20-7086-a718-04f5ecf7505a",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6541,11 +7874,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.631
+          "value": 0.631,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.08
+          "value": 2.08,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6560,7 +7901,8 @@
     },
     {
       "record_id": "01a1aa21-bc20-795b-a1f9-805fc4c28cae",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6585,11 +7927,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.701
+          "value": 0.701,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.98
+          "value": 1.98,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6604,7 +7954,8 @@
     },
     {
       "record_id": "01a1aa26-5000-7cb0-8781-3b241222d47d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6629,11 +7980,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.554
+          "value": 0.554,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.04
+          "value": 2.04,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6648,7 +8007,8 @@
     },
     {
       "record_id": "01a1aa4f-82e0-72c2-939a-4808f9a1ce60",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6673,11 +8033,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.626
+          "value": 0.626,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6692,7 +8060,8 @@
     },
     {
       "record_id": "01a1aa58-aaa0-713e-8e0a-a4360e49d210",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6717,11 +8086,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6736,7 +8113,8 @@
     },
     {
       "record_id": "01a1aa58-aaa0-7d3e-892e-c309a4c9bd9e",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6761,11 +8139,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.6
+          "value": 0.6,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.91
+          "value": 1.91,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6780,7 +8166,8 @@
     },
     {
       "record_id": "01a1aa5d-3e80-72e1-b910-c15d993c7c79",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6805,11 +8192,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.585
+          "value": 0.585,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.05
+          "value": 2.05,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6824,7 +8219,8 @@
     },
     {
       "record_id": "01a1aa5d-3e80-7509-8109-c03222f675aa",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6849,11 +8245,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6868,7 +8272,8 @@
     },
     {
       "record_id": "01a1aa5d-3e80-79c5-8d2a-b59e5243cad2",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6893,11 +8298,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6912,7 +8325,8 @@
     },
     {
       "record_id": "01a1aa5d-3e80-7c7d-81dc-6a12ff5c1cc3",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6937,11 +8351,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.546
+          "value": 0.546,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.82
+          "value": 1.82,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -6956,7 +8378,8 @@
     },
     {
       "record_id": "01a1aa86-7160-75af-8c3d-368cdcf48ddc",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -6981,11 +8404,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.706
+          "value": 0.706,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.98
+          "value": 1.98,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7000,7 +8431,8 @@
     },
     {
       "record_id": "01a1aa86-7160-75af-aa29-bffa7141a872",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7025,11 +8457,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.459
+          "value": 0.459,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.98
+          "value": 1.98,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7044,7 +8484,8 @@
     },
     {
       "record_id": "01a1aa94-2d00-719d-8b67-89a8beeaf2ce",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7069,11 +8510,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.713
+          "value": 0.713,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.85
+          "value": 1.85,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7088,7 +8537,8 @@
     },
     {
       "record_id": "01a1aa94-2d00-7858-b813-bd813a0299e6",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7113,11 +8563,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.761
+          "value": 0.761,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.23
+          "value": 2.23,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7132,7 +8590,8 @@
     },
     {
       "record_id": "01a1aa94-2d00-7a8d-9a1c-4c3516dc22c6",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7157,11 +8616,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.472
+          "value": 0.472,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.12
+          "value": 2.12,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7176,7 +8643,8 @@
     },
     {
       "record_id": "01a1af75-dee0-71a9-97e3-2c9d008d8889",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7201,11 +8669,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": false,
-          "reason": "adult_context_not_confirmed"
+          "reason": "adult_context_not_confirmed",
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7220,7 +8696,8 @@
     },
     {
       "record_id": "01a1af75-dee0-740c-a6c6-3b16aa0bd710",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7245,11 +8722,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.697
+          "value": 0.697,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.11
+          "value": 2.11,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7264,7 +8749,8 @@
     },
     {
       "record_id": "01a1af75-dee0-79a7-9e39-b9c5e978676d",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7289,11 +8775,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.764
+          "value": 0.764,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.92
+          "value": 1.92,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7308,7 +8802,8 @@
     },
     {
       "record_id": "01a1af7f-06a0-752b-a106-39fdea14b762",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7333,11 +8828,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.527
+          "value": 0.527,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.92
+          "value": 1.92,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7352,7 +8855,8 @@
     },
     {
       "record_id": "01a1af7f-06a0-7b80-b031-67d10b48e676",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7377,11 +8881,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.568
+          "value": 0.568,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.18
+          "value": 2.18,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7396,7 +8908,8 @@
     },
     {
       "record_id": "01a1af7f-06a0-7c51-a31f-a03069942abd",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7421,11 +8934,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.529
+          "value": 0.529,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.06
+          "value": 2.06,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7440,7 +8961,8 @@
     },
     {
       "record_id": "01a1af7f-06a0-7da4-bd73-67915ac1c1dd",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7465,11 +8987,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.73
+          "value": 0.73,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.85
+          "value": 1.85,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7484,7 +9014,8 @@
     },
     {
       "record_id": "01a1af7f-06a0-7e92-9f8e-65798d8064c3",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7509,11 +9040,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.562
+          "value": 0.562,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.14
+          "value": 2.14,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7528,7 +9067,8 @@
     },
     {
       "record_id": "01a1af83-9a80-77d2-b532-0a64d5f4d81a",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7553,11 +9093,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.503
+          "value": 0.503,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.03
+          "value": 2.03,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7572,7 +9120,8 @@
     },
     {
       "record_id": "01a1af83-9a80-7907-800a-e725852c15a7",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7597,11 +9146,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.587
+          "value": 0.587,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.21
+          "value": 2.21,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7616,7 +9173,8 @@
     },
     {
       "record_id": "01a1afac-cd60-773d-8806-4f8a66bdb0a6",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7641,11 +9199,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.785
+          "value": 0.785,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7660,7 +9226,8 @@
     },
     {
       "record_id": "01a1afac-cd60-7cbb-9a38-a8f2e411bfd7",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7685,11 +9252,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.602
+          "value": 0.602,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 1.94
+          "value": 1.94,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7704,7 +9279,8 @@
     },
     {
       "record_id": "01a1afac-cd60-7fd3-bb88-17aa00adb57f",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7729,11 +9305,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.539
+          "value": 0.539,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.03
+          "value": 2.03,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [
@@ -7748,7 +9332,8 @@
     },
     {
       "record_id": "01a1afb5-f520-7230-b9d1-625424a52c90",
-      "schema_version": 3,
+      "schema_version": 4,
+      "measurement_provenance_version": 1,
       "indicator_spec_version": 3,
       "label_schema_version": "coarse-v0-draft",
       "cohort": "early_grade",
@@ -7773,11 +9358,19 @@
       "indicators": {
         "I1_adult_talk_ratio": {
           "available": true,
-          "value": 0.56
+          "value": 0.56,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         },
         "I5_turns_per_minute": {
           "available": true,
-          "value": 2.0
+          "value": 2.0,
+          "origin": "synthetic",
+          "method_version": 3,
+          "label_schema_version": "coarse-v0-draft",
+          "source_manifest": "tools/demo/mock-data/meta.json"
         }
       },
       "deferred_indicators": [

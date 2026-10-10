@@ -1,0 +1,56 @@
+# Focused architecture review: classroom audio, observation and edge ML
+
+2026-10-06. User-confirmed scope: June 2027 Grade 2 reading defence; coarse acoustic summaries; no saved classroom audio; five-way classification deferred. **Plans and contracts only.** The user also requests simpler UI and automatic private-summary sync plus research contributions, with opt-out controls in Settings. [ADR-018](../adr/018-measurement-evidence-and-sharing.md) records these decisions and their prerequisites.
+
+## Method and evidence limits
+
+Targeted review of classroom acoustics, human observation, model reporting, device benchmarks and maintained source repositories. Search terms included classroom acoustic classification/DART, noisy classroom diarization, VTC, EQUIP, model cards and MLPerf Tiny. Prefer original papers, author repositories and official platform guidance. This is a focused design review, not a systematic review or exhaustive benchmark. Abstract-only findings are marked; inspected code has not been installed or benchmarked. Existing Tanner correspondence remains user-supplied clarification, not a publication.
+
+## Papers and observation evidence
+
+| Source and access | Relevant finding | Project decision / limit |
+|---|---|---|
+| [Owens et al., 2017: DART](https://pmc.ncbi.nlm.nih.gov/articles/PMC5373389/) — indexed paper excerpts; direct PMC fetch intermittently blocked; [Tanner follow-up](TANNER_DART_EQUIP_FOLLOWUP.md) | Coarse acoustic categories have context/noise limits; the author explicitly disclaims pedagogical meaningfulness validation. | Independent acoustic reference and activity context remain separate. No quality, engagement or learning score derived from sound. |
+| [Kunze et al., 2025: challenges in voice type classification](https://arxiv.org/abs/2506.11074) — author abstract | In child-worn recordings, data relevance/quantity contributed more than the investigated feature/architecture changes. | Prioritise domain/condition coverage and lawful existing data. This does not authorise a new classroom corpus or establish classroom accuracy. |
+| [Khan et al., 2025: noisy classroom diarization](https://arxiv.org/abs/2505.10879) — author abstract | Noise, overlap and child audibility matter; investigated pipelines include ASR and denoising with competing error effects. | Include missed speech, false speech, overlap and placement/noise checks. Do not import its ASR pipeline or treat its scores as comparable to our coarse model. |
+| [EQUIP documentation](https://docs.equip.ninja/en/latest/) and [official help](https://www.equip.ninja/help) — official guides | Human-coded participation combines observed discourse and student-linked context. | Use a class-level observer adaptation for validation, with no pupil identities. Label it EQUIP-informed; it is not the validated full instrument. |
+| [Reinholz, Pelaez & Shah, 2021](https://doi.org/10.1007/s43545-021-00190-x) — author PDF abstract/methods reviewed in prior follow-up | Stability varies with the code and classroom context. | Count independent teachers as well as sessions, preserve repeated-measure clustering, and keep the week-long pilot a feasibility study. |
+| [Mitchell et al., 2019: Model Cards](https://arxiv.org/abs/1810.03993) — author abstract | Intended use and performance across relevant conditions should accompany a model. | Pair each immutable model manifest with a readable evidence card. A declared supported cohort alone cannot enable a field metric. |
+| [Banbury et al., 2021: MLPerf Tiny](https://arxiv.org/abs/2106.07597) — abstract and [MLCommons benchmark guidance](https://mlcommons.org/working-groups/benchmarks/tiny/) | Accuracy, latency and energy are distinct evaluation dimensions. | Record whole-pipeline phone accuracy/availability, speed, memory and battery on the same candidate build. Microcontroller results are not Android evidence or MLPerf certification. |
+
+## Repository conventions inspected
+
+Snapshots are pinned to commits observed on 2026-10-06. These are examples to adapt, not mandatory dependencies or endorsements of their entire architecture.
+
+| Repository snapshot / files | Convention to adopt | Exclude from this project's delivery scope |
+|---|---|---|
+| [LAAC-LSCP/VTC, a66d765](https://github.com/LAAC-LSCP/VTC/tree/a66d76548e2ec9cb042b28b8b3106e77ca0fbc13): `pyproject.toml`, tree including `uv.lock`, `scripts/infer.py` | Declare dependencies; use explicit configuration/checkpoint/threshold inputs; preserve exact resolved versions and model identity. Current repo describes VTC 2.2 and links BabyHuBERT research; this is newer than the original VTC precedent. | Desktop batch audio/RTTM output, child-worn label assumptions and heavy training dependencies in the phone/web app. Neither this repo nor its reported scores establish a low-end classroom deployment. |
+| [Silero VAD, 1e261b0](https://github.com/snakers4/silero-vad/tree/1e261b036686cd0017d500ee96acd1c4ba572a9d): `pyproject.toml`, `tests/test_sequence_parity.py`, `tests/test_vad_iterator.py` | Test sequence/batch parity and threshold-sensitive start/end behavior; keep optional runtime/decode dependencies separate. Add project-specific reset/interruption tests. | Treating VAD as teacher identification or adopting desktop recording/export examples in the field app. No new runtime selected here. |
+| [MLCommons Tiny, 4addd0f](https://github.com/mlcommons/tiny/tree/4addd0fa08d216e20637637874e084895f289da4): `benchmark/README.md`, repository tree | Separate training/quantization assets, benchmark interface and device reference implementations. Preserve run inputs and quality targets with performance evidence. | Its MCU runtime, datasets, class targets and scoring thresholds. Keep our Android constraints and cohort gates. |
+| [Android architecture recommendations](https://developer.android.com/topic/architecture/recommendations) — official guidance | UI state flows from repositories through ViewModels; UI actions call the relevant logic. Keep persistence/network access behind repositories; inject dependencies for tests. Small apps can use packages rather than many Gradle modules. | Framework churn or a module per screen. Retain the existing Kotlin/Compose stack and extract responsibilities only where needed. |
+
+**Our implementation convention:** one small monorepo, one Python reference, Kotlin parity, one selected inference runtime, one selected backend/DB. Keep training dependencies isolated from the installed app and server. Use reproducible command/config entrypoints, pinned resolved dependencies, hash-addressed model releases, schema migration notes and public synthetic conformance fixtures. Private field records and their row-level hashes stay in the approved in-country research environment. A simple run manifest is sufficient; no experiment-tracking SaaS, feature store or distributed training service is added.
+
+## Changes to the repository plan
+
+1. [Measurement/evidence contract](../contracts/MEASUREMENT_EVIDENCE.md): distinguish origin, mathematical validity, contextual eligibility and approved release evidence; version each independently. Enforce the same decisions at display, aggregation and export boundaries.
+2. [UI/sharing contract](../contracts/SHARING_AND_UI.md): Today, Reflection and Settings; history within Reflection; automatic transfers of saved allowlisted summaries after purpose-specific authorisation. Settings has separate sync and research controls. Research intake is a separate protected boundary, not a copy of the private-report database.
+3. Keep `indicators-core` deterministic. Its arithmetic may run on synthetic fixtures even when no real metric is released. Add pure policy logic alongside reporting, not inside model math. Mirror this policy through shared fixtures in Kotlin.
+4. Keep the existing Android `data/`, `domain/`, `ui/` packages. Plan repositories for lessons, evidence and sharing; make ViewModels depend on them. Product components do not depend on observer/reference data. Split the oversized app state holder only as real capture/report/settings responsibilities warrant it.
+5. Under existing `ml/configs`, `ml/export`, `ml/eval` and device benchmark areas, plan locked experiment configs, model/evidence manifests and run summaries. Public examples contain synthetic or licensed approved assets only; proposed filenames are not yet implemented.
+6. Add acceptance procedures for evidence mismatch/revocation, synthetic leakage, streaming interruption, independent sharing controls, offline opt-out, clean rebuilds and simplified navigation. These are future tests, not claimed passes.
+
+## Delivery order and cost
+
+- **G1:** freeze measurement/provenance and two-purpose sharing contracts, disclosure wording, reduced navigation and backward-compatibility behavior. Keep existing users' OFF/withdrawn choices; never turn them on through migration.
+- **G2:** local capture/storage plus pure evidence/eligibility policy, one baseline model and device performance; no live metric without evidence. Validate mock/real separation and Kotlin/Python conformance.
+- **Before each G4:** enrolment/consent, selected in-country services and actual security/withdrawal tests. Implement the shared-summary path and protected research intake as separately tested purposes. No prior authorisation means zero transfer even if the preference defaults ON.
+- **G5:** release only supported metrics and claims, finish teacher comprehension/navigation tests and document study inclusion/missingness. Publish only reviewed R2 aggregates.
+
+The earlier optional-sync 50-person-hour stop limit did not include automatic research intake, two purpose ledgers and coordinated withdrawal. Keep it as an estimate for the old sync slice only; the combined sharing requirement must be re-estimated before implementation scheduling. Sequence after the local slice and within existing fixed privacy/validity constraints. If services are not ready, show sharing unavailable; manual research forms remain an explicitly disclosed study fallback, not evidence that automatic sharing was delivered.
+
+## Default sharing: feasibility boundary
+
+The user requests ON defaults for both purposes and Settings-only opt-out. This is adopted as the enrolled product preference. The [official Proclamation](https://justice.gov.et/en/law/personal-data-protection-proclamation/) and the local Gazette copy, Article 8(1)–(4), require prior, active, informed consent when consent is the legal basis and address withdrawal/unrelated processing. A preselected preference or silence is not that authorisation. ECA's page was intermittently inaccessible; no final implementing guidance was established in this pass. The institution must approve the enrolment workflow and legal basis before field release.
+
+Accordingly, the contract supports automatic sharing immediately after a saved eligible record exists **and** prior authorisation is verified; consent can be established through the approved study enrolment process. It does not prescribe a new in-app opt-in toggle or per-session prompt. If prior authorisation cannot be established, Settings-only post-transfer opt-out is insufficient for this consent-based study and transfer remains blocked. Local use remains available subject to its own capture approvals.

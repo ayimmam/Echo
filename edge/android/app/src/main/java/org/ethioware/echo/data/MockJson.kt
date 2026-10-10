@@ -17,6 +17,10 @@ object MockJson {
         val indicators = o.getJSONObject("indicators")
         return LessonRecord(
             id = o.getString("record_id"),
+            synthetic = o.optBoolean("synthetic", false),
+            schemaVersion = o.optInt("schema_version", 0),
+            measurementProvenanceVersion = o.optInt("measurement_provenance_version").takeIf { o.has("measurement_provenance_version") },
+            labelSchemaVersion = o.optString("label_schema_version").takeIf { it.isNotBlank() },
             startedOn = LocalDate.parse(o.getString("started_on")),
             startTime = LocalTime.parse(o.getString("start_time")),
             durationS = o.getInt("duration_s"),
@@ -39,7 +43,11 @@ object MockJson {
 
     fun lessonToJson(r: LessonRecord): JSONObject = JSONObject()
         .put("record_id", r.id)
+        .put("synthetic", r.synthetic)
+        .put("schema_version", r.schemaVersion)
+        .put("measurement_provenance_version", r.measurementProvenanceVersion ?: JSONObject.NULL)
         .put("indicator_spec_version", r.specVersion)
+        .put("label_schema_version", r.labelSchemaVersion ?: JSONObject.NULL)
         .put("started_on", r.startedOn.toString())
         .put("start_time", r.startTime.withSecond(0).withNano(0).toString())
         .put("duration_s", r.durationS)
@@ -63,12 +71,43 @@ object MockJson {
         )
 
     private fun measureFromJson(o: JSONObject): Measure =
-        if (o.optBoolean("available")) Measure.of(o.getDouble("value"))
-        else Measure.unavailable(o.optString("reason", REASON_INSUFFICIENT_SPEECH))
+        if (o.optBoolean("available")) {
+            Measure.of(
+                value = o.getDouble("value"),
+                origin = MeasurementOrigin.fromWire(o.optString("origin")),
+                methodVersion = o.optInt("method_version").takeIf { o.has("method_version") },
+                labelSchemaVersion = o.optString("label_schema_version").takeIf { it.isNotBlank() },
+                modelArtifactSha256 = o.optString("model_artifact_sha256").takeIf { it.isNotBlank() },
+                featureConfigHash = o.optString("feature_config_hash").takeIf { it.isNotBlank() },
+                postprocessHash = o.optString("postprocess_hash").takeIf { it.isNotBlank() },
+                evidenceManifestHash = o.optString("evidence_manifest_hash").takeIf { it.isNotBlank() },
+                releaseId = o.optString("release_id").takeIf { it.isNotBlank() },
+                sourceManifest = o.optString("source_manifest").takeIf { it.isNotBlank() },
+            )
+        } else {
+            Measure.unavailable(
+                reason = o.optString("reason", REASON_INSUFFICIENT_SPEECH),
+                origin = MeasurementOrigin.fromWire(o.optString("origin")),
+                methodVersion = o.optInt("method_version").takeIf { o.has("method_version") },
+                labelSchemaVersion = o.optString("label_schema_version").takeIf { it.isNotBlank() },
+                sourceManifest = o.optString("source_manifest").takeIf { it.isNotBlank() },
+            )
+        }
 
     private fun measureToJson(m: Measure): JSONObject =
-        if (m.available) JSONObject().put("available", true).put("value", m.value)
-        else JSONObject().put("available", false).put("reason", m.reason)
+        JSONObject()
+            .put("available", m.available)
+            .put("value", if (m.available) m.value else JSONObject.NULL)
+            .put("reason", if (m.available) JSONObject.NULL else m.reason)
+            .put("origin", m.origin.wireName)
+            .put("method_version", m.methodVersion ?: JSONObject.NULL)
+            .put("label_schema_version", m.labelSchemaVersion ?: JSONObject.NULL)
+            .put("model_artifact_sha256", m.modelArtifactSha256 ?: JSONObject.NULL)
+            .put("feature_config_hash", m.featureConfigHash ?: JSONObject.NULL)
+            .put("postprocess_hash", m.postprocessHash ?: JSONObject.NULL)
+            .put("evidence_manifest_hash", m.evidenceManifestHash ?: JSONObject.NULL)
+            .put("release_id", m.releaseId ?: JSONObject.NULL)
+            .put("source_manifest", m.sourceManifest ?: JSONObject.NULL)
 
     fun parseProfile(text: String): TeacherProfile {
         val o = JSONObject(text)
