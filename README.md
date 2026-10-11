@@ -98,6 +98,8 @@ Open `http://127.0.0.1:8000/`. This server refuses public binding and has no pro
 
 ## Documentation
 
+The [Innovation Competition implementation plan](docs/competition/INNOVATION_IMPLEMENTATION_PLAN.md) maps the supplied 2026–2027 Northern Africa criteria to AI, Huawei deployment, validation, reproducibility and submission work. It is a proposed delivery plan; cloud/AI integration is not implemented by that document.
+
 Start with the [documentation index](docs/README.md), [Android guide](edge/android/README.md), [code map](docs/research/CODEBASE_STRUCTURE.md), [research assessment](docs/research/HAWASSA_PILOT_REVIEW_2026-10-10.md) and [device runbook](docs/testing/OFFLINE_PILOT_RUNBOOK.md).
 
 [ADR-019](docs/adr/019-offline-recorded-reflection-pilot.md) defines the current offline scope. Earlier RAM-only/no-recording and Grade 2/STEM-first plans remain historical context; evidence and hosting gates still apply where compatible. The [previous architecture overview](docs/archive/ARCHITECTURE_OVERVIEW_PRE_ADR019.md) is preserved for traceability, not as a current implementation guide.
