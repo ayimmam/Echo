@@ -13,13 +13,19 @@ sys.path.insert(0, str(ROOT / "indicators-core" / "python"))
 from server.api import demo_wsgi  # noqa: E402
 from server.config import demo_settings  # noqa: E402
 from server.domain.aggregation import aggregate_by_grade  # noqa: E402
+from dimts_indicators.evidence import metric_decision  # noqa: E402
 
 
 def record(teacher, grade="2", i1=0.6, i5=2.0, cohort="early_grade", observed=2400, coverage=1.0,
            adult="single_adult_no_playback"):
-    ind = lambda v: {"available": True, "value": v}  # noqa: E731
-    return {"record_id": f"{teacher}-{i1}-{i5}", "cohort": cohort, "teacher_pseudo_id": teacher,
-            "grade": grade, "started_on": "2026-11-02", "synthetic": True,
+    ind = lambda v: {  # noqa: E731
+        "available": True, "value": v, "origin": "synthetic", "method_version": 3,
+        "label_schema_version": "coarse-v0-draft", "source_manifest": "tools/demo/mock-data/meta.json",
+    }
+    return {"record_id": f"{teacher}-{i1}-{i5}", "schema_version": 4,
+            "measurement_provenance_version": 1, "indicator_spec_version": 3,
+            "label_schema_version": "coarse-v0-draft", "cohort": cohort, "teacher_pseudo_id": teacher,
+            "grade": grade, "subject": "mother_tongue", "started_on": "2026-11-02", "synthetic": True,
             "capture": {"observed_s": observed, "coverage": coverage},
             "context": {"adult_conditions": adult},
             "indicators": {"I1_adult_talk_ratio": ind(i1), "I5_turns_per_minute": ind(i5)}}
@@ -72,6 +78,14 @@ class Suppression(unittest.TestCase):
     def test_no_total_row(self):
         self.assertNotIn("total", {c["grade"] for c in aggregate_by_grade([record("a")])})
 
+    def test_incompatible_provenance_hides_cell_without_revealing_count(self):
+        recs = [record(f"t{i}") for i in range(5)]
+        recs[-1]["indicators"]["I1_adult_talk_ratio"]["source_manifest"] = "demo/session-simulator-v1"
+        cell = self.cell(aggregate_by_grade(recs), "2")
+        self.assertTrue(cell["suppressed"])
+        self.assertEqual(cell["reason"], "incompatible_provenance")
+        self.assertEqual(set(cell), {"grade", "suppressed", "reason"})
+
 
 class DemoHttp(unittest.TestCase):
     @classmethod
@@ -111,6 +125,56 @@ class DemoHttp(unittest.TestCase):
 
 
 class FailClosed(unittest.TestCase):
+    def test_preview_is_explicit_and_requires_declared_synthetic_source(self):
+        row = record("teacher")
+        preview = metric_decision(row, "I1", allow_synthetic_preview=True)
+        self.assertTrue(preview["available"])
+        self.assertTrue(preview["synthetic_preview"])
+        self.assertEqual(metric_decision(row, "I1")["reason"], "synthetic_preview_only")
+        row["indicators"]["I1_adult_talk_ratio"]["source_manifest"] = "unknown-fixture"
+        self.assertEqual(
+            metric_decision(row, "I1", allow_synthetic_preview=True)["reason"],
+            "synthetic_preview_only",
+        )
+
+    def test_model_claim_cannot_release_a_synthetic_row_and_malformed_shape_fails_closed(self):
+        row = record("teacher")
+        measure = row["indicators"]["I1_adult_talk_ratio"]
+        measure.update({
+            "origin": "model",
+            "model_artifact_sha256": "a" * 64,
+            "feature_config_hash": "b" * 64,
+            "postprocess_hash": "c" * 64,
+            "evidence_manifest_hash": "d" * 64,
+            "release_id": "release-1",
+        })
+        self.assertEqual(
+            metric_decision(row, "I1")["reason"],
+            "synthetic_preview_only",
+        )
+        measure["reason"] = "forged-reason"
+        self.assertEqual(metric_decision(row, "I1")["reason"], "invalid_measurement")
+
+    def test_model_measure_stays_unreleased_without_exact_reviewed_registry_entry(self):
+        row = record("teacher")
+        row["synthetic"] = False
+        row["indicators"]["I1_adult_talk_ratio"].update({
+            "origin": "model",
+            "model_artifact_sha256": "a" * 64,
+            "feature_config_hash": "b" * 64,
+            "postprocess_hash": "c" * 64,
+            "evidence_manifest_hash": "d" * 64,
+            "release_id": "release-1",
+        })
+        self.assertEqual(metric_decision(row, "I1")["reason"], "unreleased_metric")
+
+    def test_teacher_proxy_measurement_requires_confirmed_single_adult_context(self):
+        row = record("teacher", adult="other_adult_or_playback")
+        self.assertEqual(
+            metric_decision(row, "I1", allow_synthetic_preview=True)["reason"],
+            "adult_context_not_confirmed",
+        )
+
     def test_refuses_other_purposes_and_public_binds(self):
         with self.assertRaises(demo_settings.ConfigError):
             demo_settings.load({"ECHO_PURPOSE": "pilot"})
@@ -118,6 +182,10 @@ class FailClosed(unittest.TestCase):
             demo_settings.load({"ECHO_DEMO_HOST": "0.0.0.0"})
         with self.assertRaises(demo_settings.ConfigError):
             demo_settings.load({"ECHO_DEMO_PORT": "http"})
+        with self.assertRaises(demo_settings.ConfigError):
+            demo_settings.load({"ECHO_DEMO_PORT": "65536"})
+        with self.assertRaises(demo_settings.ConfigError):
+            demo_settings.load({"ECHO_DEMO_HOST": "::1"})
 
     def test_refuses_unmarked_data(self):
         import tempfile
@@ -126,6 +194,16 @@ class FailClosed(unittest.TestCase):
             path.write_text(json.dumps({"synthetic": True, "records": [{"synthetic": False}]}))
             with self.assertRaises(demo_settings.ConfigError):
                 demo_settings.load_records(demo_settings.load({"ECHO_DEMO_DATA": str(path)}))
+
+    def test_refuses_malformed_fixture_envelope(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "x.json"
+            settings = demo_settings.load({"ECHO_DEMO_DATA": str(path)})
+            for data in ([], {"synthetic": True}, {"synthetic": True, "records": [None]}):
+                path.write_text(json.dumps(data))
+                with self.assertRaises(demo_settings.ConfigError):
+                    demo_settings.load_records(settings)
 
 
 if __name__ == "__main__":

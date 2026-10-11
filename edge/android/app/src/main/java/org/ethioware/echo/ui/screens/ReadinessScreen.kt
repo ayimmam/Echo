@@ -55,7 +55,7 @@ fun ReadinessScreen(vm: EchoViewModel) {
                 EchoCard {
                     if (!done) {
                         Muted(t(S.READY_BODY))
-                        LevelMeter(now, active = true, description = t(S.READY_TITLE))
+                        LevelMeter(active = true, description = t(S.READY_TITLE))
                         LinearProgressIndicator(progress = { check.progress(now) }, modifier = Modifier.fillMaxWidth())
                         Text(t(S.READY_COUNTDOWN, check.remainingS(now)), style = MaterialTheme.typography.titleMedium)
                     } else {

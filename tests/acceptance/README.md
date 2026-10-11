@@ -1,6 +1,6 @@
 # Post-implementation acceptance tests
 
-Prepared 2026-09-27. No product implementation is included. Python 3.10+ standard library only. `vectors.json` contains hand-calculated indicator oracles and cohort-contract cases; `runner.py` sends them to a future implementation adapter. The device, infrastructure and field suites are specified in [the test plan](../../docs/testing/POST_IMPLEMENTATION_TEST_PLAN.md). They are not automated by this runner.
+Prepared 2026-09-27. The runner uses Python 3.10+ standard library only. `vectors.json` contains hand-calculated indicator oracles and cohort-contract cases; `runner.py` sends them to an implementation adapter. A draft Python reference adapter now exists at `indicators-core/python/dimts_indicators/adapter.py`; it does not test the Android app, model or field service. The device, infrastructure and field suites are specified in [the test plan](../../docs/testing/POST_IMPLEMENTATION_TEST_PLAN.md). They are not automated by this runner.
 
 ## Before implementation
 
@@ -15,10 +15,10 @@ Ratify the proposed contract in ADR-012/014 before implementing its adapter. Res
 
 ## After implementation
 
-Create adapters that call the actual Python reference and Kotlin implementation. Each adapter must accept **one JSON request on stdin**, emit **one JSON result on stdout**, and exit; logging goes to stderr. Implementations may map their public field names to the normalized acceptance fields below, but must not calculate replacement results or read expected fixtures. No adapter exists yet. Run each independently against the same vectors:
+The Python reference adapter can be run now; a Kotlin implementation adapter remains future work. Each adapter must accept **one JSON request on stdin**, emit **one JSON result on stdout**, and exit; logging goes to stderr. Implementations may map their public field names to the normalized acceptance fields below, but must not calculate replacement results or read expected fixtures. Run each independently against the same vectors:
 
 ```sh
-python3 tests/acceptance/runner.py --adapter '["python3", "path/to/python_adapter.py"]'
+python3 tests/acceptance/runner.py --adapter '["python3", "indicators-core/python/dimts_indicators/adapter.py"]'
 python3 tests/acceptance/runner.py --adapter '["java", "-jar", "path/to/kotlin-adapter.jar"]'
 ```
 

@@ -45,11 +45,64 @@ enum class Mic(val key: String) {
     }
 }
 
-/** A measure is either available with a value, or unavailable with a reason. Never a silent zero. */
-data class Measure(val available: Boolean, val value: Double? = null, val reason: String? = null) {
+enum class MeasurementOrigin(val wireName: String) {
+    SYNTHETIC("synthetic"),
+    MODEL("model"),
+    OBSERVER("observer"),
+    UNKNOWN("unknown");
+
     companion object {
-        fun of(value: Double) = Measure(true, value, null)
-        fun unavailable(reason: String) = Measure(false, null, reason)
+        fun fromWire(value: String?): MeasurementOrigin = entries.firstOrNull { it.wireName == value } ?: UNKNOWN
+    }
+}
+
+/** A measure is either available with a value, or unavailable with a reason. Never a silent zero. */
+data class Measure(
+    val available: Boolean,
+    val value: Double? = null,
+    val reason: String? = null,
+    val origin: MeasurementOrigin = MeasurementOrigin.UNKNOWN,
+    val methodVersion: Int? = null,
+    val labelSchemaVersion: String? = null,
+    val modelArtifactSha256: String? = null,
+    val featureConfigHash: String? = null,
+    val postprocessHash: String? = null,
+    val evidenceManifestHash: String? = null,
+    val releaseId: String? = null,
+    val sourceManifest: String? = null,
+) {
+    fun hasValidShape(): Boolean = if (available) {
+        value != null && value.isFinite() && reason == null
+    } else {
+        value == null && !reason.isNullOrBlank()
+    }
+
+    companion object {
+        fun of(
+            value: Double,
+            origin: MeasurementOrigin = MeasurementOrigin.UNKNOWN,
+            methodVersion: Int? = null,
+            labelSchemaVersion: String? = null,
+            modelArtifactSha256: String? = null,
+            featureConfigHash: String? = null,
+            postprocessHash: String? = null,
+            evidenceManifestHash: String? = null,
+            releaseId: String? = null,
+            sourceManifest: String? = null,
+        ) = Measure(
+            true, value, null, origin, methodVersion, labelSchemaVersion,
+            modelArtifactSha256, featureConfigHash, postprocessHash, evidenceManifestHash, releaseId, sourceManifest,
+        )
+
+        fun unavailable(
+            reason: String,
+            origin: MeasurementOrigin = MeasurementOrigin.UNKNOWN,
+            methodVersion: Int? = null,
+            labelSchemaVersion: String? = null,
+            sourceManifest: String? = null,
+        ) = Measure(
+            false, null, reason, origin, methodVersion, labelSchemaVersion, sourceManifest = sourceManifest,
+        )
     }
 }
 
@@ -67,6 +120,11 @@ data class Capture(
 /** Reduced ADR-016 lesson summary (spec 3, coarse-v0-draft). Holds numbers only, never sound or text. */
 data class LessonRecord(
     val id: String,
+    val synthetic: Boolean = false,
+    /** Version of the stored record envelope. Version 4 adds explicit measurement provenance. */
+    val schemaVersion: Int = 0,
+    val measurementProvenanceVersion: Int? = null,
+    val labelSchemaVersion: String? = null,
     val startedOn: LocalDate,
     val startTime: LocalTime,
     val durationS: Int,
@@ -128,8 +186,6 @@ data class TeacherProfile(
     val preferredMic: Mic,
     val referenceDate: LocalDate,
 )
-
-enum class RemoteDeletion { NOT_NEEDED, PENDING, CONFIRMED }
 
 /** Everything the bundled mock data provides. */
 data class DemoBundle(

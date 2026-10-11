@@ -38,7 +38,15 @@ fun Translator.label(a: AdultConditions): String = this(
 fun Translator.label(m: Mic): String = this(if (m == Mic.WIRED) S.MIC_WIRED else S.MIC_BUILTIN)
 
 fun Translator.reason(reason: String?): String = this(
-    if (reason == REASON_ADULT_CONTEXT) S.R_ADULT_CONTEXT
-    else if (reason == REASON_INSUFFICIENT_SPEECH) S.R_INSUFFICIENT
-    else S.R_INSUFFICIENT,
+    when (reason) {
+        REASON_ADULT_CONTEXT, "adult_context_not_confirmed" -> S.R_ADULT_CONTEXT
+        REASON_INSUFFICIENT_SPEECH, "insufficient_speech", "insufficient_observation" -> S.R_INSUFFICIENT
+        "unreleased_metric", "release_withdrawn", "synthetic_preview_only" -> S.R_UNRELEASED
+        "unknown_provenance" -> S.R_UNKNOWN_PROVENANCE
+        "version_mismatch" -> S.R_VERSION_MISMATCH
+        "invalid_measurement" -> S.R_INVALID_MEASUREMENT
+        "observer_not_teacher_metric" -> S.R_OBSERVER
+        "incompatible_provenance" -> S.R_INCOMPATIBLE_PROVENANCE
+        else -> S.R_UNRELEASED
+    },
 )

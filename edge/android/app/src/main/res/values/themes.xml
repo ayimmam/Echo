@@ -3,5 +3,6 @@
 
     <style name="Theme.Echo" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/echo_background</item>
+        <item name="android:forceDarkAllowed">false</item>
     </style>
 </resources>

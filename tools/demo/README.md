@@ -24,11 +24,13 @@ The seeded week scenarios are intentional: week 43 → enough reliable observati
 (one phone-call lesson with 66 % coverage, one "other adult / playback" lesson); week 45 → enough, with one
 lesson left out by the teacher.
 
-Record shape (illustrative, **draft until gate G1**): `record_id` (UUIDv7), `schema_version: 3`,
-`label_schema_version: "coarse-v0-draft"`, `teacher_pseudo_id`, `started_on` + `start_time` (lesson start
-only), `capture{observed_s, missing_s, coverage, mic}`, `context{activity, adult_conditions}`,
-`indicators{I1_adult_talk_ratio, I5_turns_per_minute}` each `{available, value | reason}`, and
-`deferred_indicators` listing the measures that are not produced. No audio, features, transcript, embeddings
+Record shape (illustrative, **draft until gate G1**): `record_id` (UUIDv7), `schema_version: 4`,
+`measurement_provenance_version: 1`, `label_schema_version: "coarse-v0-draft"`, `teacher_pseudo_id`,
+`started_on` + `start_time` (lesson start only), `capture{observed_s, missing_s, coverage, mic}`,
+`context{activity, adult_conditions}`, `indicators{I1_adult_talk_ratio, I5_turns_per_minute}` each
+`{available, value | reason, origin, method_version, label_schema_version, source_manifest}`, and
+`deferred_indicators` listing the measures that are not produced. The provenance/release policy permits
+these values only on explicitly labelled synthetic preview surfaces; model releases start empty. No audio, features, transcript, embeddings
 or timeline are ever part of a record; `tests/demo/test_mock_data.py` checks for that.
 
 ```sh

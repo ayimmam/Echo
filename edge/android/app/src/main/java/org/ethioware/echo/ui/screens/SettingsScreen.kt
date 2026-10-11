@@ -82,18 +82,26 @@ fun SettingsScreen(vm: EchoViewModel) {
                 Muted(t(S.SET_STORAGE_BODY))
             }
             EchoCard {
-                Row(
-                    Modifier.fillMaxWidth().heightIn(min = 56.dp).toggleable(
-                        value = vm.syncEnabled, role = Role.Switch, onValueChange = { vm.setSync(it) },
-                    ),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(t(S.SET_SYNC), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
-                    Spacer(Modifier.width(12.dp))
-                    Switch(checked = vm.syncEnabled, onCheckedChange = null)
-                }
-                Muted(t(S.SET_SYNC_HELP))
-                Muted(t(S.SET_SYNC_DEMO))
+                PreferenceSwitch(
+                    title = t(S.SET_PRIVATE_SYNC),
+                    checked = vm.privateSyncEnabled,
+                    onChange = vm::setPrivateSummarySync,
+                )
+                Muted(t(S.SET_PRIVATE_SYNC_HELP))
+            }
+            EchoCard {
+                PreferenceSwitch(
+                    title = t(S.SET_RESEARCH_CONTRIBUTION),
+                    checked = vm.researchContributionEnabled,
+                    onChange = vm::setResearchContribution,
+                )
+                Muted(t(S.SET_RESEARCH_HELP))
+            }
+            EchoCard(tone = CardTone.Calm) {
+                Text(t(S.SET_TRANSFER_STATUS), style = MaterialTheme.typography.titleSmall)
+                Muted(t(S.SET_TRANSFER_UNAVAILABLE))
+                SecondaryButton(t(S.SET_DELETE_SHARED), onClick = {}, enabled = false)
+                Muted(t(S.SET_DELETE_SHARED_HELP))
             }
             EchoCard(tone = CardTone.Warm) {
                 Muted(t(S.SET_WITHDRAW_HELP))
@@ -103,9 +111,26 @@ fun SettingsScreen(vm: EchoViewModel) {
                 Text(t(S.SET_ABOUT), style = MaterialTheme.typography.titleSmall)
                 Muted(t(S.SET_ABOUT_BODY))
                 Muted(t(S.SET_DEMO_DATE, t.date(vm.today)))
+                SecondaryButton(t(S.SET_TUTORIAL), onClick = vm::openTutorial)
                 SecondaryButton(t(S.SET_RESET), onClick = { askReset = true })
             }
             Spacer(Modifier.width(8.dp))
         }
+    }
+}
+
+@Composable
+private fun PreferenceSwitch(title: String, checked: Boolean, onChange: (Boolean) -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().heightIn(min = 56.dp).toggleable(
+            value = checked,
+            role = Role.Switch,
+            onValueChange = onChange,
+        ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(title, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+        Spacer(Modifier.width(12.dp))
+        Switch(checked = checked, onCheckedChange = null)
     }
 }

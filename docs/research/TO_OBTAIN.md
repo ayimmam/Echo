@@ -2,6 +2,10 @@
 
 Updated 2026-10-03; historical resolutions retained. The first batch you supplied is in [`papers/`](papers/) and has been read into the audit. The table at the bottom shows what it resolved; the items below are still open.
 
+## 2026-10-05 Tanner/EQUIP follow-up
+
+Tanner’s supplied reply resolves the question of whether DART established pedagogical meaningfulness: it did not. It does not resolve local five-way performance or the observer protocol. Obtain the full Reinholz & Shah (2018) foundational methods paper listed on [EQUIP's about page](https://www.equip.ninja/about), local adviser review of a class-level no-recording adaptation, and the actual correspondence date for thesis citation. See [review and plan changes](TANNER_DART_EQUIP_FOLLOWUP.md). No contact, data upload or product integration has been performed.
+
 ## Still needed
 
 | # | Document | Where to get it | What it resolves | Priority |
@@ -52,3 +56,7 @@ Updated 2026-10-03; historical resolutions retained. The first batch you supplie
 | ModelArts and Cloud Connect service overviews | OBS/ModelArts same-region and no-encryption constraints; "Africa → AF-Johannesburg" |
 
 **Before open-sourcing:** the competition requires shortlisted entries to be public on GitHub or Gitee. `docs/research/papers/` contains publisher-copyrighted PDFs (Elsevier, ACM, University of Chicago Press, Routledge). Remove that folder, or keep research in a separate private repository, before making this repository public.
+
+## 2026-10-06 remaining decisions
+
+[ADR-018](../adr/018-measurement-evidence-and-sharing.md) needs a reviewed release-evidence protocol and a separately authorised automatic research intake. Confirm prior enrolment/consent records for each sharing purpose, in-country intake ownership/readiness, the new delivery estimate and local-language comprehension of defaults/Settings opt-outs. The Gazette's Article 8 was rechecked alongside the official ministry listing; institutional application and current implementing guidance remain open. VTC's current repository links newer BabyHuBERT work; review its full methods/licence/device feasibility only if it becomes a candidate, rather than expanding the June model scope now.

@@ -1,5 +1,9 @@
 # Security architecture — shared-hosting pilot
 
+> **Current local implementation, 2026-10-11:** [ADR-019](../adr/019-offline-recorded-reflection-pilot.md) adds device-only encrypted AAC and metadata, per-file Android Keystore keys, authenticated file identity, atomic commits, backup exclusions and 30-day expiry. The APK has no Internet permission. JVM crypto/storage tests pass; Android Keystore, backup and device behavior remain unverified. Profiles/settings persist separately, and force-stop/power-off delays physical expiry until execution resumes. These implemented local controls do not implement the server controls below. Local classroom audio is never a permitted server payload; no research upload path exists.
+
+> **2026-10-06 addition:** [ADR-018](../adr/018-measurement-evidence-and-sharing.md) and [sharing contract](../contracts/SHARING_AND_UI.md) require separate private-sync/research authorisation, purpose-scoped outboxes/tokens/ACKs, durable offline opt-out, prospective enablement, minimal intake and restore-safe withdrawal. Default-ON preferences never grant consent or model-release approval. [SHARE tests](../testing/EVIDENCE_SHARING_UI_TEST_PLAN.md) are required before either real-data path opens.
+
 2026-10-02. **Architecture requirements, not implemented controls.** Normative for the hosting revision in [ADR-015](../adr/015-capability-gated-hosting.md). User confirmed hosting capabilities are unknown and separate research infrastructure is not yet available. Draft [ADR-016](../adr/016-defence-scope-and-no-recording.md) removes Research Mode entirely. Personal-data sync is optional after the local slice; field use of phone-only storage needs the Article 22 decision.
 
 ## Trust boundaries and minimisation

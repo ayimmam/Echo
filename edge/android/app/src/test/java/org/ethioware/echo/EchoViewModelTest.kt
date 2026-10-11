@@ -6,7 +6,6 @@ import org.ethioware.echo.data.AdultConditions
 import org.ethioware.echo.data.AppLocale
 import org.ethioware.echo.data.FollowUpAnswer
 import org.ethioware.echo.data.MemoryStore
-import org.ethioware.echo.data.RemoteDeletion
 import org.ethioware.echo.domain.Phase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -45,6 +44,48 @@ class EchoViewModelTest {
         v.completeOnboarding()
         assertTrue(v.onboarded)
         assertEquals(v.today, v.consentOn)
+        assertTrue(v.tutorialVisible)
+        assertTrue(vm().tutorialVisible) // unfinished first-use guide survives a restart
+    }
+
+    @Test
+    fun `first use tutorial completes once and can be replayed`() {
+        val v = vm()
+        v.completeOnboarding()
+        repeat(EchoViewModel.TUTORIAL_PAGE_COUNT - 1) { v.nextTutorialPage() }
+        assertEquals(EchoViewModel.TUTORIAL_PAGE_COUNT - 1, v.tutorialPage)
+        v.previousTutorialPage()
+        assertEquals(EchoViewModel.TUTORIAL_PAGE_COUNT - 2, v.tutorialPage)
+        v.nextTutorialPage()
+        v.nextTutorialPage()
+        assertTrue(v.tutorialCompleted)
+        assertFalse(v.tutorialVisible)
+        assertFalse(vm().tutorialVisible)
+
+        v.openTutorial()
+        assertTrue(v.tutorialVisible)
+        assertEquals(0, v.tutorialPage)
+        v.dismissTutorial()
+        assertFalse(v.tutorialVisible)
+    }
+
+    @Test
+    fun `skipping tutorial persists and reset offers it again`() {
+        val v = vm()
+        v.completeOnboarding()
+        v.dismissTutorial()
+        assertFalse(vm().tutorialVisible)
+        v.resetDemo()
+        v.completeOnboarding()
+        assertTrue(v.tutorialVisible)
+    }
+
+    @Test
+    fun `existing onboarded state without tutorial flag gets the guide once`() {
+        store.put("state_v1", """{"v":2,"onboarded":true,"local_state":{}}""")
+        val v = vm()
+        assertTrue(v.onboarded)
+        assertTrue(v.tutorialVisible)
     }
 
     @Test
@@ -159,7 +200,6 @@ class EchoViewModelTest {
         assertTrue(v.withdrawn); assertFalse(v.onboarded)
         assertTrue(v.lessons.isEmpty()); assertNull(v.localState.chosen); assertNull(v.consentOn)
         assertNull(v.session); assertTrue(v.stack.isEmpty())
-        assertEquals(RemoteDeletion.NOT_NEEDED, v.remoteDeletion)
         val stored = store.get("state_v1")!!
         val ids = TestSupport.bundle().lessons.map { it.id }
         assertTrue("lesson ids remain in storage", ids.none { stored.contains(it) })
@@ -167,16 +207,13 @@ class EchoViewModelTest {
     }
 
     @Test
-    fun `withdrawal after enabling sync stays pending until acknowledged`() {
+    fun `withdrawal after enabling a preference still has no transfer path`() {
         val v = vm()
         v.setSync(true)
-        assertEquals(11, v.queuedIds.size)
+        assertTrue(v.queuedIds.isEmpty())
         v.withdraw()
-        assertEquals(RemoteDeletion.PENDING, v.remoteDeletion)
-        assertTrue(v.queuedIds.isEmpty()) // queued uploads are discarded
-        assertEquals(RemoteDeletion.PENDING, vm().remoteDeletion) // still pending after a restart
-        v.acknowledgeRemoteDeletion()
-        assertEquals(RemoteDeletion.CONFIRMED, v.remoteDeletion)
+        assertTrue(v.queuedIds.isEmpty())
+        assertTrue(vm().queuedIds.isEmpty())
     }
 
     @Test
@@ -201,20 +238,39 @@ class EchoViewModelTest {
     }
 
     @Test
-    fun `sync is opt-in and off by default`() {
+    fun `new setup starts preferences on but never queues data in the demo`() {
         val v = vm()
-        assertFalse(v.syncEnabled); assertTrue(v.queuedIds.isEmpty())
-        v.setSync(true)
+        assertFalse(v.syncEnabled)
+        v.completeOnboarding()
+        assertTrue(v.privateSyncEnabled)
+        assertTrue(v.researchContributionEnabled)
         val id = runLesson(v, 40, AdultConditions.SINGLE_ADULT)
-        assertTrue(id in v.queuedIds)
-        v.setSync(false)
+        assertNotNull(v.lessonById(id))
         assertTrue(v.queuedIds.isEmpty())
+        v.setPrivateSummarySync(false)
+        assertFalse(v.privateSyncEnabled)
+        assertTrue(v.researchContributionEnabled)
+        v.setResearchContribution(false)
+        assertFalse(v.researchContributionEnabled)
     }
 
     @Test
     fun `corrupt saved state falls back to bundled data instead of crashing`() {
         store.put("state_v1", "{ not json")
         val v = vm()
+        assertEquals(11, v.lessons.size)
+    }
+
+    @Test
+    fun `partial restore failure resets sharing preferences before returning to onboarding`() {
+        store.put(
+            "state_v1",
+            """{"v":2,"onboarded":true,"private_sync_enabled":true,"research_contribution_enabled":true,"sharing_preferences_initialized":true,"local_state":{},"saved_lessons":["broken"]}""",
+        )
+        val v = vm()
+        assertFalse(v.onboarded)
+        assertFalse(v.privateSyncEnabled)
+        assertFalse(v.researchContributionEnabled)
         assertEquals(11, v.lessons.size)
     }
 

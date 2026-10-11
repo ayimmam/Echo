@@ -59,7 +59,7 @@ fun OnboardingScreen(vm: EchoViewModel) {
                     }
                     1 -> {
                         Text(t(S.ONB_PRIVACY_TITLE), style = MaterialTheme.typography.headlineMedium)
-                        listOf(S.ONB_PRIVACY_1, S.ONB_PRIVACY_2, S.ONB_PRIVACY_3).forEach {
+                        listOf(S.ONB_PRIVACY_1, S.ONB_PRIVACY_2, S.ONB_PRIVACY_3, S.ONB_PRIVACY_4).forEach {
                             EchoCard(tone = CardTone.Calm) { Text(t(it), style = MaterialTheme.typography.bodyLarge) }
                         }
                     }

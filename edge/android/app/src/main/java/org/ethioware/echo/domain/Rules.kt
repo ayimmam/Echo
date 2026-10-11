@@ -40,13 +40,21 @@ data class WeekSummary(
     val weekStart: LocalDate,
     val lessons: List<LessonRecord>,
     val eligible: List<LessonRecord>,
+    val i1Eligible: List<LessonRecord>,
+    val i5Eligible: List<LessonRecord>,
     val eligibleDays: Int,
     val observationsReady: Boolean,
+    val i1Ready: Boolean,
+    val i5Ready: Boolean,
+    val i1Reason: String?,
+    val i5Reason: String?,
     val observedS: Double,
     /** Mean of per-lesson values over eligible lessons; only meaningful when [observationsReady]. */
     val i1Mean: Double?,
     val i5Mean: Double?,
     val meanCoverage: Double?,
+    val i1Coverage: Double?,
+    val i5Coverage: Double?,
 )
 
 /** Summarise one week of lessons for the chosen grade/subject and one spec version. */
@@ -57,6 +65,7 @@ fun summariseWeek(
     grade: String,
     subject: String,
     specVersion: Int,
+    allowSyntheticPreview: Boolean = false,
 ): WeekSummary {
     val lessons = allLessons
         .filter { weekStart(it.startedOn) == weekStart && it.grade == grade && it.subject == subject }
@@ -64,19 +73,91 @@ fun summariseWeek(
     val eligible = lessons.filter {
         it.specVersion == specVersion && lessonIneligibleReason(it, it.id in excludedIds) == null
     }
+    fun supported(metricId: String) = eligible.filter { record ->
+        val measure = if (metricId == "I1") record.i1 else record.i5
+        MetricEvidencePolicy.decide(record, metricId, measure, allowSyntheticPreview).available
+    }.let { records ->
+        val signatures = records.map { record ->
+            val measure = if (metricId == "I1") record.i1 else record.i5
+            listOf(
+                record.grade,
+                record.subject,
+                record.specVersion,
+                record.labelSchemaVersion,
+                measure.origin,
+                measure.methodVersion,
+                measure.labelSchemaVersion,
+                measure.modelArtifactSha256,
+                measure.featureConfigHash,
+                measure.postprocessHash,
+                measure.evidenceManifestHash,
+                measure.releaseId,
+                measure.sourceManifest,
+            )
+        }.distinct()
+        if (signatures.size <= 1) records else emptyList()
+    }
+    val i1Eligible = supported("I1")
+    val i5Eligible = supported("I5")
+    fun meetsThreshold(records: List<LessonRecord>) = records.size >= ObservationRules.MIN_LESSONS &&
+        records.map { it.startedOn }.toSet().size >= ObservationRules.MIN_DISTINCT_DAYS
+    val i1Ready = meetsThreshold(i1Eligible)
+    val i5Ready = meetsThreshold(i5Eligible)
     val days = eligible.map { it.startedOn }.toSet().size
-    val ready = eligible.size >= ObservationRules.MIN_LESSONS && days >= ObservationRules.MIN_DISTINCT_DAYS
-    fun mean(values: List<Double>) = if (ready && values.isNotEmpty()) values.average() else null
+    val ready = i1Ready && i5Ready
+    fun mean(records: List<LessonRecord>, selector: (LessonRecord) -> Double?) =
+        if (meetsThreshold(records)) records.mapNotNull(selector).takeIf { it.size == records.size }?.average() else null
+    fun unavailability(records: List<LessonRecord>, metricId: String): String? {
+        if (meetsThreshold(records)) return null
+        val supportedSignatures = eligible.mapNotNull { record ->
+            val measure = if (metricId == "I1") record.i1 else record.i5
+            if (!MetricEvidencePolicy.decide(record, metricId, measure, allowSyntheticPreview).available) null
+            else listOf(
+                record.grade,
+                record.subject,
+                record.specVersion,
+                record.labelSchemaVersion,
+                measure.origin,
+                measure.methodVersion,
+                measure.labelSchemaVersion,
+                measure.modelArtifactSha256,
+                measure.featureConfigHash,
+                measure.postprocessHash,
+                measure.evidenceManifestHash,
+                measure.releaseId,
+                measure.sourceManifest,
+            )
+        }.distinct()
+        if (supportedSignatures.size > 1) return "incompatible_provenance"
+        val decisions = eligible.map { record ->
+            MetricEvidencePolicy.decide(
+                record,
+                metricId,
+                if (metricId == "I1") record.i1 else record.i5,
+                allowSyntheticPreview,
+            )
+        }
+        return decisions.firstOrNull { !it.available && it.reason != "adult_context_not_confirmed" }?.reason
+            ?: "insufficient_observation"
+    }
     return WeekSummary(
         weekStart = weekStart,
         lessons = lessons,
         eligible = eligible,
+        i1Eligible = i1Eligible,
+        i5Eligible = i5Eligible,
         eligibleDays = days,
         observationsReady = ready,
+        i1Ready = i1Ready,
+        i5Ready = i5Ready,
+        i1Reason = unavailability(i1Eligible, "I1"),
+        i5Reason = unavailability(i5Eligible, "I5"),
         observedS = lessons.sumOf { it.capture.observedS },
-        i1Mean = mean(eligible.mapNotNull { it.i1.value }),
-        i5Mean = mean(eligible.mapNotNull { it.i5.value }),
+        i1Mean = mean(i1Eligible) { it.i1.value },
+        i5Mean = mean(i5Eligible) { it.i5.value },
         meanCoverage = if (ready) eligible.map { it.capture.coverage }.average() else null,
+        i1Coverage = if (i1Ready) i1Eligible.map { it.capture.coverage }.average() else null,
+        i5Coverage = if (i5Ready) i5Eligible.map { it.capture.coverage }.average() else null,
     )
 }
 

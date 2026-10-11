@@ -39,8 +39,13 @@ def render_dashboard(cells: list) -> str:
     for c in cells:
         label = escape(GRADE_LABEL.get(c["grade"], c["grade"]))
         if c["suppressed"]:
+            reason = (
+                f"Hidden: fewer than {K_MIN} teachers"
+                if c.get("reason") == f"fewer_than_{K_MIN}_teachers"
+                else "Hidden: measures do not share a released evidence path"
+            )
             rows.append(f'    <tr><th scope="row">{label}</th>'
-                        f'<td class="hidden" colspan="3">Hidden: fewer than {K_MIN} teachers</td></tr>')
+                        f'<td class="hidden" colspan="3">{escape(reason)}</td></tr>')
         else:
             rows.append(f'    <tr><th scope="row">{label}</th><td>{c["teachers"]}</td>'
                         f'<td>{c["I1_mean"]:.0%}</td><td>{c["I5_mean"]:.1f}</td></tr>')
@@ -80,12 +85,15 @@ def main() -> int:
     try:
         settings = demo_settings.load()
         app = make_app(demo_settings.load_records(settings))
-    except (demo_settings.ConfigError, OSError, ValueError) as exc:
+        with make_server(settings.host, settings.port, app) as server:
+            print(f"Synthetic demo on http://{settings.host}:{settings.port}/  (Ctrl-C to stop)", flush=True)
+            try:
+                server.serve_forever()
+            except KeyboardInterrupt:
+                pass
+    except (demo_settings.ConfigError, OSError, ValueError, KeyError, TypeError) as exc:
         print(f"refusing to start: {exc}", file=sys.stderr)
         return 1
-    print(f"Synthetic demo on http://{settings.host}:{settings.port}/  (Ctrl-C to stop)")
-    with make_server(settings.host, settings.port, app) as server:
-        server.serve_forever()
     return 0
 
 
