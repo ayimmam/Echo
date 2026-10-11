@@ -114,7 +114,9 @@ fun PilotApp(vm: PilotViewModel, openDemo: () -> Unit) {
                             Text("One local reminder on the weekend, when Android permits background work. No internet required.", style = MaterialTheme.typography.bodySmall)
                             Panel("Privacy and retention") {
                                 Text("Audio and reflections are encrypted locally. Collected data expires after 30 days; deletion runs on app opening and scheduled maintenance. If the phone is off or Echo is force-stopped, deletion resumes when Android allows it.")
-                                Text("Research sharing is unavailable. No server, API keys, analytics SDK or upload path is connected.")
+                                Text(vm.researchStatus)
+                                if (vm.researchOrigin.isBlank()) Text("Research server not configured in this build. No data is sent.")
+                                else ResearchSettings(vm, state.running)
                                 Text("Saved class settings remain until you edit them or clear app data. System backups are disabled.")
                                 DeleteAll(vm, state.running)
                             }
@@ -277,4 +279,21 @@ fun PilotApp(vm: PilotViewModel, openDemo: () -> Unit) {
         text = { Text("All local audio, lesson notes and weekly reflections will be permanently removed. Class settings remain.") },
         confirmButton = { TextButton(onClick = { confirming = false; vm.clearCollectedData() }) { Text("Delete all") } },
         dismissButton = { TextButton(onClick = { confirming = false }) { Text("Cancel") } })
+}
+
+@Composable private fun ResearchSettings(vm: PilotViewModel, recording: Boolean) {
+    var code by remember { mutableStateOf("") }
+    var agreed by remember { mutableStateOf(false) }
+    Text("Approved research server: ${vm.researchOrigin}")
+    Text("Optional study enrollment sends only grade, language, class-size band, recording totals, chosen practice and usefulness rating. These summaries may still identify a participant in a small study. Audio, class names and private notes stay here. Separate study consent is required.")
+    OutlinedTextField(value=code,onValueChange={code=it},label={Text("Private enrollment code")},singleLine=true,enabled=!recording && !vm.busy)
+    Row(verticalAlignment=Alignment.CenterVertically) {
+        Checkbox(checked=agreed,onCheckedChange={agreed=it},enabled=!recording && !vm.busy)
+        Text("I have reviewed and agreed to the separate study consent.")
+    }
+    Button(onClick={vm.enrollResearch(code);code="";agreed=false},enabled=agreed && code.length in 30..100 && !recording && !vm.busy) {Text("Enroll in research")}
+    OutlinedButton(onClick=vm::submitResearchReview,enabled=vm.weekly.isNotEmpty() && !recording && !vm.busy) {Text("Submit selected weekly review")}
+    OutlinedButton(onClick=vm::syncResearch,enabled=!recording && !vm.busy) {Text("Retry research transfer")}
+    OutlinedButton(onClick=vm::withdrawResearch,enabled=!recording && !vm.busy) {Text("Stop sharing and withdraw")}
+    Text("Withdrawal clears queued summaries immediately. Remote deletion waits for connectivity; all records also expire within 30 days. Deleting or excluding lessons stops enrollment to retract any submitted summary.")
 }

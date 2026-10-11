@@ -1,0 +1,4 @@
+# Use provider-supported private environment loading; do not put secrets in cron arguments.
+# Example wrapper should export /etc/echo/pilot.env and exec commands from the private venv.
+*/15 * * * * /srv/echo/bin/pilot-manage purge_research
+5 * * * * /srv/echo/bin/pilot-manage research_status

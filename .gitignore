@@ -23,3 +23,6 @@ __pycache__/
 .venv/
 .pytest_cache/
 # Copyrighted PDFs already tracked are NOT removed by ignore rules.
+/server/pilot/staticfiles/
+/server/pilot/development.sqlite3
+**/.kotlin/

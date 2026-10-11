@@ -1,5 +1,7 @@
 # Zergaw shared-hosting target
 
+> **2026-10-11 stack selection:** [ADR-020](../../../docs/adr/020-provider-independent-pilot-infrastructure.md) implements Django/PostgreSQL and WSGI/ASGI gateways. The earlier alternatives below are historical candidates; only the implemented stack can be deployed by this release. Verify Zergaw supports it or use an approved Ethiopian VPS. See the [current deployment guide](../django/README.md).
+
 Preferred budget candidate, not yet verified. The user confirmed on 2026-10-02 that runtime, database and cron support are unknown. A screenshot advertising Python/SSH/SSL/100 GB cannot determine ASGI/WSGI, root access, process management or tenant isolation.
 
 ## Select one deployment path

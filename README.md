@@ -2,7 +2,7 @@
 
 Echo is an Android project for private weekly teacher reflection in Ethiopian primary classrooms. The intended experience is simple: save class details once, connect a microphone, tap Record, then Stop; review a short visual reflection and choose one practice for next week.
 
-**Current status — 2026-10-11:** the launcher implements real offline recording and local reflection for development testing. Automated checks pass, but device behavior and classroom suitability have not been validated. Automatic pedagogical interpretation, reviewed non-English content and research sharing remain unimplemented.
+**Current status — 2026-10-11:** the launcher implements real offline recording and local reflection for development testing. Automated checks pass, but device behavior and classroom suitability have not been validated. Provider-independent Django/PostgreSQL research infrastructure, an opt-in encrypted Android queue and deferred local signal processing are now implemented. Automatic pedagogical interpretation and reviewed non-English content remain unimplemented; hosting and device activation still need validation.
 
 ## Pilot brief
 
@@ -49,7 +49,7 @@ flowchart TD
 
 Audio is encoded at 16 kHz mono, AAC-LC 32 kbit/s, into approximately 30-second chunks, then encrypted with AES-GCM and per-file Android Keystore keys. Files are app-private and excluded from backup; no plaintext audio temporary file is created. Abrupt process termination can lose the uncommitted chunk. Playback decrypts one excerpt at a time into RAM.
 
-The APK has microphone/foreground-service permissions and **no Internet permission**. It sends no audio, notes, ratings or summaries. Expiry is checked on reads/playback and scheduled cleanup; a powered-off or force-stopped phone cannot physically delete files until execution resumes. See [ADR-019](docs/adr/019-offline-recorded-reflection-pilot.md) for recovery and retention details.
+The APK has microphone/foreground-service and Internet permissions, with cleartext traffic disabled. The default build has no research origin and sends nothing. A connected build binds one approved HTTPS host and supports separately authorized numeric research summaries; audio and private notes never leave the phone. Expiry is checked on reads/playback and scheduled cleanup; a powered-off or force-stopped phone cannot physically delete files until execution resumes. See [ADR-019](docs/adr/019-offline-recorded-reflection-pilot.md) for local recovery and [ADR-020](docs/adr/020-provider-independent-pilot-infrastructure.md) for research/hosting boundaries.
 
 ## Run and verify
 
@@ -73,7 +73,11 @@ python3 -m unittest discover -s tests/demo -v
 python3 -m unittest discover -s tests/infrastructure -v
 ```
 
-Recorded verification on 2026-10-11: **67 Android JVM tests and 47 Python tests passed**; debug assembly and lint succeeded with existing warnings. No Android device/emulator was connected. Microphone routing, screen-off continuity, playback, Android Keystore, UI rendering and battery/memory behavior remain device-test requirements, not proven results.
+Recorded verification on 2026-10-11: **82 Android JVM tests, 29 research-backend PostgreSQL tests and 47 existing Python tests passed**; debug assembly and lint succeeded with existing warnings. No Android device/emulator was connected. Microphone routing, screen-off continuity, playback, Android Keystore, UI rendering and battery/memory behavior remain device-test requirements, not proven results.
+
+## Research infrastructure
+
+The [research service](server/pilot/README.md) implements one-time consent enrollment, individual credentials, strict summary admission, transactional withdrawal, expiry jobs, restricted aggregates and access-only backups. Follow the [non-Huawei infrastructure runbook](docs/testing/NON_HUAWEI_INFRASTRUCTURE_RUNBOOK.md) for setup and activation. No Huawei account or runtime dependency is required.
 
 ## Separate synthetic demo
 
@@ -93,8 +97,8 @@ Open `http://127.0.0.1:8000/`. This server refuses public binding and has no pro
 2. Obtain educator review and appropriate school/research authorization. Finalize the pilot protocol, adoption follow-up and observation method.
 3. Review and localize UI/coaching into all intended languages. Addis AI and Hasab AI are requested future integrations, not configured services; no classroom material is sent to them.
 4. Validate a licensed compact on-device analysis pipeline before displaying acoustic or pedagogical metrics. Evidence gates remain fail-closed, including Grade 4; valid class metadata does not release a model.
-5. Define and implement separately authorized, minimized research summaries, offline outbox/intake, remote retention and deletion. Small-pilot summaries cannot be assumed anonymous merely because names are removed.
-6. Verify Zergaw capabilities before selecting/deploying the server stack. Keep any Huawei competition deployment synthetic and isolated; neither cloud deployment currently exists.
+5. Validate and activate the implemented research-summary service and Android queue against the approved Ethiopian host. Verify provider backup/WAL/log deletion and operational alerting; small-pilot summaries remain pseudonymous.
+6. Verify Zergaw supports the selected Django/PostgreSQL stack before deployment, or use an approved Ethiopian VPS. Competition implementation continues in the separate [Huawei repository](https://github.com/ayimmam/Echo-Huawei-Innovation-Competition).
 
 ## Documentation
 
