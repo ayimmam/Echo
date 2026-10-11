@@ -4,6 +4,8 @@ Updated 2026-10-11. Start with the [project README](../README.md). The current b
 
 | Need | Read |
 |---|---|
+| Non-Huawei research infrastructure and activation | [Infrastructure runbook](testing/NON_HUAWEI_INFRASTRUCTURE_RUNBOOK.md), [ADR-020](adr/020-provider-independent-pilot-infrastructure.md), [research contract](contracts/RESEARCH_SUMMARY_V1.md) |
+| Innovation Competition requirements and delivery plan | [Criteria, architecture, work packages, gates and submissions](competition/INNOVATION_IMPLEMENTATION_PLAN.md) |
 | Agreed pilot scope, features and limitations | [Project overview](../README.md) |
 | Build, install and source responsibilities | [Android guide](../edge/android/README.md) and [code map](research/CODEBASE_STRUCTURE.md) |
 | Current architecture and data retention decision | [ADR-019](adr/019-offline-recorded-reflection-pilot.md) |

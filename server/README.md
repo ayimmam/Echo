@@ -1,31 +1,10 @@
 # Pilot and synthetic-demo backend
 
-> **Implementation status — 2026-10-11:** The synthetic-only WSGI dashboard now checks schema-v4 measurement provenance and suppresses incompatible evidence paths. It remains read-only, loopback-only and separate from a production backend. Purpose grants, outboxes, transfer services and production admission remain unimplemented.
+The real provider-independent research service is implemented in [pilot/](pilot/README.md): Django 5.2 LTS, PostgreSQL, WSGI/ASGI, consent-bound enrollment, strict summary intake, withdrawal, retention and restricted aggregates. It has no Huawei dependency. Follow the [infrastructure runbook](../docs/testing/NON_HUAWEI_INFRASTRUCTURE_RUNBOOK.md) and [ADR-020](../docs/adr/020-provider-independent-pilot-infrastructure.md).
 
-> The Android launcher now records encrypted audio locally under [ADR-019](../docs/adr/019-offline-recorded-reflection-pilot.md), but has no Internet permission and is not connected to this server. Audio and private notes are not server payloads. Future minimized research summaries require authorization and disclosure review; removing names does not ensure anonymity in an eight-teacher pilot.
+Zergaw must support the selected stack and pass the existing capability/security/retention checks before deployment; otherwise use a verified Ethiopian VPS. Development/test use can run locally with disposable SQLite. No external service is deployed by the code, and Android defaults to an empty research origin.
 
-> [ADR-018](../docs/adr/018-measurement-evidence-and-sharing.md) plans provenance/evidence admission and two purpose-scoped sharing paths. A narrow research intake is planned for the approved separate in-country research environment using the selected stack; it cannot reuse app tokens or expose the private-report store.
-
-No production backend is implemented. The only runnable server component is the read-only synthetic WSGI demo stub described below. Framework selection is conditional: FastAPI if managed ASGI is verified, Django if only managed WSGI is available. PostgreSQL is preferred; confirmed supported MySQL/MariaDB may be selected with Django after transaction and recovery tests. Implement one combination, not all alternatives.
-
-| Directory | Responsibility / dependency boundary |
-|---|---|
-| `api/` | HTTP validation, authenticated principal, calls to domain use cases; no direct bypass of scope checks |
-| `domain/` | Enrolment/cohort rules, immutable lesson ingest, reports and withdrawal; no web-framework imports |
-| `security/` | Central authorisation policy, credential/session lifecycle and redacted audit contracts |
-| `db/migrations/` | Chosen-engine migrations and scoped repositories; separate migration privilege |
-| `jobs/` | Bounded cron-invoked CLI jobs calling the same use cases, DB leases/checkpoints, retry/idempotency |
-| `templates/` | Rendered dashboard/report pages, autoescaping, no separate SPA build |
-| `config/` | Environment-specific validated settings and startup refusal conditions |
-| `tests/` | Future API/database/security integration tests on synthetic disposable fixtures |
-
-Dependency direction: HTTP/CLI → authorised use cases → scoped repositories. No public research-audio endpoints or training imports. The server never needs the ML framework installed to accept indicator records. Framework-native auth/session/CSRF mechanisms should be reused; do not create custom cryptography or a second generic web framework.
-
-Under [ADR-016](../docs/adr/016-defence-scope-and-no-recording.md) and [ADR-018](../docs/adr/018-measurement-evidence-and-sharing.md), data transfer remains a later gated slice after local reports; default-ON preferences in the Android demo do not transmit anything. Live browser-teacher/director/official accounts are deferred. Templates serve only synthetic competition previews. Local practice/follow-up/exclusion preferences are not uploaded or overridden by server reports. No server-side recording or Research Mode service exists. Device-only recording is implemented separately under ADR-019.
-
-[ADR-017](../docs/adr/017-research-data-access-and-publication.md) adds approved author research access in a separate in-country workspace, not a researcher role on this backend or permission to dump teacher records. App/sync consent does not permit research reuse. The minimum study route is a separately consented, checked numeric form; no research portal/export endpoint is required by June. Anonymous scholarly output review does not enable real official accounts or pilot imports to the Huawei demo.
-
-See [security architecture](../docs/security/ARCHITECTURE.md), [ADR-015](../docs/adr/015-capability-gated-hosting.md) and [hosting target](../infra/in-country/shared-hosting/README.md).
+The service never accepts classroom audio, transcripts, notes, names or model-derived pedagogy claims. Research summaries remain pseudonymous. Existing top-level domain/security/jobs contracts describe earlier broader backend proposals; pilot/ is the actual narrow research implementation. Browser teacher/director/official report accounts remain outside this slice.
 
 ## Synthetic demo stub (throwaway)
 

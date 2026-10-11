@@ -32,7 +32,7 @@ All current pilot UI/coaching is English. Non-English preferences disclose the E
 
 Playback decrypts an excerpt into RAM and stops on backgrounding, recording or deletion. Collected records expire after 30 days; class/settings configuration is separate. Cleanup runs on reads, resume, foreground refresh and a persisted daily job. Force-stop/power-off delays physical cleanup until the app can run. Weekend reminders are opt-in and best-effort, not exact alarms.
 
-The manifest includes recording, foreground-service, notification, wake-lock and boot permissions, but no Internet permission. No research transfer, translation API or cloud service is connected. Keystore/ciphertext failures surface as errors rather than replacing real data with fixtures.
+The manifest includes Internet permission and forbids cleartext traffic. Research sharing remains disconnected by default; a connected build binds a reviewed HTTPS origin via the echoResearchOrigin Gradle property. Enrollment requires a private individual code and separate study acknowledgement. Only explicitly submitted numeric/enumerated reviews enter the encrypted queue; withdrawal takes priority. No audio/private note or translation API is connected. Keystore/ciphertext failures surface as errors rather than replacing real data with fixtures.
 
 ## Code map
 
@@ -56,6 +56,6 @@ The separate synthetic demo opens through Settings. Its fixture values, language
 
 ## Verification and remaining work
 
-On 2026-10-11, 67 JVM tests passed, debug assembly succeeded and lint had no errors (existing warnings remain). JVM tests cover storage/recovery/retention, encryption envelopes and synthetic evidence rules. They do not execute Android Keystore, AudioRecord, MediaCodec or rendered UI.
+On 2026-10-11, 82 JVM tests passed, debug assembly succeeded and lint had no errors (existing warnings remain). JVM tests cover storage/recovery/retention, encryption envelopes and synthetic evidence rules. They do not execute Android Keystore, AudioRecord, MediaCodec or rendered UI.
 
-No device/emulator was connected for that verification. Use the [offline runbook](../../docs/testing/OFFLINE_PILOT_RUNBOOK.md) for device acceptance and the [synthetic runbook](../../docs/testing/DEMO_DEPLOYMENT_AND_MANUAL_TESTING.md) for fixture testing. Local inference, reviewed translations, research enrollment/transfer and cloud deployment remain future work.
+No device/emulator was connected for that verification. Use the [offline runbook](../../docs/testing/OFFLINE_PILOT_RUNBOOK.md) for device acceptance and the [synthetic runbook](../../docs/testing/DEMO_DEPLOYMENT_AND_MANUAL_TESTING.md) for fixture testing. Deferred local capture-signal analysis and research enrollment/transfer are implemented. Learned inference, reviewed translations, real hosting activation and device validation remain future work. See the [infrastructure runbook](../../docs/testing/NON_HUAWEI_INFRASTRUCTURE_RUNBOOK.md).

@@ -1,5 +1,7 @@
 # Simpler UI and automatic derived-data sharing contract
 
+> **2026-10-11 implementation update:** [ADR-020](../adr/020-provider-independent-pilot-infrastructure.md) adds provider-independent Django/PostgreSQL research infrastructure, an optional Android HTTPS outbox, priority withdrawal and deferred local signal analysis. Earlier no-network/no-intake statements below describe the pre-ADR-020 baseline. Default builds remain disconnected; learned pedagogy inference and reviewed translations remain pending.
+
 > **Applicability, 2026-10-11:** The tables below describe the earlier synthetic UI and proposed sharing contract, not the current recording launcher. Under [ADR-019](../adr/019-offline-recorded-reflection-pilot.md), the real flow saves encrypted audio locally on Stop, offers duration-based reflection and sends nothing. Default-on demo preferences do not enroll teachers in research. Future minimized summary sharing requires its own implemented authorization, payload, retention and deletion controls. See the [current workflow](../../edge/android/README.md).
 
 2026-10-06. User-directed planning revision under [ADR-018](../adr/018-measurement-evidence-and-sharing.md). On 2026-10-09 the Android demo implemented the three-destination UI, independent persisted preferences and default-ON behavior for a new setup. **No grants, outboxes, deletion endpoint or network transfer are implemented**; the demo states this and sends nothing. Capture, consent and infrastructure prerequisites still apply.

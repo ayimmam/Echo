@@ -157,10 +157,13 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
         val row = lesson(id)
         check(now() < row.expiresAt)
         require(context in CONTEXTS && note.length <= 500)
+        if (excluded && !row.excluded) ResearchQueue(this).withdraw()
         save(row.copy(context = context, note = note, excluded = excluded))
     }
     @Synchronized fun deleteLesson(id: String) {
-        files.names().filter { it == "lesson.$id" || it.startsWith("audio.$id.") }.forEach(files::delete)
+        // A deletion after an acknowledged summary invalidates its research use too.
+        if (researchRead("config")?.optBoolean("enabled", false) == true) ResearchQueue(this).withdraw()
+        files.names().filter { it == "lesson.$id" || it == "analysis.$id" || it.startsWith("audio.$id.") }.forEach(files::delete)
     }
     @Synchronized fun reflection(classId: String, week: LocalDate): JSONObject {
         expire()
@@ -176,8 +179,18 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
         val time = now()
         files.names().filter { it.startsWith("lesson.") }.forEach {
             val row = objectAt(it)?.let(LocalLesson::parse) ?: return@forEach
-            if (time >= row.expiresAt) deleteLesson(row.id)
+            if (time >= row.expiresAt) files.names().filter { name -> name == "lesson.${row.id}" || name == "analysis.${row.id}" || name.startsWith("audio.${row.id}.") }.forEach(files::delete)
         }
+        files.names().filter { it.startsWith("analysis.") }.forEach { name ->
+            val value = objectAt(name) ?: return@forEach
+            val id = name.removePrefix("analysis.")
+            if (time >= value.getLong("created") + RETENTION_MS || objectAt("lesson.$id") == null) files.delete(name)
+        }
+        researchNames().filter { it.startsWith("item.") }.forEach { name ->
+            val row = researchRead(name) ?: return@forEach
+            if (time >= row.getJSONObject("payload").getLong("collected_at_ms") + RETENTION_MS) researchDelete(name)
+        }
+        researchRead("config")?.let { if (time >= it.optLong("expires", 0)) researchNames().forEach(::researchDelete) }
         files.names().filter { it.startsWith("reflection.") }.forEach {
             val row = objectAt(it) ?: return@forEach
             if (time >= row.getLong("created") + RETENTION_MS) files.delete(it)
@@ -196,8 +209,29 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
         }
     }
     @Synchronized fun clearCollectedData() {
-        files.names().filter { it.startsWith("audio.") || it.startsWith("lesson.") || it.startsWith("reflection.") }.forEach(files::delete)
+        ResearchQueue(this).withdraw()
+        files.names().filter { it.startsWith("audio.") || it.startsWith("lesson.") || it.startsWith("reflection.") || it.startsWith("analysis.") }.forEach(files::delete)
     }
+    @Synchronized fun analyzeSignal(id: String): JSONObject? {
+        expire()
+        val data = objectAt("lesson.$id") ?: return null
+        val row = LocalLesson.parse(data)
+        if (row.status == "recording") return null
+        val result = SignalAnalysis.build(row)
+        put("analysis.$id",result)
+        return result
+    }
+    @Synchronized fun signalAnalysis(id: String): JSONObject? {
+        expire()
+        return objectAt("analysis.$id")
+    }
+    @Synchronized fun researchRead(name: String): JSONObject? = objectAt("research.$name")
+    @Synchronized fun researchWrite(name: String, value: JSONObject) {
+        require(name.matches(Regex("[a-zA-Z0-9.\\-]+")))
+        put("research.$name", value)
+    }
+    @Synchronized fun researchDelete(name: String) = files.delete("research.$name")
+    @Synchronized fun researchNames(): List<String> = files.names().filter { it.startsWith("research.") }.map { it.removePrefix("research.") }
     companion object {
         val CONTEXTS = listOf("Not specified", "Teacher modeling", "Whole-class practice", "Partner or group work", "Independent practice", "Other adult or recorded audio")
     }

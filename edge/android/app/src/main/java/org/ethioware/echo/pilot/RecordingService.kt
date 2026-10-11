@@ -219,7 +219,7 @@ class RecordingService : Service() {
                 runCatching { store?.finish(row.id, reason) }.onFailure { reason = "Could not finalize the lesson. Completed chunks will be recovered on restart." }
             }
             publish(RecordingStatus(message = if (reason.isEmpty()) "Lesson saved on this phone." else reason, lessonId = lesson?.id))
-            main.post { stopForeground(STOP_FOREGROUND_REMOVE); stopSelf() }
+            main.post { LocalAnalysis.schedule(this); stopForeground(STOP_FOREGROUND_REMOVE); stopSelf() }
         }
     }
     override fun onDestroy() { stop.set(true); super.onDestroy() }
