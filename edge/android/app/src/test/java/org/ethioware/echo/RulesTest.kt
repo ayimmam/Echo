@@ -28,6 +28,17 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class RulesTest {
+    @Test
+    fun `grade four is recognized without enabling synthetic metrics in real use`() {
+        val source = TestSupport.bundle().lessons.first {
+            MetricEvidencePolicy.decide(it, "I1", it.i1, true).available
+        }
+        val gradeFour = source.copy(grade = "4")
+        assertTrue(MetricEvidencePolicy.decide(gradeFour, "I1", gradeFour.i1, true).available)
+        assertFalse(MetricEvidencePolicy.decide(gradeFour, "I1", gradeFour.i1, false).available)
+        assertTrue(MetricEvidencePolicy.releases.isEmpty())
+    }
+
     private fun record(
         observed: Double = 2400.0,
         coverage: Double = 1.0,

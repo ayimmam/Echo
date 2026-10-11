@@ -1,6 +1,6 @@
 # Synthetic demo: local deployment and manual testing
 
-This runbook is for the **offline Android reflection demo** and the **read-only synthetic dashboard** in this repository. Use only the checked-in synthetic fixtures. Neither component is a field build: the phone does not open a microphone, run a model, encrypt its demo state or send data; the dashboard has no accounts, ingest or production hosting configuration. There is no production deployment command in this repository.
+This runbook is for the **separate synthetic Android activity** and the **read-only synthetic dashboard**. Updated 2026-10-11. The launcher now opens real local recording: use the [offline runbook](OFFLINE_PILOT_RUNBOOK.md) for that flow. The synthetic activity uses only checked-in fixtures and does not open the microphone, run a model, encrypt its demo state or send data. Its containing APK does have recording permissions and encrypted storage for the separate real flow. The dashboard has no accounts, ingest or production hosting configuration.
 
 ## 1. Prepare and run automated checks
 
@@ -36,7 +36,7 @@ cd edge/android
 ./gradlew :app:installDebug
 ```
 
-Use **Settings → Reset demo data** to return to first launch. This deletes your local demo choices and restores seeded synthetic lessons. The fixture's fixed “today” is **Friday 6 November 2026**; it intentionally does not follow the phone clock.
+After launch, use **Settings → Open separate synthetic demo** to enter the fixture activity. All actions in the table below refer to that activity. Inside it, use **Settings → Reset demo data** to return to its first launch; this does not reset the separate real recording store. This deletes your local demo choices and restores seeded synthetic lessons. The fixture's fixed “today” is **Friday 6 November 2026**; it intentionally does not follow the phone clock.
 
 Record the device model, Android version/API, app commit, test date and pass/fail for each row. Use no real names, classrooms, audio or participant data.
 
@@ -55,7 +55,7 @@ Record the device model, Android version/API, app commit, test date and pass/fai
 | Change the phone between light and dark appearance while the app is open and after relaunch. | The app and system-bar icons retain the same readable light appearance in both device modes. |
 | Save a demo lesson, relaunch, then use **Withdraw** in Settings and relaunch again. | Saved demo state persists before withdrawal. Withdrawal empties local lessons, choices and preferences and stays withdrawn after relaunch. Its message says local-only; **Start again** restores the synthetic setup. |
 
-Also inspect the installed app's permissions in Android Settings: it should have **no microphone or internet permission**. These manual steps verify user-visible behavior; they do not establish accessibility certification, field validity or Android performance on the target 2 GB phone.
+Inspect the installed APK's permissions: microphone permission is declared for the real recording flow, and Internet permission is absent. Entering or exercising the synthetic activity must not request microphone access or start capture. Do not use absence of microphone permission as a demo acceptance criterion. These manual steps verify user-visible behavior; they do not establish accessibility certification, field validity or Android performance on the target 2 GB phone.
 
 ## 3. Run and inspect the dashboard locally
 
@@ -83,4 +83,4 @@ There is **no implemented production backend, sync path, model release, real das
 python3 tools/check-hosting/check_hosting.py infra/in-country/shared-hosting/capabilities.local.json
 ```
 
-Before a field build or external hosting, complete the relevant G0–G5 gates in the [post-implementation plan](POST_IMPLEMENTATION_TEST_PLAN.md): approved cohort/consent and Article 22 decisions, selected and provisioned in-country host where applicable, implemented security and withdrawal paths, released model evidence for each metric, device measurements, and the HOST/SEC and EVID/SHARE/UI procedures. Keep the competition's synthetic deployment separate from any pilot or research data. Until those components and gates exist, only the local synthetic demo steps above are executable.
+Before a field build or external hosting, complete the relevant G0–G5 gates in the [post-implementation plan](POST_IMPLEMENTATION_TEST_PLAN.md): approved cohort/consent and Article 22 decisions, selected and provisioned in-country host where applicable, implemented security and withdrawal paths, released model evidence for each metric, device measurements, and the HOST/SEC and EVID/SHARE/UI procedures. Keep the competition's synthetic deployment separate from any pilot or research data. The local synthetic steps above and the separate real-recording development checks in the [offline runbook](OFFLINE_PILOT_RUNBOOK.md) are executable. Neither establishes field readiness. Reconcile historical G0–G5 cohort/capture assumptions with [ADR-019](../adr/019-offline-recorded-reflection-pilot.md).

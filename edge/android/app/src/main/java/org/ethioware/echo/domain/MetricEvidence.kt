@@ -125,7 +125,7 @@ object MetricEvidencePolicy {
 
     private fun LessonRecord.cohortKey(): String? = when (grade) {
         "STEM" -> "stem_adult"
-        "O", "1", "2", "3" -> "early_grade"
+        "O", "1", "2", "3", "4" -> "early_grade"
         else -> null
     }
 }

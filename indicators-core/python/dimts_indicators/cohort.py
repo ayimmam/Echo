@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 SUPPORTED_COHORTS = ("early_grade", "undergraduate_stem")
-EARLY_GRADE_GRADES = ("O", "1", "2", "3")
+EARLY_GRADE_GRADES = ("O", "1", "2", "3", "4")
 
 
 def validate_context(request: dict) -> dict:

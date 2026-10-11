@@ -1,35 +1,24 @@
 package org.ethioware.echo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.ethioware.echo.data.DemoRepository
-import org.ethioware.echo.data.SharedPrefsStore
+import org.ethioware.echo.pilot.PilotApp
+import org.ethioware.echo.pilot.PilotViewModel
 
 class MainActivity : ComponentActivity() {
-
-    private val viewModel: EchoViewModel by lazy {
-        val app = applicationContext
-        ViewModelProvider(
-            this,
-            object : ViewModelProvider.Factory {
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T =
-                    EchoViewModel(DemoRepository.fromAssets(app), SharedPrefsStore(app)) as T
-            },
-        )[EchoViewModel::class.java]
-    }
-
+    private val model by lazy { ViewModelProvider(this)[PilotViewModel::class.java] }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT),
-            navigationBarStyle = SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT),
-        )
-        setContent { EchoApp(viewModel) }
+        enableEdgeToEdge()
+        if (intent.getBooleanExtra("reflection", false)) model.tab = 1
+        setContent { PilotApp(model) { startActivity(Intent(this, SyntheticDemoActivity::class.java)) } }
+    }
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        if (intent.getBooleanExtra("reflection", false)) { model.tab = 1; model.refresh() }
     }
 }

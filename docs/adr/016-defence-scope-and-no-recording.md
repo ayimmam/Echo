@@ -1,5 +1,7 @@
 # ADR-016: Defence scope, offline reflection and no persisted research audio
 
+> **Scope superseded for the local flow, 2026-10-10:** [ADR-019](019-offline-recorded-reflection-pilot.md) replaces the RAM-only/no-persisted-audio restriction with encrypted, device-only recording and 30-day retention for the Grades 1–4 Hawassa pilot. This ADR records the earlier brief; its Grade 2/STEM-first sequence is not the current pilot plan. Evidence, authorization and hosting requirements remain applicable where compatible. No audio export is authorized.
+
 > **2026-10-06 amendment:** [ADR-018](018-measurement-evidence-and-sharing.md) changes sharing preferences and UI, adds evidence contracts and automatic minimal research contribution after authorisation. Coarse-model/Grade 2/no-recording scope remains the basis.
 
 Date: 2026-10-03. Status: **Draft architectural decision from the requested feature review; current planning baseline, not implementation, ethics or deployment approval.**

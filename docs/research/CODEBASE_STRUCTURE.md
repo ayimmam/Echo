@@ -1,121 +1,32 @@
-# Codebase structure — Dimts
+# Current codebase structure
 
-> **2026-10-09 implementation note:** the Android demo now has Today / Reflection / Settings, independent persisted sharing preferences, a v4 provenance envelope and fail-closed per-metric release checks. The Python reference has matching evidence decisions and the synthetic dashboard rejects non-synthetic or incompatible records. No model metric is released, and there is still no capture, authorisation, upload, selected backend or live deployment. The dated October 2 tree below is historical.
+Updated 2026-10-11. This is the implementation map for [ADR-019](../adr/019-offline-recorded-reflection-pilot.md). The [earlier architecture overview](../archive/ARCHITECTURE_OVERVIEW_PRE_ADR019.md) preserves the previous proposed layout. Presence of a directory or contract does not imply a deployed service.
 
-Updated 2026-10-02. [ADR-015](../adr/015-capability-gated-hosting.md) adopts the structure and security contracts below. Runtime, database and deployment remain conditional on Zergaw's confirmed capabilities. The user authorised scaffolding only, with no product features. Research infrastructure is not yet available; Research Mode is subsequently **removed** by draft [ADR-016](../adr/016-defence-scope-and-no-recording.md); retained directories do not authorise a recording service.
-
-## Current layout and status
-
-```text
-Echo/
-├── docs/
-│   ├── adr/015-capability-gated-hosting.md
-│   ├── adr/016-defence-scope-and-no-recording.md
-│   ├── security/ARCHITECTURE.md         # trust boundaries and SEC-01–12
-│   ├── testing/                       # product and hosting/security procedures
-│   └── research/                      # STEM-first plan, evidence, contracts
-├── edge/android/                      # app is a Compose starter; other areas placeholders
-├── indicators-core/                   # proposed Python/Kotlin implementations and golden data
-├── ml/                                # research placeholders; no training on shared hosting
-├── server/                            # framework-neutral contracts, no running application
-│   ├── api/                           # future HTTP adapters
-│   ├── domain/                        # authorised use cases and idempotency contracts
-│   ├── security/                      # authentication, scope and redacted audit contracts
-│   ├── config/                        # future fail-closed runtime configuration
-│   ├── db/migrations/                 # selected engine only; currently empty
-│   ├── jobs/                          # bounded scheduled CLI work, DB leases/checkpoints
-│   ├── templates/                     # future rendered reports/dashboard
-│   └── tests/                         # future product tests
-├── dashboard/                         # design boundary; no separate frontend service
-├── infra/
-│   ├── in-country/
-│   │   ├── shared-hosting/            # conditional default, derived records/reports only
-│   │   │   ├── README.md              # capability intake and deployment sequence
-│   │   │   └── capabilities.example.json  # deliberately unconfirmed
-│   │   └── vps/                       # fallback; compose/ and backup/ placeholders moved here
-│   ├── research/                      # separate private in-country setup; not provisioned
-│   ├── huawei-cloud/                  # isolated synthetic demo; ecs/rds/obs placeholders
-│   ├── openeuler/                     # legacy path redirect only
-│   └── ci/                            # future CI definitions
-├── tools/check-hosting/               # executable offline evidence checker
-└── tests/
-    ├── infrastructure/                # executable checker tests, synthetic evidence only
-    └── acceptance/                    # 18 contract vectors and harness; needs product adapters
-```
-
-Other existing ML, Android and tools placeholders remain. Named responsibilities above are not implemented modules. No server entry point, framework dependency, database migration or deployment automation is supplied before host selection; the deployment scaffolding is a capability manifest and runbook. Only the empty OS-specific backup/Compose placeholders moved.
-
-## Starter pass — 2026-10-03
-
-Starter code with **synthetic data** was added at the user's request; ADR-015's "no product features" note above is superseded for these items only. Added: `edge/android/app` demo UI; `indicators-core/python/dimts_indicators/` (reference + adapter + tests) and `indicators-core/golden/coarse-v0-draft.json`; `tools/synthetic-lessons/synth_timeline.py`; `tools/demo/` generator and `mock-data/` (shared with the Android assets via Gradle); `server/api/demo_wsgi.py`, `server/domain/aggregation.py`, `server/config/demo_settings.py`, `server/templates/demo_*` and `server/tests/`; `tests/demo/`. The stub is framework-neutral and **does not select** FastAPI or Django.
-
-## Stack and dependency boundaries
-
-One modular Python application handles the API and rendered pages. HTTP and CLI adapters call authorised domain use cases, which access scoped repositories; neither templates nor jobs bypass authorisation. The web process does not import ML frameworks, run inference, host annotation or train models. See [server contracts](../../server/README.md).
-
-Prefer PostgreSQL. Managed ASGI permits FastAPI/PostgreSQL; WSGI-only hosting permits Django with PostgreSQL or a supported MySQL/MariaDB version. Select and pin one path after provider evidence and tests. Do not build two backends or maintain cross-engine migrations. Scheduled CLI jobs must survive bounded runtimes and retries; no resident worker, Redis, Docker or root access is required for the shared profile. VPS is the fallback if required capabilities or isolation fail. openEuler is optional there; openGauss is not the baseline.
-
-The later feature review adds readiness/pause/discard/context and teacher-selected cards to the Android plan, makes sync optional in the October 3 baseline (the October 6 preference is automatic after authorisation), reduces the model to a coarse candidate and defers production LID. Kotlin/Compose/encrypted storage and all enabled-sync safety contracts remain. No module/build changes accompany this docs review.
-
-## Remaining implementation layout
-
-The 2026-10-09 pass added `indicators-core/python/dimts_indicators/evidence.py`, matching Android `domain/MetricEvidence.kt`, independent weekly I-1/I-5 eligibility, and record envelope v4 with provenance version 1. The synthetic dashboard now accepts only provenance-checked synthetic records and suppresses incompatible evidence paths. Android has Today / Reflection / Settings navigation, local lesson history, independent sharing preferences and no-transfer status. The release registry is empty; these pieces do not make the demo a field product.
-
-Remaining work stays in the existing packages and build modules. Add shared conformance fixtures for Python/Android policy, then load a signed release registry only after G0/G1/G5 evidence. Add purpose-scoped authorization, grants/revocations, durable outboxes and server admission only when the approved destinations and institutional workflows exist. Do not send from the demo.
-
-Use existing `ml/configs`, `ml/export`, `ml/eval` and `edge/android/benchmark` for experiment/model/evaluation manifests and run reports. Define their schemas in [measurement contracts](../contracts/MEASUREMENT_EVIDENCE.md); no new tracking service is required. Pin actual resolved environments separately for training, reference tests and the selected backend.
-
-Plan two purpose-scoped outboxes in Android sync and corresponding admission use cases under `server/domain/`; adapters remain under `server/api/`. Private summary sync targets the selected in-country app. A narrow study intake uses the same selected Python stack on the approved separate research environment, with independent credentials and an R1 allowlist. [Sharing/UI contract](../contracts/SHARING_AND_UI.md) owns defaults, permissions and withdrawal. No second framework, public research portal or whole-report export is added. Add future evidence, sharing and UI conformance tests to existing test areas.
-
-## Data boundaries
-
-| Target | Allowed data / access | Release condition |
-|---|---|---|
-| Shared hosting | Derived records, minimal pseudonymous enrolment/consent references and private reports | Provider evidence + HOST/SEC suites + G4-U; no audio/features/training targets |
-| Private research environment | Approved existing acoustic corpora, restricted identity register and live observer totals | Approved access/retention/ethics; **new audio recording/transfer/annotation service removed**, not waiting for provisioning |
-| Huawei Cloud demo | Synthetic records; other assets only after separate provenance/privacy/licence review | Separate identities, secrets, DB and logs; no pilot-derived import |
-
-Research is a separate environment, not another folder in the shared account. All pilot/research personal data, logs, replicas and backups stay in-country under the existing project boundary. The synthetic cloud demo should use the same selected app/engine when available. Neither the undergraduate trial nor a complete capability checklist approves early-grade release.
-
-Draft [ADR-017](../adr/017-research-data-access-and-publication.md) adds the [stakeholder map](STAKEHOLDER_MAP.md) and [research data/access plan](RESEARCH_DATA_MANAGEMENT_PLAN.md). Actual consent/linkage (R0), coded study tables/analysis (R1) and approved anonymous publication files (R2) live in the approved research environment, **not new folders in this repository**. Anteneh's named access and post-graduation continuity are readiness requirements; a checked numeric-form workflow remains a disclosed fallback; ADR-018 now plans a protected electronic study intake for automatic contributions, with no new public portal. No modules are scaffolded by this planning change.
-
-## Verification
-
-[Hosting/security procedures](../testing/HOSTING_SECURITY_TEST_PLAN.md) cover provider selection and future implementation. [Existing product suites](../testing/POST_IMPLEMENTATION_TEST_PLAN.md) still govern device, model, indicator and cohort gates. The checker verifies declared evidence completeness only; it cannot establish provider truth or actual security. See [infra](../../infra/README.md) for commands and profile selection.
-
-## Contract changes worth making now
-
-**Historical full-scope `LessonRecord` v1 → v2 (§10.1), illustrative subset only:** ADR-016 requires a new coarse-label/spec version, unavailable deferred indicators, initial enumerated context and local-only later exclusion/card state. The example below preserves the earlier proposal; it is not the reduced active schema. Freeze full schema, null/availability reasons, denominators, consent reference, processing versions and validation at G1. No previous version is implemented. STEM requires a distinct context without O–3 grade, compatible model/labels, and cohort-isolated reports/aggregates (ADR-014).
-
-```jsonc
-{
-  "schema_version": 2,
-  "cohort": "early_grade",
-  "session_type": "early_grade_lesson",
-  "label_schema_version": "early-grade-v1",
-  // …all v1 fields…
-  "capture": {
-    "mic": "builtin|wired_lavalier|usb",   // E1 / D-7
-    "observed_s": 2357.5,
-    "missing_s": 42.5,                     // all lost capture/processing; excluded from every eligible denominator
-    "class_size_estimate": 58              // entered by teacher; C-5
-  },
-  "indicators": {
-    // …I1…I8…
-    "I2_response_latency_s": { "choral": {"median": 0.2, "n": 30}, "single": {"median": 1.4, "n": 12} },
-    "I3_choral_ratio": 0.71                // reported as a balance indicator
-  },
-  "model_versions": { "seg": "…", "lid": "…", "model_manifest_hash": "…" }
-}
-```
-
-**`model_card.json`** gains `upstream_models` (with licences), `precision_by_layer` (records which layers stayed FP16 because Lite lacks INT8 GRU), and compatibility evidence for all bundled native libraries/runtime packaging. Manifest also defines shapes, class order, streaming state/lookahead and atomic compatibility checks (review G1). Upstream/derived licences belong in this manifest; using a model only as a teacher does not automatically remove downstream restrictions.
-
-## Ownership (from §15)
-
-| Area | Owner |
+| Location | Implemented role / status |
 |---|---|
-| `indicators-core/python`, `golden/`, `docs/` (ethics, legal, competition, indicator-rationale) | Lead |
-| `ml/`, `tools/synthetic-lessons/audio_mix.py` | ML |
-| `edge/`, `server/`, `dashboard/`, `infra/`, `tools/check-elf-alignment`, `tools/lesson-simulator` | Sys |
-| `indicators-core/kotlin`, `ml/features/parity` | Sys + ML |
+| `edge/android/app/src/main/java/org/ethioware/echo/MainActivity.kt` | Launches real offline local flow |
+| `edge/android/app/src/main/java/org/ethioware/echo/pilot/` | Compose UI, class profiles, capture service, AAC encryption/storage, recovery, expiry, excerpts, draft coaching, reflection and local reminders |
+| `edge/android/app/src/main/java/org/ethioware/echo/SyntheticDemoActivity.kt` | Non-exported fixture app entered from Settings; isolated legacy state |
+| `edge/android/app/src/main/java/org/ethioware/echo/domain/` | Synthetic session/measurement behavior and fail-closed evidence/release rules |
+| `edge/android/app/src/test/` | JVM tests for local storage/crypto and legacy fixture/evidence behavior; no device certification |
+| `indicators-core/python/dimts_indicators/` | Reference arithmetic, cohort/provenance checks, timeline validation and acceptance adapter; no acoustic model |
+| `server/api/demo_wsgi.py` | Loopback-only, read-only synthetic dashboard API |
+| `server/domain/aggregation.py` | Synthetic aggregate/suppression behavior; not a production research intake |
+| `server/security/`, `server/jobs/`, `server/db/` | Future production boundaries/contracts; runtime/database unselected |
+| `tools/demo/` | Shared fixture generator and Android/server mock assets |
+| `tools/check-hosting/` | Offline provider-evidence checker; cannot provision or certify a host |
+| `tests/` | Demo, hosting-readiness and reference acceptance tests |
+| `infra/` | Conditional Zergaw/VPS/research/Huawei target descriptions, not deployed environments |
+| `docs/` | Decisions, contracts, research, validation procedures and historical plans |
+
+## Real local dependency path
+
+`MainActivity → PilotApp / PilotViewModel → PilotStore → AndroidPrivateFiles → private encrypted files + Android Keystore`.
+
+`RecordingService → bounded AudioRecord input → MediaCodec AAC → PilotStore committed chunks`. Audio is not imported into the synthetic indicator engine. `WeeklyReminder` and the expiry job use local state only. No network permission, model runtime, translation API, auth/grant service, sync outbox or remote intake is connected.
+
+See the [Android code map](../../edge/android/README.md) for individual file responsibilities and the [runbook](../testing/OFFLINE_PILOT_RUNBOOK.md) for verification limits. Grade 4 context acceptance does not change the empty model-release registry.
+
+## Next integration boundaries
+
+A future local model must consume the actual AAC decode path, have supported language/device evidence and pass metric-specific release gates. Research transfer needs an explicit minimized payload and separate authorization, retry/idempotency, deletion and retention behavior. Zergaw runtime selection depends on verified provider capabilities; Huawei remains a separate synthetic competition target. None of these integrations is implied by the implemented local slice.

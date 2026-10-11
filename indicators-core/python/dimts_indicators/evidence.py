@@ -65,7 +65,7 @@ def metric_decision(
     if not isinstance(grade, str) or not grade or not isinstance(subject, str) or not subject:
         return {"available": False, "reason": "unknown_provenance"}
     expected_cohort = (
-        "stem_adult" if grade == "STEM" else "early_grade" if grade in {"O", "1", "2", "3"} else None
+        "stem_adult" if grade == "STEM" else "early_grade" if grade in {"O", "1", "2", "3", "4"} else None
     )
     if expected_cohort is None or record.get("cohort") != expected_cohort:
         return {"available": False, "reason": "unknown_provenance"}

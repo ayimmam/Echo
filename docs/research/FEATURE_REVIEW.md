@@ -1,5 +1,7 @@
 # Feature review — Echovolve / Dimts
 
+> **Historical feature assessment:** Scope and implementation statements below predate [ADR-019](../adr/019-offline-recorded-reflection-pilot.md). The current Hawassa pilot uses Grades 1–4 and device-only encrypted recording. See the [current assessment](HAWASSA_PILOT_REVIEW_2026-10-10.md) and [implementation map](CODEBASE_STRUCTURE.md); this earlier review does not reinstate the RAM-only/Grade 2/STEM-first scope.
+
 > **2026-10-06 planning amendment:** [ADR-018](../adr/018-measurement-evidence-and-sharing.md) supersedes the opt-in/manual-only sharing defaults below: two automatic authorised sharing purposes, Settings opt-outs, simpler Today/Reflection/Settings UI and explicit evidence/provenance gates. The original scores and budget remain dated estimates, not a cost estimate for automatic research intake.
 
 Review dates: **2026-10-02–03**. Decision horizon: **June 2027 defence**; competition milestones may be earlier. **Design recommendations, not implementation or measured results.** [ADR-016](../adr/016-defence-scope-and-no-recording.md) records the scope decision. Existing uncommitted infrastructure work is preserved.

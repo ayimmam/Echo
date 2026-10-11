@@ -1,79 +1,61 @@
-# Echovolve Android app — demo build
+# Echo Android development build
 
-> **Implementation status, 2026-10-09:** the app now uses Today/Reflection/Settings, independent default-ON sharing preferences for a new setup, schema-v4 measurement provenance and fail-closed metric release checks. This remains a synthetic demo: there is no consent-grant service, upload adapter, model release or destination, so preferences never send data.
+Updated 2026-10-11. The launcher opens real offline recording and weekly reflection. This is a development build awaiting device and classroom validation. The [root README](../../README.md) defines the pilot brief; [ADR-019](../../docs/adr/019-offline-recorded-reflection-pilot.md) defines the current data boundary.
 
-A runnable, **synthetic-data** prototype of the teacher app in the ADR-016 scope: Grade 2 mother-tongue
-reading, offline, no recording. It exists so the flow and wording can be seen and criticised.
+## Build and install
 
-> **What this build is not.** It opens **no microphone** (no `RECORD_AUDIO` permission, no foreground
-> service), runs **no model**, stores nothing encrypted and sends nothing anywhere. Level bars and the
-> readiness check are simulated; every indicator value is a seeded fixture. It must not be used in a
-> classroom: field capture needs ethics approval, school permission and the Article 22 decision
-> (ADR-016 §9) first.
-
-## Run it
-
-1. Open **`edge/android`** (not the repo root) in Android Studio.
-2. *Device Manager → Create device* (any phone, an arm64 image with API 29+ — e.g. Pixel, API 36),
-   or plug in a phone with USB debugging.
-3. Press **Run ▶** (`app`). Or from a terminal:
+Open this directory in Android Studio. Requirements: Android SDK 37, a compatible JDK and Gradle dependencies; target device Android 10+ (API 29). The current scaffold declares an arm64 ABI filter. Compatibility/performance on teachers' 2 GB phones is not yet measured.
 
 ```sh
-cd edge/android
-./gradlew :app:installDebug          # installs on the running emulator / attached phone
+./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --offline
+./gradlew :app:installDebug
 ```
 
-The Gradle wrapper provisions the JDK named in `gradle/gradle-daemon-jvm.properties`. If your shell has
-no JDK, point `JAVA_HOME` at Android Studio's bundled one:
-`/Applications/Android Studio.app/Contents/jbr/Contents/Home`.
+The first command needs cached dependencies for offline use; the second needs a connected device/emulator. If your shell lacks a JDK, Android Studio on macOS commonly bundles one at `/Applications/Android Studio.app/Contents/jbr/Contents/Home`.
 
-## Tour (first launch)
+Output: `app/build/outputs/apk/debug/app-debug.apk`. There are no separate synthetic/recording product flavors: both activities are in this APK.
 
-| Step | What to try |
+## Teacher workflow
+
+1. Save class details: grade 1–4, subject, language, class size and goal. Avoid pupil names.
+2. Connect a wired/USB microphone and tap Record. Grant microphone permission; notification permission supports reminders/notification visibility. External input is required by default; phone-microphone testing is an explicit Settings option. Bluetooth input is not implemented.
+3. Stop in the app or recording notification. Committed audio saves locally without an additional confirmation screen. Capture has a two-hour limit and stops on detected routing/silencing/input/storage failures.
+4. Open lesson details for private excerpt playback, context corrections, exclusion or deletion.
+5. In Reflection, choose class/week, inspect duration bars and choose one draft practice. Record whether last week's practice was tried and rate usefulness.
+6. In Settings, add classes, change language/microphone preference, opt into weekend reminders or delete collected data.
+
+All current pilot UI/coaching is English. Non-English preferences disclose the English-preview fallback; classroom language is a separate field. The app does not interpret speech, identify speakers or estimate learning. Source-linked cards are goal/subject-based drafts awaiting educator validation.
+
+## Storage and lifecycle
+
+`RecordingService` encodes bounded 16 kHz mono input to AAC-LC at 32 kbit/s. Approximately 30-second chunks and JSON records use authenticated AES-GCM encryption with per-file Android Keystore keys in backup-excluded app-private storage. No cleartext audio file is written. Metadata commits after its chunk; interrupted sessions recover committed chunks only, potentially losing the last uncommitted chunk.
+
+Playback decrypts an excerpt into RAM and stops on backgrounding, recording or deletion. Collected records expire after 30 days; class/settings configuration is separate. Cleanup runs on reads, resume, foreground refresh and a persisted daily job. Force-stop/power-off delays physical cleanup until the app can run. Weekend reminders are opt-in and best-effort, not exact alarms.
+
+The manifest includes recording, foreground-service, notification, wake-lock and boot permissions, but no Internet permission. No research transfer, translation API or cloud service is connected. Keystore/ciphertext failures surface as errors rather than replacing real data with fixtures.
+
+## Code map
+
+Paths below are relative to `app/src/main/java/org/ethioware/echo/`.
+
+| Path | Responsibility |
 |---|---|
-| **Welcome (3 steps)** | Pick English / አማርኛ / Sidaamu Afoo, read the privacy notice, tick consent. A skippable five-page button guide then opens automatically on first use. |
-| **Today** | One primary action: preview the simulated microphone check, then start a demo lesson. Class size and microphone choice are under **Lesson details**. A status line says no sharing destination is connected. |
-| **Lesson** | Timer + three separate numbers (elapsed / observed / *not observed*), clear demo microphone state, **no score**, Pause, End, and **Stop and discard**. The demo-only **Simulate phone call** marks time as *not observed*, never as silence. **Skip ahead 10 min** makes a realistic lesson quickly. |
-| **End of lesson** | Optional context (what the lesson mostly was, who was speaking), *leave out of my weekly reflection*, **Save summary** or **Discard** (discard creates no record). Choosing anything but "only me, nothing played" makes the adult-voice measures *unavailable*, not zero. |
-| **Reflection** | Seeded "today" is **Fri 6 Nov 2026**. I-1 and I-5 are checked independently and shown only for a compatible, provenance-checked demo path. Lesson history is a collapsed secondary view. A follow-up question appears once; choose one of three practice cards or none. |
-| **Settings** | Language, separate private-summary sync and study-contribution preferences, transfer status, local withdrawal, **Show button guide**, and **Reset demo data**. Preferences start on after a new setup, but the demo has no authorisation or transfer service and sends nothing. |
+| `MainActivity.kt` | Launches the local flow and handles reminder navigation |
+| `pilot/PilotApp.kt` | Today, Reflection and Settings Compose UI |
+| `pilot/PilotViewModel.kt` | Serialized background storage work, state and RAM excerpt playback |
+| `pilot/RecordingService.kt` | Explicit foreground capture, route/input checks and bounded encoding |
+| `pilot/PilotData.kt` | Profiles, lessons, reflection, draft cards, recovery and expiry rules |
+| `pilot/AuthenticatedEnvelope.kt` | Versioned authenticated encryption envelope |
+| `pilot/AndroidPrivateFiles.kt` | Keystore/AtomicFile adapter, runtime and expiry job |
+| `pilot/WeeklyReminder.kt` | Opt-in local weekend notification and deduplication |
+| `SyntheticDemoActivity.kt` | Non-exported entry point to the isolated fixture app |
+| `EchoViewModel.kt`, `data/`, `ui/` | Legacy synthetic state, SharedPreferences and UI |
+| `domain/` | Synthetic session/measurement rules and fail-closed evidence policy |
 
-Everything on screen is labelled as demo data. Sidaamu Afoo has no wording yet: it shows English with a
-`[SID-DRAFT]` banner rather than an invented translation. The Amharic is an unreviewed draft.
+The separate synthetic demo opens through Settings. Its fixture values, language drafts, default-on sharing preferences and demo reset apply only inside that activity. It does not record or send data. Shared fixtures live at `tools/demo/mock-data/android-assets/mock/` in the repository and are packaged by Gradle.
 
-## Code map (`app/src/main/java/org/ethioware/echo`)
+## Verification and remaining work
 
-| Path | Role |
-|---|---|
-| `data/` | Models, JSON parsing, `KeyValueStore` (SharedPreferences in the app, in-memory in tests), asset loading |
-| `domain/Rules.kt`, `domain/MetricEvidence.kt` | Per-metric weekly eligibility, practice-card rules and fail-closed provenance/release policy. No model metrics are released. |
-| `domain/Session.kt` | Timestamp-based lesson state machine (running / paused / interrupted) and the 30 s readiness check |
-| `domain/MockMeasure.kt` | Stand-in for model + indicator engine. Real availability rules, fake numbers |
-| `EchoViewModel.kt` | All flows; time and storage are injected so they are unit-testable |
-| `ui/i18n/` | Typed string keys, English source, Amharic draft, Sidaamu fallback |
-| `ui/screens/`, `ui/components/`, `ui/theme/` | Compose UI (Material 3, fixed light brand palette regardless of device dark mode) |
+On 2026-10-11, 67 JVM tests passed, debug assembly succeeded and lint had no errors (existing warnings remain). JVM tests cover storage/recovery/retention, encryption envelopes and synthetic evidence rules. They do not execute Android Keystore, AudioRecord, MediaCodec or rendered UI.
 
-Mock data comes from the repo-level `tools/demo/mock-data/android-assets/mock/` and is packaged into the
-APK as `assets/mock/*.json` by `androidComponents.onVariants` in `app/build.gradle.kts` — one source for
-the app, the Python tools and the server stub. Regenerate it with `python3 tools/demo/generate_mock_data.py`.
-
-## Tests
-
-```sh
-cd edge/android
-./gradlew :app:testDebugUnitTest :app:assembleDebug
-```
-
-The unit tests read the same shared mock files, and `RulesTest` asserts the same week-by-week
-eligibility verdicts as the Python suite, which keeps the two implementations honest. There is no
-automated UI/screenshot test yet.
-
-For installation and a device-by-device manual pass, use the [synthetic demo runbook](../../docs/testing/DEMO_DEPLOYMENT_AND_MANUAL_TESTING.md).
-
-## Known gaps (deliberate)
-
-* No capture, foreground service, model or encrypted storage (Room + SQLCipher + Keystore): gate G2.
-* Process death during a lesson is not recovered (the real app must show an explicitly interrupted session).
-* Dates are Gregorian; Ethiopian-calendar display is open.
-* Sharing preferences persist independently, but there are no grants, outboxes, acknowledgements or network code. Old queued demo state is discarded during migration; the app never claims it was sent.
-* `compileSdk`/`targetSdk` 37 and the dependency versions are the scaffold's; lint reports newer versions.
+No device/emulator was connected for that verification. Use the [offline runbook](../../docs/testing/OFFLINE_PILOT_RUNBOOK.md) for device acceptance and the [synthetic runbook](../../docs/testing/DEMO_DEPLOYMENT_AND_MANUAL_TESTING.md) for fixture testing. Local inference, reviewed translations, research enrollment/transfer and cloud deployment remain future work.

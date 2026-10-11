@@ -1,5 +1,7 @@
 # ADR-018: Measurement evidence, simpler UI and default sharing preferences
 
+> **Current scope, 2026-10-11:** [ADR-019](019-offline-recorded-reflection-pilot.md) adds a separate real local recording flow. The default-on sharing preferences described here belong to the synthetic activity only. The local flow has no network permission, sharing toggle or transfer service. Provenance and model-release gates remain applicable; no model is released.
+
 2026-10-06. Status: **Adopted planning/contract revision; demo UI/preferences and provenance gates implemented on 2026-10-09. Transfer services, device/model validation and institutional deployment approval remain pending.**
 
 ## Context

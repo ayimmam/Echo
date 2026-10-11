@@ -1,5 +1,7 @@
 # Measurement provenance and evidence contract
 
+> **Current capture boundary, 2026-10-11:** The RAM-only pipeline below is the ADR-018 historical proposal. [ADR-019](../adr/019-offline-recorded-reflection-pilot.md) now implements encrypted local AAC retention and excerpt playback, with no inference pipeline. Future inference must be validated against this actual codec/decode path. Grade 4 context is accepted by Kotlin/Python checks; this does not release any model or metric. The provenance and fail-closed evidence requirements below remain in force.
+
 2026-10-06. Implementation contract under [ADR-018](../adr/018-measurement-evidence-and-sharing.md). On 2026-10-09 the synthetic fixtures and Android records moved to envelope v4 with provenance version 1; Kotlin and Python now apply fail-closed per-metric release decisions. The model-release registry remains empty, so no model metric is released. Examples and type names below remain design notation where no runtime service exists.
 
 ## Boundaries

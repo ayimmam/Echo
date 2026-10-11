@@ -1,5 +1,7 @@
 # Post-implementation acceptance suites
 
+> **Scope note, 2026-10-11:** This is the earlier architecture acceptance plan, not a record of completed checks. Use the [offline pilot runbook](OFFLINE_PILOT_RUNBOOK.md) for the implemented recording flow. Reconcile older RAM-only, no-recording and cohort-sequence expectations with [ADR-019](../adr/019-offline-recorded-reflection-pilot.md); future model and hosting gates still need implementation-specific evidence.
+
 > **2026-10-06 delta:** [EVID/REPRO/SHARE/UI procedures](EVIDENCE_SHARING_UI_TEST_PLAN.md) cover ADR-018 provenance, release gates, default-ON authorised sharing and simplified navigation. All new product cases NOT RUN.
 
 > **2026-10-02 hosting revision:** [HOST-01–04 and SEC-01–12](HOSTING_SECURITY_TEST_PLAN.md) add shared-hosting, security and research readiness procedures. Run the applicable profile: shared hosting does not require root, Docker or a selectable OS; VPS/container tests apply only if selected. Research Mode is **removed** under draft ADR-016; no enabling gate remains. Offline checker success is not a product/security test pass.
