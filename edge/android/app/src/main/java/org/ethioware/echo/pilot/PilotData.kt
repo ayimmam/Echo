@@ -1,6 +1,7 @@
 package org.ethioware.echo.pilot
 
 import org.json.JSONObject
+import org.json.JSONArray
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -18,19 +19,35 @@ data class ClassProfile(
     val language: String = "am",
     val size: Int = 50,
     val goal: String = "understanding",
+    val topic: String = "",
 ) {
-    fun valid() = name.isNotBlank() && name.length <= 60 && grade in 1..4 &&
+    val cohort: String get() = if (grade in 11..12) "secondary" else "early_grade"
+    fun valid() = name.isNotBlank() && name.length <= 60 && (grade in 1..4 || grade in 11..12) &&
         subject in listOf("Reading", "Mathematics", "Other") && language in LANGUAGES.keys &&
-        size in 1..150 && goal in Coaching.cards.map { it.id }
+        size in 1..150 && topic.length <= 80 && goal in Coaching.available(this).map { it.id }
     fun json() = JSONObject().put("id", id).put("name", name).put("grade", grade)
         .put("subject", subject).put("language", language).put("size", size).put("goal", goal)
+        .put("topic", topic).put("schema", 2).put("cohort", cohort)
     companion object {
-        fun parse(o: JSONObject) = ClassProfile(o.getString("id"), o.getString("name"), o.getInt("grade"),
-            o.getString("subject"), o.getString("language"), o.getInt("size"), o.getString("goal"))
+        fun parse(o: JSONObject): ClassProfile {
+            val profile = ClassProfile(o.getString("id"), o.getString("name"), o.getInt("grade"),
+                o.getString("subject"), o.getString("language"), o.getInt("size"), o.getString("goal"),
+                o.optString("topic", ""))
+            require(o.optInt("schema", 1) in 1..2 &&
+                (!o.has("cohort") || o.getString("cohort") == profile.cohort)) { "Unsupported profile context" }
+            return profile
+        }
     }
 }
 
 val LANGUAGES = linkedMapOf("en" to "English", "am" to "አማርኛ", "om" to "Afaan Oromo", "sid" to "Sidaamu Afoo")
+
+data class ChunkEvidence(val index: Int, val startSample: Long, val endSample: Long, val commitElapsedMs: Long?) {
+    fun json() = JSONObject().put("index", index).put("start_sample", startSample)
+        .put("end_sample", endSample).put("commit_elapsed_ms", commitElapsedMs ?: JSONObject.NULL)
+    companion object { fun parse(o: JSONObject) = ChunkEvidence(o.getInt("index"), o.getLong("start_sample"),
+        o.getLong("end_sample"), if (o.isNull("commit_elapsed_ms")) null else o.getLong("commit_elapsed_ms")) }
+}
 
 data class LocalLesson(
     val id: String,
@@ -47,48 +64,34 @@ data class LocalLesson(
     val excluded: Boolean = false,
     val context: String = "Not specified",
     val note: String = "",
+    val chunkEvidence: List<ChunkEvidence> = emptyList(),
+    val attemptedMs: Long? = null,
 ) {
     val expiresAt: Long get() = createdAt + RETENTION_MS
     fun json() = JSONObject().put("id", id).put("created", createdAt).put("checkpoint", checkpointAt)
         .put("profile", profile.json()).put("captured", capturedMs).put("chunks", chunks)
         .put("status", status).put("reason", reason).put("samples", samples).put("clipped", clipped)
         .put("quiet", quiet).put("excluded", excluded).put("context", context).put("note", note)
+        .put("chunk_evidence", JSONArray(chunkEvidence.map { it.json() }))
+        .put("attempted_ms", attemptedMs ?: JSONObject.NULL)
     companion object {
-        fun parse(o: JSONObject) = LocalLesson(o.getString("id"), o.getLong("created"), o.getLong("checkpoint"),
+        fun parse(o: JSONObject): LocalLesson {
+            val evidence = o.optJSONArray("chunk_evidence")?.let { list ->
+                (0 until list.length()).map { ChunkEvidence.parse(list.getJSONObject(it)) }
+            }.orEmpty()
+            val lesson = LocalLesson(o.getString("id"), o.getLong("created"), o.getLong("checkpoint"),
             ClassProfile.parse(o.getJSONObject("profile")), o.getLong("captured"), o.getInt("chunks"),
             o.getString("status"), o.getString("reason"), o.getLong("samples"), o.getLong("clipped"),
-            o.getLong("quiet"), o.getBoolean("excluded"), o.getString("context"), o.getString("note"))
+            o.getLong("quiet"), o.getBoolean("excluded"), o.getString("context"), o.getString("note"),
+            evidence, if (o.isNull("attempted_ms")) null else o.getLong("attempted_ms"))
+            require(evidence.isEmpty() || (evidence.size == lesson.chunks && evidence.indices.all { index ->
+                evidence[index].index == index && evidence[index].startSample >= 0 &&
+                    evidence[index].endSample > evidence[index].startSample &&
+                    (index == 0 || evidence[index].startSample >= evidence[index - 1].endSample)
+            })) { "Invalid chunk evidence" }
+            return lesson
+        }
     }
-}
-
-data class CoachingCard(val id: String, val title: String, val steps: List<String>, val example: String,
-    val source: String, val scope: String)
-
-object Coaching {
-    const val VERSION = "hawassa-coaching-2026-10-draft-1"
-    // Source-linked development content. No translation or institutional approval is implied.
-    val cards = listOf(
-        CoachingCard("understanding", "Check understanding, then check again", listOf(
-            "Ask one question about today's learning. Give children time to think.",
-            "Invite explanations from different parts of the room. Listen for one misunderstanding.",
-            "Explain that point again, then ask a fresh question to check understanding."),
-            "How did you work that out? What helped you decide?",
-            "https://educationendowmentfoundation.org.uk/education-evidence/guidance-reports/feedback", "All subjects"),
-        CoachingCard("reading", "Model, practice together, try independently", listOf(
-            "Choose one sound–symbol or word skill from your language's curriculum. Model it clearly.",
-            "Practice together using a familiar example.",
-            "Invite an individual attempt with a new example; give specific feedback and another try."),
-            "I will show one example. Let's try together. Now try this new one.",
-            "https://www.worldbank.org/en/news/press-release/2025/10/30/new-report-offers-evidence-based-solutions-to-address-global-literacy-crisis-among-children", "Reading; adapt examples to the language"),
-        CoachingCard("explanations", "Make room for an explanation", listOf(
-            "Ask a question that invites a reason, not only a short answer.",
-            "Give thinking time, then let partners exchange ideas briefly.",
-            "Invite an explanation and build on it. Check another child's understanding."),
-            "Why do you think that? Can someone explain it another way?",
-            "https://educationendowmentfoundation.org.uk/education-evidence/teaching-learning-toolkit/oral-language-interventions", "All subjects"),
-    )
-    fun forGoal(goal: String, subject: String): CoachingCard =
-        cards.first { it.id == if (goal == "reading" && subject != "Reading") "understanding" else goal }
 }
 
 fun monday(date: LocalDate): LocalDate = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
@@ -135,17 +138,25 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
         return LocalLesson(UUID.randomUUID().toString(), time, time, profile).also(::save)
     }
     /** Chunk first, then metadata: a crash never claims an uncommitted audio chunk was saved. */
-    @Synchronized fun append(id: String, audio: ByteArray, durationMs: Long, samples: Long, clipped: Long, quiet: Long) {
+    @Synchronized fun append(id: String, audio: ByteArray, durationMs: Long, samples: Long, clipped: Long, quiet: Long,
+                             commitElapsedMs: Long? = null, savedSamples: Long = samples) {
         val row = lesson(id)
         check(now() < row.expiresAt && row.status == "recording")
-        require(audio.isNotEmpty() && audio.size <= 512_000 && durationMs in 1..35_000)
+        require(audio.isNotEmpty() && audio.size <= 512_000 && durationMs in 1..35_000 && savedSamples > 0)
         files.write("audio.$id.${row.chunks}", audio)
+        val start = row.chunkEvidence.lastOrNull()?.endSample ?: 0L
+        val evidence = if (row.chunks == row.chunkEvidence.size) {
+            row.chunkEvidence + ChunkEvidence(row.chunks, start, start + savedSamples, commitElapsedMs)
+        } else emptyList() // Legacy rows have no full timing history; never claim complete coverage.
         save(row.copy(checkpointAt = now(), capturedMs = row.capturedMs + durationMs, chunks = row.chunks + 1,
-            samples = row.samples + samples, clipped = row.clipped + clipped, quiet = row.quiet + quiet))
+            samples = row.samples + samples, clipped = row.clipped + clipped, quiet = row.quiet + quiet,
+            chunkEvidence = evidence))
     }
-    @Synchronized fun finish(id: String, reason: String = "") {
+    @Synchronized fun finish(id: String, reason: String = "", attemptedMs: Long? = null) {
         val row = lesson(id)
-        save(row.copy(status = if (reason.isEmpty()) "saved" else "interrupted", reason = reason))
+        require(attemptedMs == null || attemptedMs >= 0)
+        save(row.copy(status = if (reason.isEmpty()) "saved" else "interrupted", reason = reason,
+            attemptedMs = attemptedMs ?: row.attemptedMs))
     }
     @Synchronized fun audio(id: String, index: Int): ByteArray {
         val row = lesson(id)
@@ -157,10 +168,13 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
         val row = lesson(id)
         check(now() < row.expiresAt)
         require(context in CONTEXTS && note.length <= 500)
+        if (excluded && !row.excluded) ResearchQueue(this).withdraw()
         save(row.copy(context = context, note = note, excluded = excluded))
     }
     @Synchronized fun deleteLesson(id: String) {
-        files.names().filter { it == "lesson.$id" || it.startsWith("audio.$id.") }.forEach(files::delete)
+        // A deletion after an acknowledged summary invalidates its research use too.
+        if (researchRead("config")?.optBoolean("enabled", false) == true) ResearchQueue(this).withdraw()
+        files.names().filter { it == "lesson.$id" || it == "analysis.$id" || it.startsWith("audio.$id.") }.forEach(files::delete)
     }
     @Synchronized fun reflection(classId: String, week: LocalDate): JSONObject {
         expire()
@@ -169,15 +183,29 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
     @Synchronized fun saveReflection(classId: String, week: LocalDate, value: JSONObject) {
         val name = "reflection.$classId.$week"
         val created = objectAt(name)?.optLong("created", now()) ?: now()
-        value.put("created", created).put("contentVersion", Coaching.VERSION)
+        value.put("created", created)
+        if (!value.has("contentVersion")) value.put("contentVersion", Coaching.VERSION)
+        if (value.optString("chosen").isNotBlank() && !value.has("chosenCardVersion")) {
+            value.put("chosenCardVersion", if (value.optString("contentVersion") == Coaching.VERSION) "2" else "1")
+        }
         put(name, value)
     }
     @Synchronized fun expire() {
         val time = now()
         files.names().filter { it.startsWith("lesson.") }.forEach {
             val row = objectAt(it)?.let(LocalLesson::parse) ?: return@forEach
-            if (time >= row.expiresAt) deleteLesson(row.id)
+            if (time >= row.expiresAt) files.names().filter { name -> name == "lesson.${row.id}" || name == "analysis.${row.id}" || name.startsWith("audio.${row.id}.") }.forEach(files::delete)
         }
+        files.names().filter { it.startsWith("analysis.") }.forEach { name ->
+            val value = objectAt(name) ?: return@forEach
+            val id = name.removePrefix("analysis.")
+            if (time >= value.getLong("created") + RETENTION_MS || objectAt("lesson.$id") == null) files.delete(name)
+        }
+        researchNames().filter { it.startsWith("item.") }.forEach { name ->
+            val row = researchRead(name) ?: return@forEach
+            if (time >= row.getJSONObject("payload").getLong("collected_at_ms") + RETENTION_MS) researchDelete(name)
+        }
+        researchRead("config")?.let { if (time >= it.optLong("expires", 0)) researchNames().forEach(::researchDelete) }
         files.names().filter { it.startsWith("reflection.") }.forEach {
             val row = objectAt(it) ?: return@forEach
             if (time >= row.getLong("created") + RETENTION_MS) files.delete(it)
@@ -196,8 +224,29 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
         }
     }
     @Synchronized fun clearCollectedData() {
-        files.names().filter { it.startsWith("audio.") || it.startsWith("lesson.") || it.startsWith("reflection.") }.forEach(files::delete)
+        ResearchQueue(this).withdraw()
+        files.names().filter { it.startsWith("audio.") || it.startsWith("lesson.") || it.startsWith("reflection.") || it.startsWith("analysis.") }.forEach(files::delete)
     }
+    @Synchronized fun analyzeSignal(id: String): JSONObject? {
+        expire()
+        val data = objectAt("lesson.$id") ?: return null
+        val row = LocalLesson.parse(data)
+        if (row.status == "recording") return null
+        val result = SignalAnalysis.build(row)
+        put("analysis.$id",result)
+        return result
+    }
+    @Synchronized fun signalAnalysis(id: String): JSONObject? {
+        expire()
+        return objectAt("analysis.$id")
+    }
+    @Synchronized fun researchRead(name: String): JSONObject? = objectAt("research.$name")
+    @Synchronized fun researchWrite(name: String, value: JSONObject) {
+        require(name.matches(Regex("[a-zA-Z0-9.\\-]+")))
+        put("research.$name", value)
+    }
+    @Synchronized fun researchDelete(name: String) = files.delete("research.$name")
+    @Synchronized fun researchNames(): List<String> = files.names().filter { it.startsWith("research.") }.map { it.removePrefix("research.") }
     companion object {
         val CONTEXTS = listOf("Not specified", "Teacher modeling", "Whole-class practice", "Partner or group work", "Independent practice", "Other adult or recorded audio")
     }

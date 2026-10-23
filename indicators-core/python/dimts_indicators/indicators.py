@@ -19,6 +19,7 @@ from .timeline import (
     MISSING,
     NON_SPEECH,
     OVERLAP,
+    UNKNOWN_ROLE,
     SPEECH_LABELS,
     TICKS_PER_S,
     Segment,
@@ -68,18 +69,19 @@ def _role(label: str) -> Optional[str]:
     return None  # NON_SPEECH, OVERLAP and MISSING are not turns
 
 
-def _alternations(segments: Sequence[Segment]) -> List[int]:
+def _alternations(segments: Sequence[Segment], *, break_on_overlap: bool = False) -> List[int]:
     """Start ticks of each adult<->child role change.
 
-    NON_SPEECH never breaks a turn sequence (no silence-gap cap). OVERLAP is skipped
-    (DRAFT). MISSING ends the uninterrupted span: no alternation is bridged across it.
+    NON_SPEECH never breaks a turn sequence (no silence-gap cap). Historical
+    specs skip OVERLAP; coarse-v1 breaks the pair on OVERLAP or UNKNOWN_ROLE.
+    MISSING always ends the uninterrupted span.
     The tick of an alternation is the start of the destination turn, so a change on an
     exact minute boundary belongs to the destination bin.
     """
     ticks: List[int] = []
     prev_role: Optional[str] = None
     for seg in segments:
-        if seg.label == MISSING:
+        if seg.label == MISSING or (break_on_overlap and seg.label in {OVERLAP, UNKNOWN_ROLE}):
             prev_role = None
             continue
         role = _role(seg.label)
@@ -115,7 +117,7 @@ def _response_gaps(runs: Sequence[Segment]) -> Dict[str, List[int]]:
 
 def compute_indicators(segments: Sequence[Segment], duration_ticks: int, schema: str) -> dict:
     """Return the normalised acceptance-v1 result for a validated timeline."""
-    coarse = schema == "coarse-v0-draft"
+    coarse = schema in {"coarse-v0-draft", "coarse-v1"}
     runs = merge_runs(segments)
 
     missing_ticks = sum(s.ticks for s in segments if s.label == MISSING)
@@ -125,9 +127,10 @@ def compute_indicators(segments: Sequence[Segment], duration_ticks: int, schema:
 
     adult = sum(s.ticks for s in segments if s.label in ADULT_LABELS)
     speech = sum(s.ticks for s in segments if s.label in SPEECH_LABELS)
-    i1 = adult / speech if speech else None
+    unknown_ticks = sum(s.ticks for s in segments if s.label == UNKNOWN_ROLE)
+    i1 = adult / speech if speech and not unknown_ticks else None
 
-    alternations = _alternations(segments)
+    alternations = _alternations(segments, break_on_overlap=schema == "coarse-v1")
     i5 = len(alternations) / observed_min if observed_ticks else None
 
     # I7: share of wholly observed 60 s bins (final partial bin included) with an alternation.
@@ -156,6 +159,9 @@ def compute_indicators(segments: Sequence[Segment], duration_ticks: int, schema:
         "I7": i7,
         "I8": i8,
     }
+    if schema == "coarse-v1":
+        result["uncertain_role_s"] = unknown_ticks / TICKS_PER_S
+        result["uncertain_role_fraction"] = unknown_ticks / speech if speech else None
 
     if coarse:
         empty_latency = {"n": 0, "median": None, "p25": None, "p75": None}
@@ -165,7 +171,8 @@ def compute_indicators(segments: Sequence[Segment], duration_ticks: int, schema:
                 "I3": None,
                 "I4": {"count": 0, "per_10min": None},
                 "I6": None,
-                "unavailable": dict(COARSE_UNAVAILABLE),
+                "unavailable": {**COARSE_UNAVAILABLE,
+                                **({"I1": "uncertain_role_speech"} if unknown_ticks else {})},
             }
         )
         return result

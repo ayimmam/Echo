@@ -1,6 +1,6 @@
 # Echo Android development build
 
-Updated 2026-10-11. The launcher opens real offline recording and weekly reflection. This is a development build awaiting device and classroom validation. The [root README](../../README.md) defines the pilot brief; [ADR-019](../../docs/adr/019-offline-recorded-reflection-pilot.md) defines the current data boundary.
+Updated 2026-10-23. The launcher opens real offline recording and weekly reflection. This is a development build awaiting device and classroom validation. The [root README](../../README.md) defines the primary pilot brief; [ADR-019](../../docs/adr/019-offline-recorded-reflection-pilot.md) defines the current data boundary. [Implementation status](../../docs/PEDAGOGY_IMPLEMENTATION_STATUS.md) records the newer pedagogy and Grades 11–12 development work.
 
 ## Build and install
 
@@ -17,7 +17,7 @@ Output: `app/build/outputs/apk/debug/app-debug.apk`. There are no separate synth
 
 ## Teacher workflow
 
-1. Save class details: grade 1–4, subject, language, class size and goal. Avoid pupil names.
+1. Save class details: grade 1–4 for the primary pilot, or Grade 11/12 for separate development testing; subject, language, class size and goal. Avoid pupil names.
 2. Connect a wired/USB microphone and tap Record. Grant microphone permission; notification permission supports reminders/notification visibility. External input is required by default; phone-microphone testing is an explicit Settings option. Bluetooth input is not implemented.
 3. Stop in the app or recording notification. Committed audio saves locally without an additional confirmation screen. Capture has a two-hour limit and stops on detected routing/silencing/input/storage failures.
 4. Open lesson details for private excerpt playback, context corrections, exclusion or deletion.
@@ -32,7 +32,7 @@ All current pilot UI/coaching is English. Non-English preferences disclose the E
 
 Playback decrypts an excerpt into RAM and stops on backgrounding, recording or deletion. Collected records expire after 30 days; class/settings configuration is separate. Cleanup runs on reads, resume, foreground refresh and a persisted daily job. Force-stop/power-off delays physical cleanup until the app can run. Weekend reminders are opt-in and best-effort, not exact alarms.
 
-The manifest includes recording, foreground-service, notification, wake-lock and boot permissions, but no Internet permission. No research transfer, translation API or cloud service is connected. Keystore/ciphertext failures surface as errors rather than replacing real data with fixtures.
+The manifest includes Internet permission and forbids cleartext traffic. Research sharing remains disconnected by default; a connected build binds a reviewed HTTPS origin via the echoResearchOrigin Gradle property. Enrollment requires a private individual code and separate study acknowledgement. Only explicitly submitted numeric/enumerated reviews enter the encrypted queue; withdrawal takes priority. No audio/private note or translation API is connected. Keystore/ciphertext failures surface as errors rather than replacing real data with fixtures.
 
 ## Code map
 
@@ -56,6 +56,6 @@ The separate synthetic demo opens through Settings. Its fixture values, language
 
 ## Verification and remaining work
 
-On 2026-10-11, 67 JVM tests passed, debug assembly succeeded and lint had no errors (existing warnings remain). JVM tests cover storage/recovery/retention, encryption envelopes and synthetic evidence rules. They do not execute Android Keystore, AudioRecord, MediaCodec or rendered UI.
+On 2026-10-11, 82 JVM tests passed, debug assembly succeeded and lint had no errors (existing warnings remain). JVM tests cover storage/recovery/retention, encryption envelopes and synthetic evidence rules. They do not execute Android Keystore, AudioRecord, MediaCodec or rendered UI.
 
-No device/emulator was connected for that verification. Use the [offline runbook](../../docs/testing/OFFLINE_PILOT_RUNBOOK.md) for device acceptance and the [synthetic runbook](../../docs/testing/DEMO_DEPLOYMENT_AND_MANUAL_TESTING.md) for fixture testing. Local inference, reviewed translations, research enrollment/transfer and cloud deployment remain future work.
+No device/emulator was connected for that verification. Use the [offline runbook](../../docs/testing/OFFLINE_PILOT_RUNBOOK.md) for device acceptance and the [synthetic runbook](../../docs/testing/DEMO_DEPLOYMENT_AND_MANUAL_TESTING.md) for fixture testing. Deferred local capture-signal analysis and research enrollment/transfer are implemented. Learned inference, reviewed translations, real hosting activation and device validation remain future work. See the [infrastructure runbook](../../docs/testing/NON_HUAWEI_INFRASTRUCTURE_RUNBOOK.md).

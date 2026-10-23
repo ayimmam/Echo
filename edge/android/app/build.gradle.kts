@@ -19,6 +19,9 @@ android {
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
+        val researchOrigin = providers.gradleProperty("echoResearchOrigin").orElse("").get()
+        require(!researchOrigin.contains('"') && !researchOrigin.contains('\\'))
+        buildConfigField("String", "RESEARCH_ORIGIN", "\"$researchOrigin\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,6 +39,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

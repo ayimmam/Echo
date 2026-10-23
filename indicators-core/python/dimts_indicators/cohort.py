@@ -1,7 +1,7 @@
 """Cohort isolation checks (ADR-014): STEM adults and early-grade children never mix."""
 from __future__ import annotations
 
-SUPPORTED_COHORTS = ("early_grade", "undergraduate_stem")
+SUPPORTED_COHORTS = ("early_grade", "undergraduate_stem", "secondary")
 EARLY_GRADE_GRADES = ("O", "1", "2", "3", "4")
 
 
@@ -13,6 +13,10 @@ def validate_context(request: dict) -> dict:
     if cohort == "undergraduate_stem":
         # An adult trial must not carry a child grade/subject context.
         if "grade" in request or "subject" in request:
+            return {"valid": False, "reason": "cohort_context_mismatch"}
+        return {"valid": True}
+    if cohort == "secondary":
+        if request.get("session_type") != "secondary_lesson" or str(request.get("grade", "")) not in {"11", "12"} or not request.get("subject"):
             return {"valid": False, "reason": "cohort_context_mismatch"}
         return {"valid": True}
     if request.get("session_type") != "early_grade_lesson" or "course_category" in request:

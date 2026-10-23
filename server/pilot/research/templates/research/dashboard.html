@@ -1,0 +1,8 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Echo research</title><body>
+<h1>Echo {{ study }} pilot research</h1><p>Restricted research view. These summaries are pseudonymous. There are no audio, private notes, teacher reports or school/language filters here.</p>
+{% if aggregate.available %}<p>Contributing participants: {{ aggregate.participants }}</p>
+{% if aggregate.rating %}<p>Mean participant usefulness rating: <strong>{{ aggregate.rating }} / 5</strong></p><meter min="1" max="5" value="{{ aggregate.rating }}">{{ aggregate.rating }}</meter>{% else %}<p>Usefulness rating unavailable: fewer than five rated contributors.</p>{% endif %}
+{% else %}<p>{{ aggregate.reason }}</p>{% endif %}
+<p>This restricted view is not a publication release. Do not publish differences between visits or screenshots without disclosure review.</p>
+{% if maintenance %}<p>Last successful retention job: {{ maintenance.last_success }}</p>{% else %}<p>Retention job has not completed.</p>{% endif %}
+<form method="post" action="/accounts/logout/">{% csrf_token %}<button>Sign out</button></form></body></html>

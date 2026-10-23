@@ -81,6 +81,7 @@ class RecordingService : Service() {
         var encoder: MediaCodec? = null
         var store: PilotStore? = null
         var lesson: LocalLesson? = null
+        var captureStartElapsed: Long? = null
         var reason = ""
         try {
             store = PilotRuntime.store(this)
@@ -113,6 +114,7 @@ class RecordingService : Service() {
             recorder.startRecording()
             check(recorder.recordingState == AudioRecord.RECORDSTATE_RECORDING) { "Microphone did not start." }
             val start = SystemClock.elapsedRealtime()
+            captureStartElapsed = start
             val pcm = ShortArray(1024)
             var totalSamples = 0L
             var chunkSamples = 0L
@@ -131,7 +133,9 @@ class RecordingService : Service() {
                 val coveredSamples = minOf(encodedSamples, totalSamples)
                 val duration = (coveredSamples - committedSamples) * 1000 / RATE
                 if (duration > 0) {
-                    store.append(lesson.id, chunk.toByteArray(), duration, chunkSamples, clipped, quiet)
+                    store.append(lesson.id, chunk.toByteArray(), duration, chunkSamples, clipped, quiet,
+                        commitElapsedMs = SystemClock.elapsedRealtime() - start,
+                        savedSamples = coveredSamples - committedSamples)
                     committedSamples = coveredSamples
                 }
                 chunk.reset(); frames = 0; chunkSamples = 0; clipped = 0; quiet = 0
@@ -216,10 +220,11 @@ class RecordingService : Service() {
                 if (reason.isEmpty() && runCatching { store?.lessons()?.find { it.id == row.id }?.capturedMs == 0L }.getOrDefault(false)) {
                     reason = "No completed audio was saved. Check the microphone and try again."
                 }
-                runCatching { store?.finish(row.id, reason) }.onFailure { reason = "Could not finalize the lesson. Completed chunks will be recovered on restart." }
+                runCatching { store?.finish(row.id, reason, captureStartElapsed?.let { SystemClock.elapsedRealtime() - it }) }
+                    .onFailure { reason = "Could not finalize the lesson. Completed chunks will be recovered on restart." }
             }
             publish(RecordingStatus(message = if (reason.isEmpty()) "Lesson saved on this phone." else reason, lessonId = lesson?.id))
-            main.post { stopForeground(STOP_FOREGROUND_REMOVE); stopSelf() }
+            main.post { LocalAnalysis.schedule(this); stopForeground(STOP_FOREGROUND_REMOVE); stopSelf() }
         }
     }
     override fun onDestroy() { stop.set(true); super.onDestroy() }

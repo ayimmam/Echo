@@ -35,6 +35,35 @@ class PilotStoreTest {
         assertFalse(profile.copy(grade = 5).valid())
         assertFalse(profile.copy(size = 0).valid())
     }
+    @Test fun `secondary profile is scoped and legacy profile retains its cohort`() {
+        val secondary = profile.copy(grade = 11, subject = "Mathematics", goal = "math_reasoning", topic = "Quadratic equations")
+        assertTrue(secondary.valid())
+        assertEquals("secondary", ClassProfile.parse(secondary.json()).cohort)
+        assertEquals("Quadratic equations", ClassProfile.parse(secondary.json()).topic)
+        assertFalse(secondary.copy(goal = "reading").valid())
+        assertFalse(secondary.copy(grade = 10).valid())
+        val legacy = profile.json().apply { remove("schema"); remove("cohort"); remove("topic") }
+        assertEquals("early_grade", ClassProfile.parse(legacy).cohort)
+        assertEquals("", ClassProfile.parse(legacy).topic)
+        assertThrows(IllegalArgumentException::class.java) {
+            ClassProfile.parse(secondary.json().put("cohort", "early_grade"))
+        }
+    }
+    @Test fun `draft practice selection respects secondary subject`() {
+        val math = profile.copy(grade = 11, subject = "Mathematics", goal = "math_reasoning")
+        assertTrue(Coaching.available(math).any { it.id == "math_reasoning" })
+        assertFalse(Coaching.available(math).any { it.id == "reading" })
+        assertFalse(Coaching.available(profile).any { it.id == "math_reasoning" })
+        assertFalse(Coaching.forGoal(math).reviewed)
+    }
+    @Test fun `reflection composer is useful without recording and does not invent a metric`() {
+        val math = profile.copy(grade = 11, subject = "Mathematics", goal = "math_reasoning")
+        val report = ReflectionComposer.compose(math, emptyList(), JSONObject(), Coaching.forGoal(math))
+        assertTrue(report.observation.contains("No saved lesson audio"))
+        assertTrue(report.limitation.contains("No validated acoustic observation"))
+        assertNotNull(report.action)
+        assertFalse(report.observation.contains("understood"))
+    }
     @Test fun `recording snapshots profile rather than later class edits`() {
         val row = recorded()
         store.finish(row.id)
@@ -85,6 +114,18 @@ class PilotStoreTest {
         assertEquals("interrupted", row.status)
         assertEquals(30_000L, row.capturedMs)
         assertTrue(row.reason.contains("completed chunks"))
+    }
+    @Test fun `committed chunks retain bounded sample evidence and attempted time`() {
+        val row = store.create(profile)
+        store.append(row.id, byteArrayOf(1, 2), 1000, 16_000, 0, 0, commitElapsedMs = 1200, savedSamples = 16_000)
+        store.finish(row.id, attemptedMs = 1500)
+        val saved = store.lessons().single()
+        assertEquals(1, saved.chunkEvidence.size)
+        assertEquals(0L, saved.chunkEvidence.single().startSample)
+        assertEquals(16_000L, saved.chunkEvidence.single().endSample)
+        assertEquals(1500L, saved.attemptedMs)
+        assertEquals(1000.0 / 1500, store.analyzeSignal(row.id)!!.getDouble("capture_fraction"), 0.0001)
+        assertFalse(store.signalAnalysis(row.id)!!.getBoolean("gap_timing_available"))
     }
     @Test fun `crash between audio and metadata does not count uncommitted audio`() {
         val row = recorded()

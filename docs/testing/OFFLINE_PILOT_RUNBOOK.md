@@ -19,7 +19,7 @@ APK: `edge/android/app/build/outputs/apk/debug/app-debug.apk`. The current scaff
 3. Lock the screen and teach/test normally. Stop from the app or ongoing notification. Completed audio is saved locally without a separate save screen.
 4. Open the lesson's details to play a selected short excerpt on the phone, add private context, exclude the lesson or delete it. Use headphones for privacy.
 5. Open Reflection, choose the class/week, review saved-duration bars, correct lesson context, choose one goal-based practice and rate the review. Next week's reflection asks whether the previous practice was tried.
-6. Settings has an opt-in local weekend reminder (Android notification permission is required), and exposes the separately stored synthetic demo, language preference, mic choice and permanent deletion of collected data. No research data is sent.
+6. Settings has an opt-in local weekend reminder (Android notification permission is required), and exposes the separately stored synthetic demo, language preference, mic choice and permanent deletion of collected data. Default builds send no research data. Optional connected-build enrollment/transfer is covered in the [infrastructure runbook](NON_HUAWEI_INFRASTRUCTURE_RUNBOOK.md).
 
 ## Automated checks
 
@@ -48,7 +48,7 @@ Record results per phone, OS, microphone/adapter and app revision. A failed row 
 | Corrupt ciphertext/Keystore loss | Visible storage error; no demo data substitution or silent reset. |
 | Reminder | Opt in with notification permission; an eligible weekend reminder opens Reflection and is not duplicated in the same week. Opt out and verify no further reminder. Allow for Android scheduling delays. |
 | Demo isolation | Open the synthetic demo from Settings: no capture starts, real lessons are absent, and resetting fixtures leaves real local records unchanged. |
-| No connectivity | Capture, correction, playback and weekly report all work. No traffic should originate from this flow. |
+| No connectivity | Capture, correction, playback and weekly report all work. Default builds originate no traffic; connected builds queue only explicitly submitted reviews and pause transfer during capture. |
 | Battery/thermal | Measure against an idle baseline, including screen-off capture; target ≤5 additional percentage points/hour and no thermal warning. This is a proposed target, not a measured result. |
 | Memory | Measure release-build PSS; proposed capture target below 200 MB. No full-lesson PCM buffer or file. |
 
@@ -57,7 +57,7 @@ Record results per phone, OS, microphone/adapter and app revision. A failed row 
 - Device execution of the above, acoustic signal/coverage validation in real room conditions, and battery profiling.
 - A validated, licensed compact local model and deferred inference pipeline. Present code performs capture/signal checks, not teacher/child diarization, ASR or pedagogical interpretation.
 - Educator approval and fully reviewed Amharic, Afaan Oromo and Sidaamu Afoo content/UI. Non-English preferences currently disclose English-preview fallback. Addis/Hasab credentials and human Sidama translation are not present.
-- Research enrollment/consent, minimized payload and authenticated outbox/intake, provider capability verification, remote retention/backup handling. These are not implemented or enabled.
+- Research enrollment, minimized payload and authenticated outbox/intake are implemented under ADR-020. Provider capability verification, remote retention/backup evidence and connected-device acceptance still precede activation.
 - Separate synthetic Huawei deployment and confirmation of applicable competition acceptance criteria.
 - Usability tests with teachers, including opt-in best-effort weekend reminders. Android background restrictions can delay notifications; reports are always available on demand.
 
@@ -66,6 +66,6 @@ The one-month pilot begins after readiness, not on the date of this development 
 ## Verification recorded 2026-10-11
 
 - Android debug APK assembly and lint succeeded. Lint retains existing scaffold/dependency/style warnings; no lint errors.
-- 67 Android JVM tests passed; 0 failures/errors.
+- 82 Android JVM tests passed; 0 failures/errors.
 - Python: 12 indicator/scope, 18 server, 7 mock-data and 10 hosting-readiness tests passed during this implementation.
 - `git diff --check` passed. No Android device or emulator was connected, so capture, playback, UI rendering, Android Keystore and battery behavior have not been executed on a device.
