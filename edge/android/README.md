@@ -1,6 +1,6 @@
 # Echo Android development build
 
-Updated 2026-10-11. The launcher opens real offline recording and weekly reflection. This is a development build awaiting device and classroom validation. The [root README](../../README.md) defines the pilot brief; [ADR-019](../../docs/adr/019-offline-recorded-reflection-pilot.md) defines the current data boundary.
+Updated 2026-10-23. The launcher opens real offline recording and weekly reflection. This is a development build awaiting device and classroom validation. The [root README](../../README.md) defines the primary pilot brief; [ADR-019](../../docs/adr/019-offline-recorded-reflection-pilot.md) defines the current data boundary. [Implementation status](../../docs/PEDAGOGY_IMPLEMENTATION_STATUS.md) records the newer pedagogy and Grades 11–12 development work.
 
 ## Build and install
 
@@ -17,7 +17,7 @@ Output: `app/build/outputs/apk/debug/app-debug.apk`. There are no separate synth
 
 ## Teacher workflow
 
-1. Save class details: grade 1–4, subject, language, class size and goal. Avoid pupil names.
+1. Save class details: grade 1–4 for the primary pilot, or Grade 11/12 for separate development testing; subject, language, class size and goal. Avoid pupil names.
 2. Connect a wired/USB microphone and tap Record. Grant microphone permission; notification permission supports reminders/notification visibility. External input is required by default; phone-microphone testing is an explicit Settings option. Bluetooth input is not implemented.
 3. Stop in the app or recording notification. Committed audio saves locally without an additional confirmation screen. Capture has a two-hour limit and stops on detected routing/silencing/input/storage failures.
 4. Open lesson details for private excerpt playback, context corrections, exclusion or deletion.

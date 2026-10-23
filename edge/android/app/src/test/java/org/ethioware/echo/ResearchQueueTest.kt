@@ -91,6 +91,21 @@ class ResearchQueueTest {
         val a=lesson();val b=a.copy(profile=a.profile.copy(id="another"))
         assertThrows(IllegalArgumentException::class.java) {ResearchProjection.build(listOf(a,b),JSONObject())}
     }
+    @Test fun secondaryProfileCannotEnterPrimaryResearchContract() {
+        val row=lesson().copy(profile=ClassProfile(grade=11,subject="Mathematics",goal="math_reasoning"))
+        assertThrows(IllegalArgumentException::class.java) { ResearchProjection.build(listOf(row),JSONObject()) }
+    }
+    @Test fun secondaryReflectionCanUseV2WithoutRecording() {
+        val profile=ClassProfile(grade=11,subject="Mathematics",goal="math_reasoning")
+        val review=JSONObject().put("created",time).put("chosen","math_reasoning")
+            .put("tried","notyet").put("rating",4)
+        val payload=ResearchProjection.buildV2(profile,emptyList(),review)
+        assertEquals(2,payload.getInt("schema_version"))
+        assertEquals(0,payload.getInt("lesson_count"))
+        assertEquals(0,payload.getInt("recorded_minutes"))
+        assertEquals("not_yet",payload.getString("follow_up"))
+        assertFalse(payload.toString().contains(profile.name))
+    }
     @Test fun signalHasNoSemanticMetricsAndExpiresWithLesson() {
         val row=lesson();val result=store.analyzeSignal(row.id)!!
         assertFalse(result.getBoolean("pedagogy_available"));assertEquals(0.02,result.getDouble("clipped_fraction"),0.00001)

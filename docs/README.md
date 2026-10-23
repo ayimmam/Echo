@@ -1,9 +1,11 @@
 # Echo documentation
 
-Updated 2026-10-11. Start with the [project README](../README.md). The current build is an offline recording/reflection development slice, not a validated classroom release.
+Updated 2026-10-23. Start with the [project README](../README.md). The current build is an offline recording/reflection development slice, not a validated classroom release.
 
 | Need | Read |
 |---|---|
+| Implement the October pedagogy report and proposed Grade 11–12 pathway | [Detailed implementation plan](PEDAGOGY_IMPLEMENTATION_PLAN.md) — proposed phases, file changes, migrations, tests and release gates |
+| Track what the pedagogy implementation actually delivers | [Implementation status](PEDAGOGY_IMPLEMENTATION_STATUS.md) and the [v2 research contract](contracts/RESEARCH_SUMMARY_V2.md) |
 | Non-Huawei research infrastructure and activation | [Infrastructure runbook](testing/NON_HUAWEI_INFRASTRUCTURE_RUNBOOK.md), [ADR-020](adr/020-provider-independent-pilot-infrastructure.md), [research contract](contracts/RESEARCH_SUMMARY_V1.md) |
 | Innovation Competition requirements and delivery plan | [Criteria, architecture, work packages, gates and submissions](competition/INNOVATION_IMPLEMENTATION_PLAN.md) |
 | Agreed pilot scope, features and limitations | [Project overview](../README.md) |

@@ -122,6 +122,42 @@ class ResearchTests(TestCase):
         self.assertEqual(self.post('summaries',self.data).status_code,413)
         self.assertEqual(Summary.objects.count(),128)
 
+    def test_v2_secondary_grant_isolated_from_primary_and_preserves_reflection_only(self):
+        grant,code=services.issue_grant('secondary-001',self.now,study='secondary',schema_version=2)
+        enrollment=services.enroll(code,self.now)
+        self.assertEqual(enrollment['study'],'secondary')
+        self.assertEqual(enrollment['schema_version'],2)
+        payload={**self.data,'schema_version':2,'grade':11,'lesson_count':0,'recorded_minutes':0,
+                 'practice':'math_reasoning','follow_up':'not_yet','reflection_completed':True,
+                 'content_version':'hawassa-coaching-2026-10-draft-2'}
+        payload.pop('tried')
+        self.assertEqual(self.post('summaries',payload,enrollment['token']).status_code,200)
+        self.assertEqual(self.post('summaries',{**payload,'record_id':str(uuid.uuid4())}).status_code,400)
+        self.assertFalse(services.aggregate(self.now,study='secondary')['available'])
+        self.assertFalse(services.aggregate(self.now,study='primary')['available'])
+        self.assertEqual(Summary.objects.get(grant=grant).payload['follow_up'],'not_yet')
+
+    def test_v2_rejects_cross_study_and_unapproved_fields(self):
+        _,code=services.issue_grant('secondary-002',self.now,study='secondary',schema_version=2)
+        token=services.enroll(code,self.now)['token']
+        payload={**self.data,'schema_version':2,'grade':12,'follow_up':'did_not_fit','reflection_completed':True}
+        payload.pop('tried')
+        self.assertEqual(self.post('summaries',{**payload,'grade':2},token).status_code,400)
+        self.assertEqual(self.post('summaries',{**payload,'follow_up':{}},token).status_code,400)
+        self.assertEqual(self.post('summaries',{**payload,'transcript':'secret'},token).status_code,400)
+        self.assertEqual(self.post('summaries',{**payload,'recorded_minutes':0},token).status_code,400)
+        self.assertEqual(self.post('summaries',{**payload,'practice':'reading'},token).status_code,400)
+        self.assertEqual(self.post('summaries',{**payload,'content_version':'hawassa-coaching-2026-10-draft-1'},token).status_code,400)
+
+    def test_secondary_dashboard_has_separate_permission(self):
+        user=User.objects.create_user('secondary-viewer',password='a-test-passphrase')
+        self.client.force_login(user)
+        user.user_permissions.add(Permission.objects.get(codename='view_research_aggregate'))
+        self.assertEqual(self.client.get('/research/secondary/').status_code,403)
+        user.user_permissions.add(Permission.objects.get(codename='view_secondary_aggregate'))
+        self.assertEqual(self.client.get('/research/secondary/').status_code,200)
+        self.assertEqual(self.client.get('/research/secondary/?grade=11').status_code,400)
+
     def test_readiness_requires_current_retention_maintenance(self):
         self.assertEqual(self.client.get('/readyz').status_code,503)
         services.purge(self.now)

@@ -60,7 +60,8 @@ fun PilotApp(vm: PilotViewModel, openDemo: () -> Unit) {
             Column(Modifier.fillMaxSize().padding(inset).verticalScroll(rememberScrollState()).padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp)) {
                 Text("Echo", style = MaterialTheme.typography.headlineMedium)
-                Text("Local recording preview · No data leaves this phone", style = MaterialTheme.typography.labelLarge)
+                Text(if (vm.researchOrigin.isBlank()) "Local recording preview · Research transfer unavailable"
+                    else "Local recording preview · Optional research sharing", style = MaterialTheme.typography.labelLarge)
                 if (vm.locale != "en") Notice("${LANGUAGES[vm.locale]} selected. This new flow currently uses English preview copy; reviewed translations are not installed.")
                 vm.error?.let { Notice(it); OutlinedButton(onClick = vm::refresh) { Text("Retry") } }
                 if (!vm.loaded) {
@@ -163,13 +164,18 @@ fun PilotApp(vm: PilotViewModel, openDemo: () -> Unit) {
     var size by remember(original?.id) { mutableStateOf(value.size.toString()) }
     Panel(if (original == null) "Set up a class once" else "Class details") {
         OutlinedTextField(value.name, { value = value.copy(name = it.take(60)) }, label = { Text("Class name (no pupil names)") }, enabled = !disabled, modifier = Modifier.fillMaxWidth())
-        Choice("Grade", value.grade.toString(), (1..4).associate { it.toString() to "Grade $it" }, !disabled) { value = value.copy(grade = it.toInt()) }
+        Choice("Grade", value.grade.toString(), ((1..4).toList() + listOf(11, 12)).associate { it.toString() to "Grade $it" }, !disabled) {
+            val changed = value.copy(grade = it.toInt())
+            value = changed.copy(goal = if (Coaching.available(changed).any { card -> card.id == changed.goal }) changed.goal else "understanding")
+        }
         Choice("Subject", value.subject, listOf("Reading", "Mathematics", "Other").associateWith { it }, !disabled) { value = value.copy(subject = it) }
+        if (value.cohort == "secondary") OutlinedTextField(value.topic, { value = value.copy(topic = it.take(80)) },
+            label = { Text("Curriculum topic (optional)") }, enabled = !disabled, modifier = Modifier.fillMaxWidth())
         Choice("Classroom language", value.language, LANGUAGES, !disabled) { value = value.copy(language = it) }
         OutlinedTextField(size, { size = it.filter(Char::isDigit).take(3) }, label = { Text("Approximate number of learners") }, enabled = !disabled, modifier = Modifier.fillMaxWidth())
-        Choice("Your teaching goal", value.goal, Coaching.cards.filter { value.subject == "Reading" || it.id != "reading" }.associate { it.id to it.title }, !disabled) { value = value.copy(goal = it) }
+        Choice("Your teaching goal", value.goal, Coaching.available(value).associate { it.id to it.title }, !disabled) { value = value.copy(goal = it) }
         val number = size.toIntOrNull()
-        val candidate = value.copy(size = number ?: 0, goal = if (value.subject != "Reading" && value.goal == "reading") "understanding" else value.goal)
+        val candidate = value.copy(size = number ?: 0, goal = if (Coaching.available(value).any { it.id == value.goal }) value.goal else "understanding")
         Button(onClick = { onSave(candidate) }, enabled = !disabled && candidate.valid(), modifier = Modifier.fillMaxWidth()) { Text("Save class") }
         onCancel?.let { OutlinedButton(onClick = it, enabled = !disabled) { Text("Cancel") } }
     }
@@ -218,7 +224,7 @@ fun PilotApp(vm: PilotViewModel, openDemo: () -> Unit) {
 
 @Composable private fun ReflectionScreen(vm: PilotViewModel, recording: Boolean) {
     val rows = vm.weekly
-    val recorded = rows.sumOf { it.capturedMs }
+    val report = vm.report
     var details by remember { mutableStateOf(false) }
     Text("One small step for next week", style = MaterialTheme.typography.headlineSmall)
     Choice("Class", vm.selectedId, vm.profiles.associate { it.id to "${it.name} · Grade ${it.grade}" }, !vm.busy, vm::selectClass)
@@ -228,7 +234,7 @@ fun PilotApp(vm: PilotViewModel, openDemo: () -> Unit) {
     }
     Text("Week of ${vm.week} · 2–10 minutes · Private", style = MaterialTheme.typography.labelLarge)
     Panel("Your recorded week") {
-        Text("${rows.size} lessons · ${recorded / 60_000} minutes saved")
+        Text(report?.observation ?: "Choose a class to begin reflection.")
         if (rows.isEmpty()) Text("No saved lessons for this class and week. You can still choose a goal-based practice.")
         else {
             val longest = rows.maxOf { it.capturedMs }.coerceAtLeast(1)
@@ -238,7 +244,7 @@ fun PilotApp(vm: PilotViewModel, openDemo: () -> Unit) {
             }
             Text("Bars show saved recording duration, not teaching quality or the proportion of the lesson observed.", style = MaterialTheme.typography.bodySmall)
         }
-        Text("Automatic teaching observations are not available. Echo cannot yet judge participation, question quality or understanding from these recordings.")
+        Text(report?.limitation ?: "Automatic teaching observations are not available.")
         TextButton(onClick = { details = !details }) { Text(if (details) "Hide lesson context" else "Review or correct lesson context") }
     }
     if (details) vm.lessons.filter { it.profile.id == vm.selectedId && monday(lessonDate(it, ZoneId.systemDefault())) == vm.week }
@@ -247,11 +253,12 @@ fun PilotApp(vm: PilotViewModel, openDemo: () -> Unit) {
     if (previous != null) Panel("Last week's practice: ${previous.title}") {
         Text("Your answer is a reflection, not an audio finding.")
         Choice("Did you try it?", vm.reflection.optString("tried"), linkedMapOf("yes" to "I tried it", "notyet" to "Not yet", "notuseful" to "It did not fit my class"), !vm.busy) { vm.updateReflection("tried", it) }
-        if (vm.reflection.optString("tried") == "yes") Text("You reported trying a new practice. Think about what the children's responses helped you change.")
+        Text(report?.followUp ?: "What did learners show you?")
     }
     val card = vm.chosen ?: vm.suggested
     Panel(card.title) {
         Text("Suggested from your goal · ${card.scope}", style = MaterialTheme.typography.labelMedium)
+        report?.action?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
         card.steps.forEachIndexed { index, step ->
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text("${index + 1}", style = MaterialTheme.typography.headlineSmall)
@@ -263,13 +270,14 @@ fun PilotApp(vm: PilotViewModel, openDemo: () -> Unit) {
         Button(onClick = { vm.updateReflection("chosen", card.id) }, enabled = !vm.busy && vm.chosen?.id != card.id, modifier = Modifier.fillMaxWidth()) {
             Text(if (vm.chosen?.id == card.id) "Chosen for next week" else "Try this next week")
         }
-        Choice("Or choose another practice", card.id, Coaching.cards.filter { vm.profile?.subject == "Reading" || it.id != "reading" }.associate { it.id to it.title }, !vm.busy) { vm.updateReflection("chosen", it) }
+        Choice("Or choose another practice", card.id, vm.profile?.let(Coaching::available).orEmpty().associate { it.id to it.title }, !vm.busy) { vm.updateReflection("chosen", it) }
         if (vm.chosen != null) TextButton(onClick = { vm.updateReflection("chosen", "") }, enabled = !vm.busy) { Text("Remove my choice") }
         Text("Evidence: ${card.source}", style = MaterialTheme.typography.bodySmall)
-        Text("Draft ${Coaching.VERSION}. Local educator and language review pending.", style = MaterialTheme.typography.bodySmall)
+        Text("Draft ${Coaching.VERSION} · card v${card.version}. ${card.limitations} Local educator and language review pending.", style = MaterialTheme.typography.bodySmall)
     }
     Choice("Was this review useful?", vm.reflection.optString("rating"), linkedMapOf("1" to "1 — Not useful", "2" to "2 — Slightly useful", "3" to "3 — Somewhat useful", "4" to "4 — Useful", "5" to "5 — Very useful"), !vm.busy) { vm.updateReflection("rating", it) }
-    Text("Your rating stays on this phone. Nothing is sent for research.", style = MaterialTheme.typography.bodySmall)
+    Text(if (vm.researchOrigin.isBlank()) "Your rating stays on this phone."
+        else "Your rating stays on this phone unless you explicitly submit this review after study enrollment.", style = MaterialTheme.typography.bodySmall)
 }
 
 @Composable private fun DeleteAll(vm: PilotViewModel, recording: Boolean) {
@@ -285,14 +293,15 @@ fun PilotApp(vm: PilotViewModel, openDemo: () -> Unit) {
     var code by remember { mutableStateOf("") }
     var agreed by remember { mutableStateOf(false) }
     Text("Approved research server: ${vm.researchOrigin}")
-    Text("Optional study enrollment sends only grade, language, class-size band, recording totals, chosen practice and usefulness rating. These summaries may still identify a participant in a small study. Audio, class names and private notes stay here. Separate study consent is required.")
+    Text("Optional study enrollment sends grade, language, class-size band, recording and reflection totals, chosen practice, follow-up and usefulness rating under the enrolled study schema. These summaries may still identify a participant in a small study. Audio, class names and private notes stay here. Separate study consent is required.")
     OutlinedTextField(value=code,onValueChange={code=it},label={Text("Private enrollment code")},singleLine=true,enabled=!recording && !vm.busy)
     Row(verticalAlignment=Alignment.CenterVertically) {
         Checkbox(checked=agreed,onCheckedChange={agreed=it},enabled=!recording && !vm.busy)
         Text("I have reviewed and agreed to the separate study consent.")
     }
     Button(onClick={vm.enrollResearch(code);code="";agreed=false},enabled=agreed && code.length in 30..100 && !recording && !vm.busy) {Text("Enroll in research")}
-    OutlinedButton(onClick=vm::submitResearchReview,enabled=vm.weekly.isNotEmpty() && !recording && !vm.busy) {Text("Submit selected weekly review")}
+    OutlinedButton(onClick=vm::submitResearchReview,enabled=vm.canSubmitResearch && !recording && !vm.busy) {Text("Submit selected weekly review")}
+    if (vm.profile?.cohort == "secondary" && vm.researchStudy != "secondary") Text("Secondary research submissions require a separate study enrollment; local reflection remains available.")
     OutlinedButton(onClick=vm::syncResearch,enabled=!recording && !vm.busy) {Text("Retry research transfer")}
     OutlinedButton(onClick=vm::withdrawResearch,enabled=!recording && !vm.busy) {Text("Stop sharing and withdraw")}
     Text("Withdrawal clears queued summaries immediately. Remote deletion waits for connectivity; all records also expire within 30 days. Deleting or excluding lessons stops enrollment to retract any submitted summary.")

@@ -2,7 +2,7 @@
 
 Echo is an Android project for private weekly teacher reflection in Ethiopian primary classrooms. The intended experience is simple: save class details once, connect a microphone, tap Record, then Stop; review a short visual reflection and choose one practice for next week.
 
-**Current status — 2026-10-11:** the launcher implements real offline recording and local reflection for development testing. Automated checks pass, but device behavior and classroom suitability have not been validated. Provider-independent Django/PostgreSQL research infrastructure, an opt-in encrypted Android queue and deferred local signal processing are now implemented. Automatic pedagogical interpretation and reviewed non-English content remain unimplemented; hosting and device activation still need validation.
+**Current status — 2026-10-23:** the launcher implements real offline recording and local reflection for development testing. The reflection flow now supports scoped draft cards and Grades 11–12 class profiles as a separate development pathway. Automated checks pass, but device behavior and classroom suitability have not been validated. Provider-independent Django/PostgreSQL research infrastructure supports separately scoped v1/v2 grants and an opt-in encrypted Android queue. Automatic pedagogical interpretation, reviewed secondary content and reviewed non-English content remain unimplemented; hosting and device activation still need validation. See the [implementation status](docs/PEDAGOGY_IMPLEMENTATION_STATUS.md).
 
 ## Pilot brief
 
@@ -16,6 +16,8 @@ Echo is an Android project for private weekly teacher reflection in Ethiopian pr
 | Purpose | Personalized self-reflection; no teacher ranking or pupil identification |
 | Validation | Intended review by Hawassa University education specialists and the teacher education college; approval is not yet established |
 | Success | More than 70% sustained adoption (at least 6/8 teachers), more than 80% positive review ratings, and interviews about teaching changes |
+
+Grades 11–12 in the app are a separate development path. They are not participants in this agreed primary pilot, and no secondary acoustic metric or field study has been approved.
 
 Define the rating denominator, positive-rating threshold and post-pilot follow-up interval before enrollment. Interviews establish perceived change; independent observation is needed to substantiate changed practice. See the [research and pilot assessment](docs/research/HAWASSA_PILOT_REVIEW_2026-10-10.md).
 
