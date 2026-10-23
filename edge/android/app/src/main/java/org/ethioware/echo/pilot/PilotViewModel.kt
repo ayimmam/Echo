@@ -28,6 +28,9 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
     private var playRequest = 0
     private var pending = 0
     var researchStatus by mutableStateOf("Research sharing is off."); private set
+    var researchSchema by mutableIntStateOf(1); private set
+    var researchStudy by mutableStateOf("primary"); private set
+    var researchActive by mutableStateOf(false); private set
     val researchOrigin get() = BuildConfig.RESEARCH_ORIGIN
     var playing by mutableStateOf<String?>(null); private set
     var loaded by mutableStateOf(false); private set
@@ -45,8 +48,18 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
     var tab by mutableIntStateOf(0)
     val profile get() = profiles.firstOrNull { it.id == selectedId } ?: profiles.firstOrNull()
     val weekly get() = profile?.let { weeklyLessons(lessons, it.id, week, ZoneId.systemDefault()) }.orEmpty()
-    val chosen get() = Coaching.cards.firstOrNull { it.id == reflection.optString("chosen") }
-    val suggested get() = profile?.let { Coaching.forGoal(it.goal, it.subject) } ?: Coaching.cards.first()
+    val chosen get() = profile?.let { current -> Coaching.available(current).firstOrNull { card ->
+        card.id == reflection.optString("chosen") &&
+            card.version == reflection.optString("chosenCardVersion", card.version)
+    } }
+    val suggested get() = profile?.let(Coaching::forGoal) ?: Coaching.cards.first()
+    val report get() = profile?.let { ReflectionComposer.compose(it, weekly, reflection, chosen ?: suggested) }
+    val canSubmitResearch get() = profile?.let { current ->
+        val expectedStudy = if (current.cohort == "early_grade") "primary" else "secondary"
+        researchActive && researchStudy == expectedStudy &&
+            (researchSchema == 2 && (weekly.isNotEmpty() || reflection.has("created")) ||
+                researchSchema == 1 && current.cohort == "early_grade" && weekly.isNotEmpty())
+    } ?: false
 
     init { refresh(); PilotRuntime.scheduleExpiry(app); ResearchTransfer.schedule(app); LocalAnalysis.schedule(app) }
     private fun task(action: () -> Unit) {
@@ -109,6 +122,12 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
         val id = profile?.id ?: return
         val target = week
         val changed = JSONObject(reflection.toString()).put(key, value)
+        if (key == "chosen") {
+            val card = profile?.let { current -> Coaching.available(current).firstOrNull { it.id == value } }
+            require(value == "" || card != null)
+            if (card == null) changed.remove("chosenCardVersion")
+            else changed.put("chosenCardVersion", card.version).put("contentVersion", Coaching.VERSION)
+        }
         reflection = changed
         task { store.saveReflection(id, target, changed) }
     }
@@ -178,7 +197,12 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
             config.optBoolean("enabled",false) -> "Research active: $queued queued, $sent acknowledged, $rejected rejected. Only submitted reviews are shared."
             else -> "Research sharing is off."
         }
-        main.post { researchStatus = message }
+        main.post {
+            researchStatus = message
+            researchSchema = config.optInt("schema_version",1)
+            researchStudy = config.optString("study","primary")
+            researchActive = config.optBoolean("enabled",false)
+        }
     }
     fun enrollResearch(code: String) = task {
         check(!RecordingMonitor.state.running)
@@ -188,10 +212,16 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun submitResearchReview() {
         val rows = weekly.toList(); val review = JSONObject(reflection.toString())
+        val selectedProfile = profile ?: return
         val key = "${profile?.id}.$week"
         task {
             val queue = ResearchQueue(store)
-            queue.enqueue(key, ResearchProjection.build(rows, review))
+            val config = queue.config()
+            val study = if (selectedProfile.cohort == "early_grade") "primary" else "secondary"
+            check(config.optString("study","primary") == study)
+            val payload = if (config.optInt("schema_version",1)==2) ResearchProjection.buildV2(selectedProfile,rows,review)
+                else ResearchProjection.build(rows, review)
+            queue.enqueue(key, payload)
             ResearchTransfer.schedule(app)
             main.post { researchStatus = "Review queued. Audio, names and private context stay on this phone." }
         }

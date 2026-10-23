@@ -82,6 +82,21 @@ class StructuralErrors(unittest.TestCase):
         self.assertEqual(handle({"contract": "nope"}), {"error": "unsupported_contract"})
         self.assertEqual(handle({"contract": "acceptance-v1", "operation": "x"}), {"error": "unsupported_operation"})
 
+    def test_new_spec_breaks_pairs_on_overlap_and_unknown_role(self):
+        labels = ["ADULT", "OVERLAP", "CHILD_UNSPECIFIED", "UNKNOWN_ROLE", "ADULT", "CHILD_UNSPECIFIED"]
+        tl = [{"start_tick": i * 100, "end_tick": (i + 1) * 100, "label": label}
+              for i, label in enumerate(labels)]
+        old = indicators([dict(s) for s in tl if s["label"] != "UNKNOWN_ROLE"], 600, spec=3)
+        self.assertEqual(old["error"], "timeline_not_contiguous")
+        new = indicators(tl, 600, spec=4)
+        self.assertEqual(new["I1"], None)
+        self.assertEqual(new["unavailable"]["I1"], "uncertain_role_speech")
+        self.assertAlmostEqual(new["I5"], 10.0)  # only the final adjacent pair in six seconds
+        self.assertAlmostEqual(new["uncertain_role_fraction"], 1 / 6)
+        no_unknown = [dict(s) for s in tl[:3]]
+        self.assertAlmostEqual(indicators(no_unknown, 300, spec=3)["I5"], 20.0)
+        self.assertEqual(indicators(no_unknown, 300, spec=4)["I5"], 0.0)
+
     def test_bad_language_rejected(self):
         tl = [{"start_tick": 0, "end_tick": 100, "label": "TEACHER", "lang": "fra"}]
         self.assertEqual(indicators(tl, 100), {"error": "invalid_language"})

@@ -5,6 +5,8 @@ class Grant(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # Reference to approved consent evidence, never a participant name or school roster.
     consent_reference = models.CharField(max_length=100, unique=True)
+    study = models.CharField(max_length=16, default='primary')
+    schema_version = models.PositiveSmallIntegerField(default=1)
     created_at = models.DateTimeField()
     expires_at = models.DateTimeField()
     withdrawn_at = models.DateTimeField(null=True)
@@ -13,7 +15,8 @@ class Grant(models.Model):
     enrolled_at = models.DateTimeField(null=True)
     token_hash = models.CharField(max_length=64, unique=True, null=True)
     class Meta:
-        permissions = [('view_research_aggregate', 'View suppressed pilot research aggregates')]
+        permissions = [('view_research_aggregate', 'View suppressed primary pilot aggregates'),
+                       ('view_secondary_aggregate', 'View suppressed secondary pilot aggregates')]
 
 class Summary(models.Model):
     grant = models.ForeignKey(Grant, on_delete=models.CASCADE)

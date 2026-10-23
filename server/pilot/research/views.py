@@ -60,7 +60,7 @@ def withdraw(request,payload):
 @require_GET
 def health(request):
     # No unauthenticated database statistics or participant information.
-    return JsonResponse({'status':'ok','service':'echo-research','schema_version':1})
+    return JsonResponse({'status':'ok','service':'echo-research','schema_version':2})
 
 @require_GET
 def ready(request):
@@ -76,7 +76,15 @@ def ready(request):
 def dashboard(request):
     # Filter parameters would enable unsafe small-cell/repeated-release exploration.
     if request.GET:return response('filters_not_supported',400)
-    return render(request,'research/dashboard.html',{'aggregate':services.aggregate(), 'maintenance':Maintenance.objects.filter(name='purge').first()})
+    return render(request,'research/dashboard.html',{'aggregate':services.aggregate(study='primary'), 'study':'Primary',
+        'maintenance':Maintenance.objects.filter(name='purge').first()})
+
+@login_required
+@permission_required('research.view_secondary_aggregate',raise_exception=True)
+def secondary_dashboard(request):
+    if request.GET:return response('filters_not_supported',400)
+    return render(request,'research/dashboard.html',{'aggregate':services.aggregate(study='secondary'), 'study':'Secondary',
+        'maintenance':Maintenance.objects.filter(name='purge').first()})
 
 class LimitedLogin(LoginView):
     template_name='research/login.html'

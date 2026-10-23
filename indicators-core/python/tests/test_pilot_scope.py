@@ -31,3 +31,10 @@ class PilotScope(unittest.TestCase):
             "cohort": "early_grade", "session_type": "early_grade_lesson", "grade": "5",
         })["valid"])
         self.assertFalse(validate_model({"cohort": "early_grade", "model": {}})["valid"])
+
+    def test_secondary_context_is_explicit_and_does_not_release_model(self):
+        self.assertEqual({"valid": True}, validate_context({
+            "cohort": "secondary", "session_type": "secondary_lesson", "grade": "11", "subject": "mathematics"}))
+        self.assertFalse(validate_context({
+            "cohort": "secondary", "session_type": "secondary_lesson", "grade": "10", "subject": "mathematics"})["valid"])
+        self.assertFalse(validate_model({"cohort": "secondary", "model": {"supported_cohorts": ["early_grade"]}})["valid"])

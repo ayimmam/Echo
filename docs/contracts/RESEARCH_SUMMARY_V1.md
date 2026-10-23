@@ -17,7 +17,7 @@ The teacher chooses a class/week and explicitly submits it after enrollment. Pro
 | `rating` | Integer 1–5 or null |
 | `practice` | none, understanding, reading or explanations |
 | `tried` | yes, no or unknown; not-yet/does-not-fit are projected to no |
-| `content_version` | Exact supported draft content release, currently `hawassa-coaching-2026-10-draft-1` |
+| `content_version` | Exact supported draft content release, `hawassa-coaching-2026-10-draft-1` or `hawassa-coaching-2026-10-draft-2`; new grades/cards remain outside v1 |
 
 These fields measure recorded participation and teacher self-report, not audio interpretation or student understanding. Stable grant authentication means these summaries remain pseudonymous. A small pilot cannot be assumed anonymous simply by excluding names.
 

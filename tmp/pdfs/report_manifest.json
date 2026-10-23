@@ -1,0 +1,110 @@
+{
+  "output": "/Users/anteneh/Documents/Repos/Echo/output/pdf/echo_pedagogy_evidence_and_offline_feasibility_report.pdf",
+  "sections": [
+    [
+      "Executive judgment",
+      2
+    ],
+    [
+      "Scope, method and evidence status",
+      3
+    ],
+    [
+      "Local need and the coaching mechanism",
+      4
+    ],
+    [
+      "What automated feedback evidence proves",
+      5
+    ],
+    [
+      "A theory of change with separate tests",
+      6
+    ],
+    [
+      "Pedagogical framework and practice library",
+      7
+    ],
+    [
+      "Indicator audit: timing is not pedagogy",
+      8
+    ],
+    [
+      "Indicator audit: coverage and language",
+      9
+    ],
+    [
+      "Proposed offline system architecture",
+      10
+    ],
+    [
+      "Acoustic modeling and uncertainty",
+      11
+    ],
+    [
+      "Multilingual speech and temporary ASR",
+      12
+    ],
+    [
+      "What fits on a 2 GB phone?",
+      13
+    ],
+    [
+      "Android execution and acceptance budget",
+      14
+    ],
+    [
+      "Summary generation without a large model",
+      15
+    ],
+    [
+      "Keeping the pedagogy current offline",
+      16
+    ],
+    [
+      "Validation I: capture and acoustic measures",
+      17
+    ],
+    [
+      "Validation II: meaning and teacher use",
+      18
+    ],
+    [
+      "Pilot design: two coordinated tracks",
+      19
+    ],
+    [
+      "Outcomes and analysis plan",
+      20
+    ],
+    [
+      "Progression gates and fallback decisions",
+      21
+    ],
+    [
+      "Engineering implementation plan",
+      22
+    ],
+    [
+      "Privacy, transcripts and pilot approval",
+      23
+    ],
+    [
+      "Resources, risks and realistic scope",
+      24
+    ],
+    [
+      "Thesis defense and final recommendation",
+      25
+    ],
+    [
+      "Source audit and reproducibility notes",
+      26
+    ],
+    [
+      "References",
+      27
+    ]
+  ],
+  "references": 29
+}

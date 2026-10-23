@@ -6,21 +6,56 @@ import java.util.UUID
 
 /** Strict projection, never a serialized LocalLesson or teacher/class identifier. */
 object ResearchProjection {
+    private val supportedContent = setOf("hawassa-coaching-2026-10-draft-1", Coaching.VERSION)
     fun build(rows: List<LocalLesson>, reflection: JSONObject, id: String = UUID.randomUUID().toString()): JSONObject {
         require(rows.isNotEmpty() && rows.all { !it.excluded && it.capturedMs > 0 && it.status != "recording" })
         val profile = rows.first().profile
+        require(profile.cohort == "early_grade") { "The current research contract covers Grades 1–4 only." }
         require(rows.all { it.profile.id == profile.id && it.profile.grade == profile.grade && it.profile.language == profile.language && it.profile.size == profile.size })
         val earliest = minOf(rows.minOf { it.createdAt }, reflection.optLong("created", rows.minOf { it.createdAt }))
         // Floor to UTC day: coarser than a classroom schedule, and expires conservatively early.
         val collected = earliest / 86_400_000L * 86_400_000L
         val rating = reflection.optInt("rating", 0).takeIf { it in 1..5 }
         val rawTried = reflection.optString("tried", "unknown")
+        val contentVersion = reflection.optString("contentVersion",Coaching.VERSION)
+        require(contentVersion in supportedContent)
         return JSONObject().put("schema_version",1).put("record_id",id).put("collected_at_ms",collected)
             .put("grade",profile.grade).put("language",profile.language)
             .put("class_size_band",when (profile.size) { in 1..39 -> "1-39"; in 40..70 -> "40-70"; else -> "71-150" })
             .put("lesson_count",rows.size).put("recorded_minutes",maxOf(1,rows.sumOf { it.capturedMs } / 60_000L))
-            .put("rating",rating ?: JSONObject.NULL).put("practice",reflection.optString("chosen").takeIf { it in Coaching.cards.map { card -> card.id } } ?: "none")
-            .put("tried",when (rawTried) { "yes" -> "yes"; "notyet", "notuseful" -> "no"; else -> "unknown" }).put("content_version",Coaching.VERSION)
+            .put("rating",rating ?: JSONObject.NULL).put("practice",reflection.optString("chosen").takeIf {
+                it in setOf("understanding","reading","explanations")
+            } ?: "none")
+            .put("tried",when (rawTried) { "yes" -> "yes"; "notyet", "notuseful" -> "no"; else -> "unknown" })
+            .put("content_version",contentVersion)
+    }
+
+    fun buildV2(profile: ClassProfile, rows: List<LocalLesson>, reflection: JSONObject,
+                id: String = UUID.randomUUID().toString()): JSONObject {
+        require(profile.valid() && rows.all { it.profile.id == profile.id && it.profile.grade == profile.grade &&
+            it.profile.language == profile.language && it.profile.size == profile.size &&
+            !it.excluded && it.capturedMs > 0 && it.status != "recording" })
+        val created = reflection.optLong("created",0L)
+        require(created > 0 || rows.isNotEmpty())
+        val earliest = minOf(rows.minOfOrNull { it.createdAt } ?: Long.MAX_VALUE,
+            if (created > 0) created else Long.MAX_VALUE)
+        val collected = earliest / 86_400_000L * 86_400_000L
+        val rating = reflection.optInt("rating",0).takeIf { it in 1..5 }
+        val practice = reflection.optString("chosen").takeIf { selected ->
+            Coaching.available(profile).any { it.id == selected }
+        } ?: "none"
+        val contentVersion = reflection.optString("contentVersion",Coaching.VERSION)
+        require(contentVersion in supportedContent)
+        require(profile.cohort != "secondary" || contentVersion == Coaching.VERSION)
+        return JSONObject().put("schema_version",2).put("record_id",id).put("collected_at_ms",collected)
+            .put("grade",profile.grade).put("language",profile.language)
+            .put("class_size_band",when(profile.size) { in 1..39 -> "1-39"; in 40..70 -> "40-70"; else -> "71-150" })
+            .put("lesson_count",rows.size).put("recorded_minutes",if (rows.isEmpty()) 0 else maxOf(1,rows.sumOf { it.capturedMs } / 60_000L))
+            .put("rating",rating ?: JSONObject.NULL).put("practice",practice)
+            .put("follow_up",when(reflection.optString("tried")) { "yes" -> "yes"; "notyet" -> "not_yet";
+                "notuseful" -> "did_not_fit"; else -> "unknown" })
+            .put("reflection_completed",practice != "none" || rating != null || reflection.has("tried"))
+            .put("content_version",contentVersion)
     }
 }
 
@@ -46,11 +81,18 @@ class ResearchQueue(private val store: PilotStore) {
         check(reply.code==200) { "Enrollment failed. Check the private code with the research team." }
         val token=reply.body.getString("token");require(token.length in 30..100)
         val expiry=reply.body.getLong("expires_at_ms");check(expiry>store.now())
-        store.researchWrite("config",JSONObject().put("origin",endpoint).put("token",token).put("expires",expiry).put("enabled",true))
+        val schema = reply.body.optInt("schema_version",1)
+        val study = reply.body.optString("study","primary")
+        require(schema in 1..2 && study in setOf("primary","secondary") && !(study=="secondary" && schema!=2))
+        store.researchWrite("config",JSONObject().put("origin",endpoint).put("token",token).put("expires",expiry)
+            .put("enabled",true).put("schema_version",schema).put("study",study))
     }
     fun enqueue(key: String, payload: JSONObject) = synchronized(store) {
         val current=config()
         check(current.optBoolean("enabled",false) && !current.optBoolean("withdrawal",false) && store.now()<current.getLong("expires"))
+        require(payload.optInt("schema_version",-1) == current.optInt("schema_version",1))
+        val grade = payload.optInt("grade",-1)
+        require(if (current.optString("study","primary") == "secondary") grade in 11..12 else grade in 1..4)
         require(key.matches(Regex("[a-zA-Z0-9.\\-]+")))
         // Freeze a summary at opt-in submission. Same class/week is never revised silently after ACK.
         val name="item.$key"

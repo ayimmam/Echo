@@ -1,6 +1,6 @@
 # Echo research service — provider-independent implementation
 
-Implemented 2026-10-11. Django 5.2 LTS, PostgreSQL for real deployments, WSGI and ASGI entry points. SQLite is a disposable development/test option. No Huawei SDK, cloud account or ML framework is required. This service is separate from `server/api/demo_wsgi.py` and never receives classroom audio.
+Updated 2026-10-23. Django 5.2 LTS, PostgreSQL for real deployments, WSGI and ASGI entry points. SQLite is a disposable development/test option. No Huawei SDK, cloud account or ML framework is required. This service is separate from `server/api/demo_wsgi.py` and never receives classroom audio. Study-scoped v2 admission is described in [the v2 contract](../../docs/contracts/RESEARCH_SUMMARY_V2.md); existing primary v1 admission remains supported.
 
 ## Disposable local run
 
@@ -44,7 +44,7 @@ Collection is conservatively floored to a UTC day and anchored to the earliest i
 
 ## Restricted research view
 
-`manage.py create_researcher USERNAME` creates a password-validated aggregate viewer without staff/superuser flags. Browser login uses Django CSRF protection and rate limiting; logout is POST. Session cookies are secure in production. The dashboard combines the whole pilot, requires five contributing participants and separately requires five rated participants for usefulness. Each participant is weighted equally. No school/language drill-down, individual records or export exists.
+`manage.py create_researcher USERNAME` creates a password-validated primary aggregate viewer without staff/superuser flags. Browser login uses Django CSRF protection and rate limiting; logout is POST. Session cookies are secure in production. The primary dashboard combines its own study only, requires five contributing participants and separately requires five rated participants for usefulness. Each participant is weighted equally. The separate `/research/secondary/` route requires `research.view_secondary_aggregate`, which the operator must grant explicitly. No school/language drill-down, individual records or export exists.
 
 This authenticated operational view is not an anonymous publication release. It must not be published or differenced across visits. Public research outputs still require disclosure review. The five-contributor rule alone does not prevent repeated-release inference.
 
