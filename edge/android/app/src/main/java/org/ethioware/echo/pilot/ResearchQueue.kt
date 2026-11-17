@@ -102,6 +102,7 @@ class ResearchQueue(private val store: PilotStore) {
         val current=config()
         store.researchNames().filter { it.startsWith("item.") }.forEach(store::researchDelete)
         if (current.has("token")) store.researchWrite("config",current.put("enabled",false).put("withdrawal",true).put("next",0L))
+        store.purgeShadowDeletedRecordings()
     }
     fun send(transport: ResearchTransport) {
         store.expire()

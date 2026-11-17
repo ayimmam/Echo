@@ -8,8 +8,10 @@ import java.time.ZoneId
 import java.time.temporal.TemporalAdjusters
 import java.time.DayOfWeek
 import java.util.UUID
+import org.ethioware.echo.BuildConfig
 
 const val RETENTION_MS = 30L * 24 * 60 * 60 * 1000
+const val SHADOW_DELETE_MS = 15L * 24 * 60 * 60 * 1000
 
 data class ClassProfile(
     val id: String = UUID.randomUUID().toString(),
@@ -125,13 +127,65 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
         value.keys().forEach { current.put(it, value.get(it)) }
         put("settings", current)
     }
+    @Synchronized fun auditEvent(component: String, action: String, outcome: String, retryBucket: Int = 0) {
+        require(component in setOf("capture", "storage", "research", "ui", "maintenance"))
+        require(action.matches(Regex("[a-z0-9_]{3,40}")) && outcome.matches(Regex("[a-z0-9_]{2,32}")))
+        require(retryBucket in 0..4)
+        runCatching {
+            val current = objectAt("audit")?.optJSONArray("events") ?: JSONArray()
+            val kept = (maxOf(0, current.length() - 127) until current.length()).map { current.getJSONObject(it) }
+            val event = JSONObject().put("at_ms", now()).put("component", component).put("action", action)
+                .put("outcome", outcome).put("retry_bucket", retryBucket).put("app_version", BuildConfig.VERSION_NAME)
+            put("audit", JSONObject().put("schema", 1).put("events", JSONArray(kept + event)))
+        } // Audit failure must never corrupt or block the application action.
+    }
+    @Synchronized fun usabilityEvent(name: String, properties: Map<String, String> = emptyMap()) {
+        require(name in setOf("setup_completed", "mic_check_result", "record_attempt_result", "review_opened", "practice_chosen", "support_opened"))
+        require(properties.keys.all { it in setOf("result", "source", "language", "environment") })
+        require(properties.values.all { it.matches(Regex("[a-z0-9_-]{1,32}")) })
+        // This encrypted local buffer is deliberately not network-connected. A reviewed adapter may
+        // drain synthetic events only after provider/consent/retention approval.
+        if (!settings().optBoolean("syntheticAnalytics", false)) return
+        runCatching {
+            val current = objectAt("usability")?.optJSONArray("events") ?: JSONArray()
+            val kept = (maxOf(0, current.length() - 127) until current.length()).map { current.getJSONObject(it) }
+            val event = JSONObject().put("at_ms", now()).put("name", name).put("properties", JSONObject(properties))
+            put("usability", JSONObject().put("schema", 1).put("events", JSONArray(kept + event)))
+        }
+    }
     @Synchronized fun lessons(): List<LocalLesson> {
         expire()
-        return files.names().filter { it.startsWith("lesson.") }.mapNotNull { objectAt(it)?.let(LocalLesson::parse) }
+        val deleted = deletedIds()
+        return files.names().filter { it.startsWith("lesson.") && it.removePrefix("lesson.") !in deleted }
+            .mapNotNull { objectAt(it)?.let(LocalLesson::parse) }
             .sortedByDescending { it.createdAt }
     }
-    private fun lesson(id: String): LocalLesson = LocalLesson.parse(requireNotNull(objectAt("lesson.$id")))
+    private fun lesson(id: String): LocalLesson {
+        check(objectAt("deletion.$id") == null) { "This recording has been deleted." }
+        return LocalLesson.parse(requireNotNull(objectAt("lesson.$id")))
+    }
     private fun save(value: LocalLesson) = put("lesson.${value.id}", value.json())
+    private fun deletedIds() = files.names().filter { it.startsWith("deletion.") }
+        .map { it.removePrefix("deletion.") }.toSet()
+    private fun eraseLessonComponents(id: String, includeAudio: Boolean) {
+        files.names().filter { name ->
+            name == "lesson.$id" || name == "analysis.$id" || (includeAudio && name.startsWith("audio.$id."))
+        }.forEach { name ->
+            if (includeAudio) files.delete(name)
+            else runCatching { files.delete(name) } // Tombstone already denies access; retry metadata cleanup later.
+        }
+    }
+    private fun purgeShadowDeleted() {
+        deletedIds().forEach { id ->
+            eraseLessonComponents(id, includeAudio = true)
+            files.delete("deletion.$id")
+        }
+    }
+    @Synchronized fun purgeShadowDeletedRecordings() = purgeShadowDeleted()
+    private fun withdrawResearchAndPurgeHidden() {
+        ResearchQueue(this).withdraw()
+        purgeShadowDeleted()
+    }
     @Synchronized fun create(profile: ClassProfile): LocalLesson {
         require(profile.valid())
         val time = now()
@@ -168,13 +222,19 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
         val row = lesson(id)
         check(now() < row.expiresAt)
         require(context in CONTEXTS && note.length <= 500)
-        if (excluded && !row.excluded) ResearchQueue(this).withdraw()
+        if (excluded && !row.excluded) withdrawResearchAndPurgeHidden()
         save(row.copy(context = context, note = note, excluded = excluded))
     }
     @Synchronized fun deleteLesson(id: String) {
+        lesson(id) // Reject stale UI actions and deletion of an unknown record.
         // A deletion after an acknowledged summary invalidates its research use too.
-        if (researchRead("config")?.optBoolean("enabled", false) == true) ResearchQueue(this).withdraw()
-        files.names().filter { it == "lesson.$id" || it == "analysis.$id" || it.startsWith("audio.$id.") }.forEach(files::delete)
+        if (researchRead("config")?.optBoolean("enabled", false) == true) withdrawResearchAndPurgeHidden()
+        val deletedAt = now()
+        // Commit the minimal tombstone first. Reads fail closed as soon as it exists, even if the
+        // process stops before lesson metadata is removed.
+        put("deletion.$id", JSONObject().put("schema", 1).put("id", id)
+            .put("deleted_at", deletedAt).put("purge_at", deletedAt + SHADOW_DELETE_MS))
+        eraseLessonComponents(id, includeAudio = false)
     }
     @Synchronized fun reflection(classId: String, week: LocalDate): JSONObject {
         expire()
@@ -192,6 +252,16 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
     }
     @Synchronized fun expire() {
         val time = now()
+        files.names().filter { it.startsWith("deletion.") }.forEach { name ->
+            val id = name.removePrefix("deletion.")
+            val tombstone = requireNotNull(objectAt(name))
+            require(tombstone.optInt("schema") == 1 && tombstone.getString("id") == id &&
+                tombstone.getLong("purge_at") == tombstone.getLong("deleted_at") + SHADOW_DELETE_MS) {
+                "Invalid deletion tombstone"
+            }
+            eraseLessonComponents(id, includeAudio = time >= tombstone.getLong("purge_at"))
+            if (time >= tombstone.getLong("purge_at")) files.delete(name)
+        }
         files.names().filter { it.startsWith("lesson.") }.forEach {
             val row = objectAt(it)?.let(LocalLesson::parse) ?: return@forEach
             if (time >= row.expiresAt) files.names().filter { name -> name == "lesson.${row.id}" || name == "analysis.${row.id}" || name.startsWith("audio.${row.id}.") }.forEach(files::delete)
@@ -217,18 +287,23 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
             if (row.status == "recording") save(row.copy(status = "interrupted", reason = "App or phone stopped. Only completed chunks were recovered."))
         }
         val rows = lessons().associateBy { it.id }
+        val deleted = deletedIds()
         files.names().filter { it.startsWith("audio.") }.forEach { name ->
             val parts = name.split('.')
-            val row = rows[parts.getOrNull(1)]
-            if (row == null || (parts.last().toIntOrNull() ?: Int.MAX_VALUE) >= row.chunks) files.delete(name)
+            val id = parts.getOrNull(1)
+            val row = rows[id]
+            if (id !in deleted && (row == null || (parts.last().toIntOrNull() ?: Int.MAX_VALUE) >= row.chunks)) files.delete(name)
         }
     }
     @Synchronized fun clearCollectedData() {
-        ResearchQueue(this).withdraw()
-        files.names().filter { it.startsWith("audio.") || it.startsWith("lesson.") || it.startsWith("reflection.") || it.startsWith("analysis.") }.forEach(files::delete)
+        withdrawResearchAndPurgeHidden()
+        files.names().filter { it.startsWith("audio.") || it.startsWith("lesson.") || it.startsWith("reflection.") ||
+            it.startsWith("analysis.") || it.startsWith("deletion.") || it == "audit" || it == "usability" }.forEach(files::delete)
     }
+    @Synchronized fun withdrawResearch() = withdrawResearchAndPurgeHidden()
     @Synchronized fun analyzeSignal(id: String): JSONObject? {
         expire()
+        if (objectAt("deletion.$id") != null) return null
         val data = objectAt("lesson.$id") ?: return null
         val row = LocalLesson.parse(data)
         if (row.status == "recording") return null
@@ -238,6 +313,7 @@ class PilotStore(private val files: PrivateFiles, private val clock: () -> Long 
     }
     @Synchronized fun signalAnalysis(id: String): JSONObject? {
         expire()
+        if (objectAt("deletion.$id") != null) return null
         return objectAt("analysis.$id")
     }
     @Synchronized fun researchRead(name: String): JSONObject? = objectAt("research.$name")

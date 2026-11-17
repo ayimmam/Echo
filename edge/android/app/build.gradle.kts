@@ -19,9 +19,15 @@ android {
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
+        val pilotEnvironment = providers.gradleProperty("echoPilotEnvironment").orElse("offline").get()
         val researchOrigin = providers.gradleProperty("echoResearchOrigin").orElse("").get()
+        require(pilotEnvironment in setOf("offline", "synthetic", "live"))
         require(!researchOrigin.contains('"') && !researchOrigin.contains('\\'))
+        require(if (pilotEnvironment == "live") researchOrigin.startsWith("https://") else researchOrigin.isBlank()) {
+            "Only an approved live build may embed a research origin; offline/synthetic teacher builds must remain disconnected."
+        }
         buildConfigField("String", "RESEARCH_ORIGIN", "\"$researchOrigin\"")
+        buildConfigField("String", "PILOT_ENVIRONMENT", "\"$pilotEnvironment\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -14,11 +14,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        if (intent.getBooleanExtra("reflection", false)) model.tab = 1
+        if (intent.getBooleanExtra("reflection", false)) model.tab = 3
         setContent { PilotApp(model) { startActivity(Intent(this, SyntheticDemoActivity::class.java)) } }
     }
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        if (intent.getBooleanExtra("reflection", false)) { model.tab = 1; model.refresh() }
+        if (intent.getBooleanExtra("reflection", false)) { model.tab = 3; model.refresh() }
     }
 }

@@ -17,27 +17,28 @@ object ReflectionComposer {
         lessons: List<LocalLesson>,
         reflection: JSONObject,
         card: CoachingCard?,
+        locale: String = "en",
     ): ReflectionReport {
         val eligible = lessons.filter { !it.excluded && it.capturedMs > 0 && it.profile.id == profile.id }
+        val am = locale == "am"
         val observation = if (eligible.isEmpty()) {
-            "No saved lesson audio is available for this week. You can still choose a teaching goal."
+            if (am) "በዚህ ሳምንት የተቀመጠ የትምህርት ድምጽ የለም። አሁንም የማስተማር ግብ መምረጥ ይችላሉ።" else "No saved lesson audio is available for this week. You can still choose a teaching goal."
         } else {
-            "${eligible.size} saved lesson${if (eligible.size == 1) "" else "s"}; " +
-                "${eligible.sumOf { it.capturedMs } / 60_000} recorded minutes."
+            if (am) "${eligible.size} የተቀመጡ ትምህርቶች፤ ${eligible.sumOf { it.capturedMs } / 60_000} የተቀዱ ደቂቃዎች።"
+            else "${eligible.size} saved lesson${if (eligible.size == 1) "" else "s"}; ${eligible.sumOf { it.capturedMs } / 60_000} recorded minutes."
         }
         val choice = card?.takeIf { it.fits(profile) }
         return ReflectionReport(
             observation = observation,
-            limitation = "Recorded time does not measure understanding, participation or teaching quality. " +
-                "No validated acoustic observation is available.",
-            action = choice?.let { "Try one lesson action: ${it.steps.first()}" },
+            limitation = if (am) "የተቀዳ ጊዜ ግንዛቤን፣ ተሳትፎን ወይም የማስተማር ጥራትን አይለካም። የተረጋገጠ የድምጽ ምልከታ የለም።" else "Recorded time does not measure understanding, participation or teaching quality. No validated acoustic observation is available.",
+            action = choice?.let { if (am) "በአንድ ትምህርት ይሞክሩ፦ ${localizedCard(it, locale).steps.first()}" else "Try one lesson action: ${it.steps.first()}" },
             followUp = when (reflection.optString("tried")) {
-                "yes" -> "You reported trying the previous practice. What did learners show you?"
-                "notyet" -> "You have not tried the previous practice yet. What would make it feasible?"
-                "notuseful" -> "The previous practice did not fit. Choose or adapt another action."
-                else -> "Next week, record whether the chosen action fit your lesson."
+                "yes" -> if (am) "ያለፈውን ልምምድ እንደሞከሩ ገልጸዋል። ተማሪዎቹ ምን አሳዩዎት?" else "You reported trying the previous practice. What did learners show you?"
+                "notyet" -> if (am) "ያለፈውን ልምምድ ገና አልሞከሩም። ምን ቢኖር መሞከር ይችላሉ?" else "You have not tried the previous practice yet. What would make it feasible?"
+                "notuseful" -> if (am) "ያለፈው ልምምድ አልተስማማም። ሌላ ድርጊት ይምረጡ ወይም ያስተካክሉ።" else "The previous practice did not fit. Choose or adapt another action."
+                else -> if (am) "በሚቀጥለው ሳምንት የመረጡት ድርጊት ከትምህርትዎ ጋር መስማማቱን ይመዝግቡ።" else "Next week, record whether the chosen action fit your lesson."
             },
-            basis = choice?.let { "Draft practice ${it.id} v${it.version}; ${it.limitations}" },
+            basis = choice?.let { if (am) "ረቂቅ ልምምድ ${it.id} v${it.version}፤ ${localizedCard(it, locale).limitations}" else "Draft practice ${it.id} v${it.version}; ${it.limitations}" },
         )
     }
 }

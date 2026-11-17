@@ -6,6 +6,13 @@ import android.os.Handler
 import android.os.Looper
 import android.media.MediaDataSource
 import android.media.MediaPlayer
+import android.Manifest
+import android.content.pm.PackageManager
+import android.media.AudioDeviceInfo
+import android.media.AudioFormat
+import android.media.AudioManager
+import android.media.AudioRecord
+import android.media.MediaRecorder
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -41,6 +48,10 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
     var locale by mutableStateOf("en"); private set
     var externalMic by mutableStateOf(true); private set
     var reminders by mutableStateOf(false); private set
+    var reminderDay by mutableStateOf("SUNDAY"); private set
+    var reminderMinute by mutableIntStateOf(18 * 60); private set
+    var externalConnected by mutableStateOf(false); private set
+    var micCheck by mutableStateOf(MicCheckResult()); private set
     var lessons by mutableStateOf<List<LocalLesson>>(emptyList()); private set
     var week by mutableStateOf(monday(LocalDate.now())); private set
     var reflection by mutableStateOf(JSONObject()); private set
@@ -53,7 +64,7 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
             card.version == reflection.optString("chosenCardVersion", card.version)
     } }
     val suggested get() = profile?.let(Coaching::forGoal) ?: Coaching.cards.first()
-    val report get() = profile?.let { ReflectionComposer.compose(it, weekly, reflection, chosen ?: suggested) }
+    val report get() = profile?.let { ReflectionComposer.compose(it, weekly, reflection, chosen ?: suggested, locale) }
     val canSubmitResearch get() = profile?.let { current ->
         val expectedStudy = if (current.cohort == "early_grade") "primary" else "secondary"
         researchActive && researchStudy == expectedStudy &&
@@ -71,6 +82,7 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     fun refresh() = task {
+        if (BuildConfig.PILOT_ENVIRONMENT == "synthetic") store.patchSettings(JSONObject().put("syntheticAnalytics", true))
         val saved = store.settings()
         val rows = store.lessons()
         val classes = saved.optJSONArray("classes") ?: JSONArray()
@@ -84,6 +96,9 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
             profiles = parsed; selectedId = selected; locale = saved.optString("locale", "en")
             externalMic = saved.optBoolean("external", true); lessons = rows
             reminders = saved.optBoolean("reminders", false)
+            reminderDay = saved.optString("reminderDay", "SUNDAY")
+            reminderMinute = saved.optInt("reminderMinute", 18 * 60).coerceIn(17 * 60, 23 * 60 + 59)
+            externalConnected = hasExternalInput()
             reflection = review; previousReflection = previous; loaded = true
             refreshResearchStatus()
 
@@ -92,17 +107,74 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
     private fun persistSettings() {
         val value = JSONObject().put("classes", JSONArray(profiles.map { it.json() }))
             .put("selected", selectedId).put("locale", locale).put("external", externalMic).put("reminders", reminders)
+            .put("reminderDay", reminderDay).put("reminderMinute", reminderMinute)
         task { store.patchSettings(value) }
     }
     fun saveProfile(value: ClassProfile) {
         require(value.valid())
         profiles = profiles.filterNot { it.id == value.id } + value
         selectedId = value.id; persistSettings(); loadReflection()
+        task { store.auditEvent("ui", "setup_completed", "saved"); store.usabilityEvent("setup_completed", mapOf("language" to locale, "environment" to BuildConfig.PILOT_ENVIRONMENT)) }
     }
     fun selectClass(id: String) { selectedId = id; persistSettings(); loadReflection() }
-    fun selectLanguage(language: String) { require(language in LANGUAGES); locale = language; persistSettings() }
-    fun selectMic(external: Boolean) { externalMic = external; persistSettings() }
+    fun selectLanguage(language: String) { require(language in setOf("en", "am")); locale = language; persistSettings() }
+    fun selectMic(external: Boolean) { externalMic = external; micCheck = MicCheckResult(); externalConnected = hasExternalInput(); persistSettings() }
     fun updateReminders(enabled: Boolean) { reminders = enabled; persistSettings() }
+    fun updateReminderTime(day: String, minute: Int) {
+        require(day in setOf("SATURDAY", "SUNDAY") && minute in (17 * 60)..(23 * 60 + 59))
+        reminderDay = day; reminderMinute = minute; persistSettings()
+    }
+    private fun hasExternalInput(): Boolean = app.getSystemService(AudioManager::class.java)
+        .getDevices(AudioManager.GET_DEVICES_INPUTS).any { it.type in EXTERNAL_INPUTS }
+    fun checkMic() {
+        if (RecordingMonitor.state.running || busy) return
+        micCheck = MicCheckResult("checking")
+        task {
+            val result = runMicCheck(externalMic)
+            store.auditEvent("capture", "mic_check", result.state)
+            store.usabilityEvent("mic_check_result", mapOf("result" to result.state, "source" to if (externalMic) "external" else "phone", "environment" to BuildConfig.PILOT_ENVIRONMENT))
+            main.post { micCheck = result; externalConnected = hasExternalInput() }
+        }
+    }
+    private fun runMicCheck(external: Boolean): MicCheckResult {
+        if (app.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+            return MicCheckResult("permission")
+        val manager = app.getSystemService(AudioManager::class.java)
+        val device = manager.getDevices(AudioManager.GET_DEVICES_INPUTS).firstOrNull {
+            if (external) it.type in EXTERNAL_INPUTS else it.type == AudioDeviceInfo.TYPE_BUILTIN_MIC
+        } ?: return MicCheckResult("disconnected")
+        val minimum = AudioRecord.getMinBufferSize(16_000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT)
+        if (minimum <= 0) return MicCheckResult("unsupported")
+        var recorder: AudioRecord? = null
+        return try {
+            recorder = AudioRecord.Builder().setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION)
+                .setAudioFormat(AudioFormat.Builder().setSampleRate(16_000).setChannelMask(AudioFormat.CHANNEL_IN_MONO)
+                    .setEncoding(AudioFormat.ENCODING_PCM_16BIT).build())
+                .setBufferSizeInBytes(maxOf(minimum * 2, 16_384)).build()
+            if (recorder.state != AudioRecord.STATE_INITIALIZED || !recorder.setPreferredDevice(device))
+                return MicCheckResult("route_failed")
+            recorder.startRecording()
+            val samples = ShortArray(1024)
+            var peak = 0
+            var total = 0
+            repeat(16) {
+                val count = recorder.read(samples, 0, samples.size, AudioRecord.READ_BLOCKING)
+                if (count > 0) {
+                    total += count
+                    for (index in 0 until count) peak = maxOf(peak, kotlin.math.abs(samples[index].toInt()))
+                }
+            }
+            val routed = recorder.routedDevice
+            when {
+                routed == null || routed.id != device.id -> MicCheckResult("route_failed", peak = peak)
+                total == 0 -> MicCheckResult("no_input")
+                peak < 64 -> MicCheckResult("no_signal", routed.productName?.toString().orEmpty(), false, peak)
+                else -> MicCheckResult("ready", routed.productName?.toString().orEmpty(), true, peak)
+            }
+        } catch (_: SecurityException) { MicCheckResult("permission") }
+        catch (_: Exception) { MicCheckResult("failed") }
+        finally { runCatching { recorder?.stop() }; recorder?.release() }
+    }
     fun moveWeek(delta: Long) {
         val next = week.plusWeeks(delta)
         if (next > monday(LocalDate.now()) || next < monday(LocalDate.now().minusDays(30))) return
@@ -129,7 +201,10 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
             else changed.put("chosenCardVersion", card.version).put("contentVersion", Coaching.VERSION)
         }
         reflection = changed
-        task { store.saveReflection(id, target, changed) }
+        task {
+            store.saveReflection(id, target, changed)
+            if (key == "chosen") store.usabilityEvent("practice_chosen", mapOf("result" to if (value == "") "removed" else "chosen", "language" to locale, "environment" to BuildConfig.PILOT_ENVIRONMENT))
+        }
     }
     fun correct(row: LocalLesson, context: String, note: String, excluded: Boolean) = task {
         store.correct(row.id, context, note, excluded)
@@ -154,8 +229,9 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
         stopPlayback()
         val selected = profile ?: return
         try {
+            task { store.usabilityEvent("record_attempt_result", mapOf("result" to "started", "source" to if (externalMic) "external" else "phone", "environment" to BuildConfig.PILOT_ENVIRONMENT)) }
             app.startForegroundService(Intent(app, RecordingService::class.java).setAction(RecordingService.START)
-                .putExtra("profile", selected.json().toString()).putExtra("external", externalMic))
+                .putExtra("profile", selected.json().toString()).putExtra("external", externalMic).putExtra("locale", locale))
         } catch (_: Exception) { error = "Android could not start recording. Keep Echo open, check microphone permission, and try again." }
     }
     fun stop() { app.startService(Intent(app, RecordingService::class.java).setAction(RecordingService.STOP)) }
@@ -227,7 +303,7 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     fun withdrawResearch() = task {
-        ResearchQueue(store).withdraw()
+        store.withdrawResearch()
         ResearchTransfer.schedule(app)
         main.post { refreshResearchStatus() }
     }
@@ -237,8 +313,13 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
         main.post { refreshResearchStatus() }
     }
     fun permissionDenied() { error = "Microphone permission is required to record. No recording was started." }
+    fun recordUsability(name: String) = task { store.usabilityEvent(name, mapOf("language" to locale, "environment" to BuildConfig.PILOT_ENVIRONMENT)) }
     override fun onCleared() { stopPlayback(); io.shutdown(); super.onCleared() }
 }
+
+data class MicCheckResult(val state: String = "idle", val route: String = "", val signalDetected: Boolean = false, val peak: Int = 0)
+
+private val EXTERNAL_INPUTS = setOf(AudioDeviceInfo.TYPE_WIRED_HEADSET, AudioDeviceInfo.TYPE_USB_HEADSET, AudioDeviceInfo.TYPE_USB_DEVICE)
 
 /** Only one short decrypted excerpt in RAM. No temporary plaintext audio file. */
 private class MemoryAudio(private val bytes: ByteArray) : MediaDataSource() {

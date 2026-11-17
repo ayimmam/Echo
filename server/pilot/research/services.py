@@ -143,6 +143,13 @@ def aggregate(now=None, *, study='primary'):
     # Separate contributor gate for ratings; no zeros or subgroup counts for suppressed fields.
     return {'available':True,'participants':len(by_grant),'rating':round(sum(means)/len(means),2) if len(means)>=5 else None}
 
+def usefulness_outcome(now=None, *, study='primary'):
+    from .outcomes import calculate_usefulness
+    now=now or timezone.now()
+    rows=Summary.objects.filter(expires_at__gt=now,grant__withdrawn_at__isnull=True,grant__expires_at__gt=now,
+                                grant__study=study).values_list('grant_id','payload')
+    return calculate_usefulness((str(grant_id),payload.get('rating')) for grant_id,payload in rows)
+
 @transaction.atomic
 def rotate_enrollment(reference,now=None):
     """Private operator recovery; keep one grant/participant and original retention deadline."""
