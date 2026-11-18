@@ -1,5 +1,7 @@
 # Current codebase structure
 
+> **2026-10-11 implementation update:** [ADR-020](../adr/020-provider-independent-pilot-infrastructure.md) adds provider-independent Django/PostgreSQL research infrastructure, an optional Android HTTPS outbox, priority withdrawal and deferred local signal analysis. Earlier no-network/no-intake statements below describe the pre-ADR-020 baseline. Default builds remain disconnected; learned pedagogy inference and reviewed translations remain pending.
+
 Updated 2026-10-11. This is the implementation map for [ADR-019](../adr/019-offline-recorded-reflection-pilot.md). The [earlier architecture overview](../archive/ARCHITECTURE_OVERVIEW_PRE_ADR019.md) preserves the previous proposed layout. Presence of a directory or contract does not imply a deployed service.
 
 | Location | Implemented role / status |

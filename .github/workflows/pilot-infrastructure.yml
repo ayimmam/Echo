@@ -1,13 +1,7 @@
 name: Pilot infrastructure checks
 on:
   push:
-    branches:
-      - dev
-      - claude/main
   pull_request:
-    branches:
-      - dev
-      - claude/main
 permissions:
   contents: read
 jobs:

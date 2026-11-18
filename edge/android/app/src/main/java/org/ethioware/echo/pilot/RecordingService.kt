@@ -49,11 +49,12 @@ class RecordingService : Service() {
         if (intent?.action != START || checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             stopSelf(); return START_NOT_STICKY
         }
+        val am = intent.getStringExtra("locale") == "am"
         getSystemService(NotificationManager::class.java).createNotificationChannel(
-            NotificationChannel(CHANNEL, "Classroom recording", NotificationManager.IMPORTANCE_LOW))
+            NotificationChannel(CHANNEL, if (am) "የክፍል ቅጂ" else "Classroom recording", NotificationManager.IMPORTANCE_LOW))
         try {
-            if (Build.VERSION.SDK_INT >= 30) startForeground(3100, notification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
-            else startForeground(3100, notification())
+            if (Build.VERSION.SDK_INT >= 30) startForeground(3100, notification(am), ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
+            else startForeground(3100, notification(am))
         }
         catch (_: Exception) {
             publish(RecordingStatus(message = "Android blocked microphone access. Open Echo and check permissions."))
@@ -67,13 +68,14 @@ class RecordingService : Service() {
         worker = Thread { capture(profile, external) }.also { it.start() }
         return START_NOT_STICKY
     }
-    private fun notification(): Notification {
+    private fun notification(am: Boolean): Notification {
         val open = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val end = PendingIntent.getService(this, 1, Intent(this, RecordingService::class.java).setAction(STOP), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         return Notification.Builder(this, CHANNEL).setSmallIcon(android.R.drawable.ic_btn_speak_now)
-            .setContentTitle("Echo is recording").setContentText("Audio stays on this phone. Tap Stop when the lesson ends.")
+            .setContentTitle(if (am) "Echo እየቀዳ ነው" else "Echo is recording")
+            .setContentText(if (am) "ድምጹ በዚህ ስልክ ላይ ይቆያል። ትምህርቱ ሲያበቃ አቁምን ይንኩ።" else "Audio stays on this phone. Tap Stop when the lesson ends.")
             .setContentIntent(open).setOngoing(true).setOnlyAlertOnce(true)
-            .addAction(Notification.Action.Builder(null, "Stop and save", end).build()).build()
+            .addAction(Notification.Action.Builder(null, if (am) "አቁምና አስቀምጥ" else "Stop and save", end).build()).build()
     }
     private fun publish(value: RecordingStatus) { main.post { RecordingMonitor.state = value } }
     private fun capture(profile: ClassProfile, external: Boolean) {
@@ -81,6 +83,7 @@ class RecordingService : Service() {
         var encoder: MediaCodec? = null
         var store: PilotStore? = null
         var lesson: LocalLesson? = null
+        var captureStartElapsed: Long? = null
         var reason = ""
         try {
             store = PilotRuntime.store(this)
@@ -113,6 +116,7 @@ class RecordingService : Service() {
             recorder.startRecording()
             check(recorder.recordingState == AudioRecord.RECORDSTATE_RECORDING) { "Microphone did not start." }
             val start = SystemClock.elapsedRealtime()
+            captureStartElapsed = start
             val pcm = ShortArray(1024)
             var totalSamples = 0L
             var chunkSamples = 0L
@@ -131,7 +135,9 @@ class RecordingService : Service() {
                 val coveredSamples = minOf(encodedSamples, totalSamples)
                 val duration = (coveredSamples - committedSamples) * 1000 / RATE
                 if (duration > 0) {
-                    store.append(lesson.id, chunk.toByteArray(), duration, chunkSamples, clipped, quiet)
+                    store.append(lesson.id, chunk.toByteArray(), duration, chunkSamples, clipped, quiet,
+                        commitElapsedMs = SystemClock.elapsedRealtime() - start,
+                        savedSamples = coveredSamples - committedSamples)
                     committedSamples = coveredSamples
                 }
                 chunk.reset(); frames = 0; chunkSamples = 0; clipped = 0; quiet = 0
@@ -216,10 +222,12 @@ class RecordingService : Service() {
                 if (reason.isEmpty() && runCatching { store?.lessons()?.find { it.id == row.id }?.capturedMs == 0L }.getOrDefault(false)) {
                     reason = "No completed audio was saved. Check the microphone and try again."
                 }
-                runCatching { store?.finish(row.id, reason) }.onFailure { reason = "Could not finalize the lesson. Completed chunks will be recovered on restart." }
+                runCatching { store?.finish(row.id, reason, captureStartElapsed?.let { SystemClock.elapsedRealtime() - it }) }
+                    .onFailure { reason = "Could not finalize the lesson. Completed chunks will be recovered on restart." }
             }
+            runCatching { store?.auditEvent("capture", "record_attempt", if (reason.isEmpty()) "saved" else "interrupted") }
             publish(RecordingStatus(message = if (reason.isEmpty()) "Lesson saved on this phone." else reason, lessonId = lesson?.id))
-            main.post { stopForeground(STOP_FOREGROUND_REMOVE); stopSelf() }
+            main.post { LocalAnalysis.schedule(this); stopForeground(STOP_FOREGROUND_REMOVE); stopSelf() }
         }
     }
     override fun onDestroy() { stop.set(true); super.onDestroy() }

@@ -11,6 +11,8 @@ Two label schemas exist side by side; neither is silently reinterpreted as the o
   (``indicator_spec_version`` 2).
 * ``coarse-v0-draft`` -- the reduced adult / child-unspecified / overlap / non-speech
   candidate (``indicator_spec_version`` 3). DRAFT: not frozen until gate G1.
+* ``coarse-v1`` -- a separate experimental schema with uncertain speech role and
+  overlap-breaking alternations (``indicator_spec_version`` 4).
 """
 from __future__ import annotations
 
@@ -23,6 +25,7 @@ TICKS_PER_S = 1000 // TICK_MS
 MISSING = "MISSING"
 NON_SPEECH = "NON_SPEECH"
 OVERLAP = "OVERLAP"
+UNKNOWN_ROLE = "UNKNOWN_ROLE"
 
 LABEL_SCHEMAS = {
     "early-grade-v1": frozenset(
@@ -31,16 +34,19 @@ LABEL_SCHEMAS = {
     "coarse-v0-draft": frozenset(
         {"ADULT", "CHILD_UNSPECIFIED", OVERLAP, NON_SPEECH, MISSING}
     ),
+    "coarse-v1": frozenset(
+        {"ADULT", "CHILD_UNSPECIFIED", UNKNOWN_ROLE, OVERLAP, NON_SPEECH, MISSING}
+    ),
 }
 
 # indicator_spec_version -> label schema. Anything else is rejected, not guessed.
-SPEC_VERSION_SCHEMA = {2: "early-grade-v1", 3: "coarse-v0-draft"}
+SPEC_VERSION_SCHEMA = {2: "early-grade-v1", 3: "coarse-v0-draft", 4: "coarse-v1"}
 
 LANGUAGES = ("amh", "sid", "eng", "oth", "unknown")
 
 ADULT_LABELS = frozenset({"TEACHER", "ADULT"})
 CHILD_LABELS = frozenset({"CHILD_SINGLE", "CHILD_CHORAL", "CHILD_UNSPECIFIED"})
-SPEECH_LABELS = ADULT_LABELS | CHILD_LABELS | {OVERLAP}
+SPEECH_LABELS = ADULT_LABELS | CHILD_LABELS | {OVERLAP, UNKNOWN_ROLE}
 
 
 class TimelineError(ValueError):

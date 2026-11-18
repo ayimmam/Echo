@@ -1,0 +1,60 @@
+# Synthetic-only rehearsal. This blueprint is not an approved live research destination.
+databases:
+  - name: echo-synthetic-db
+    databaseName: echo_synthetic
+    user: echo_synthetic
+
+services:
+  - type: web
+    name: echo-synthetic-research
+    runtime: python
+    rootDir: server/pilot
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    preDeployCommand: python manage.py migrate && python manage.py purge_research
+    startCommand: gunicorn pilot_backend.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --access-logfile /dev/null
+    healthCheckPath: /healthz
+    envVars: &echo_env
+      - key: ECHO_ENV
+        value: production
+      - key: ECHO_SECRET_KEY
+        generateValue: true
+      - key: ECHO_ALLOWED_HOSTS
+        sync: false
+      - key: ECHO_HOSTING_APPROVED
+        value: yes
+      - key: ECHO_RETENTION_APPROVED
+        value: yes
+      - key: ECHO_TRUSTED_PROXY
+        value: yes
+      - key: ECHO_DB_ENGINE
+        value: postgresql
+      - key: ECHO_DB_NAME
+        fromDatabase: { name: echo-synthetic-db, property: database }
+      - key: ECHO_DB_USER
+        fromDatabase: { name: echo-synthetic-db, property: user }
+      - key: ECHO_DB_PASSWORD
+        fromDatabase: { name: echo-synthetic-db, property: password }
+      - key: ECHO_DB_HOST
+        fromDatabase: { name: echo-synthetic-db, property: host }
+      - key: ECHO_DB_PORT
+        fromDatabase: { name: echo-synthetic-db, property: port }
+      - key: ECHO_DB_SSLMODE
+        value: require
+
+  - type: cron
+    name: echo-synthetic-purge
+    runtime: python
+    rootDir: server/pilot
+    schedule: "*/15 * * * *"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python manage.py purge_research
+    envVars: *echo_env
+
+  - type: cron
+    name: echo-synthetic-readiness
+    runtime: python
+    rootDir: server/pilot
+    schedule: "7 * * * *"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python manage.py research_status
+    envVars: *echo_env
