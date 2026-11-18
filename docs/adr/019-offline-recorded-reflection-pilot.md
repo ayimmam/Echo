@@ -1,5 +1,7 @@
 # ADR-019: Local recorded reflection for the Hawassa pilot
 
+> **2026-10-11 implementation update:** [ADR-020](020-provider-independent-pilot-infrastructure.md) adds provider-independent Django/PostgreSQL research infrastructure, an optional Android HTTPS outbox, priority withdrawal and deferred local signal analysis. Earlier no-network/no-intake statements below describe the pre-ADR-020 baseline. Default builds remain disconnected; learned pedagogy inference and reviewed translations remain pending.
+
 Date: 2026-10-10. Status: implemented development slice; field release pending validation.
 
 ## Context

@@ -1,0 +1,16 @@
+[Unit]
+Description=Echo research intake
+After=network.target
+[Service]
+User=echo
+Group=echo
+WorkingDirectory=/srv/echo/server/pilot
+EnvironmentFile=/etc/echo/pilot.env
+ExecStart=/srv/echo/venv/bin/gunicorn --config /srv/echo/infra/in-country/django/gunicorn.conf.py pilot_backend.wsgi:application
+Restart=on-failure
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+[Install]
+WantedBy=multi-user.target

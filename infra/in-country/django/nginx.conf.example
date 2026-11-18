@@ -1,0 +1,16 @@
+# Install only on an approved Ethiopian VPS. Replace host/certificate paths.
+server {
+    listen 443 ssl;
+    server_name research.example.et;
+    ssl_certificate /etc/letsencrypt/live/research.example.et/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/research.example.et/privkey.pem;
+    client_max_body_size 4k;
+    access_log off;
+    location / {
+        proxy_pass http://127.0.0.1:8001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For "";
+        proxy_read_timeout 30s;
+    }
+}
