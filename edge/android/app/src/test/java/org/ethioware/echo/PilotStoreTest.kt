@@ -11,14 +11,24 @@ import java.time.ZoneId
 class PilotStoreTest {
     private class Files : PrivateFiles {
         val data = mutableMapOf<String, ByteArray>()
+        val operations = mutableListOf<String>()
+        val reads = mutableListOf<String>()
         var failLessonWrite = false
+        var failDeleteOnce: String? = null
         override fun names() = data.keys.toList()
-        override fun read(name: String) = data[name]?.clone()
+        override fun read(name: String): ByteArray? {
+            reads += name
+            return data[name]?.clone()
+        }
         override fun write(name: String, bytes: ByteArray) {
             if (failLessonWrite && name.startsWith("lesson.")) error("disk full")
             data[name] = bytes.clone()
+            operations += "write:$name"
         }
-        override fun delete(name: String) { data.remove(name) }
+        override fun delete(name: String) {
+            if (failDeleteOnce == name) { failDeleteOnce = null; error("interrupted delete") }
+            data.remove(name); operations += "delete:$name"
+        }
     }
     private val files = Files()
     private var time = Instant.parse("2026-10-05T07:00:00Z").toEpochMilli()
@@ -127,6 +137,33 @@ class PilotStoreTest {
         assertEquals(1000.0 / 1500, store.analyzeSignal(row.id)!!.getDouble("capture_fraction"), 0.0001)
         assertFalse(store.signalAnalysis(row.id)!!.getBoolean("gap_timing_available"))
     }
+    @Test fun `audio check is immediately available from saved metadata without reading audio or writing a report`() {
+        val row = store.create(profile)
+        store.append(row.id, byteArrayOf(1), 1_000, 16_000, 160, 15_200)
+        assertNull(store.signalAnalysis(row.id))
+        val saved = store.finish(row.id)
+        files.operations.clear()
+        files.reads.clear()
+
+        val evidence = SignalAnalysis.evidence(saved)!!
+        assertTrue(evidence.frequentClipping)
+        assertTrue(evidence.mostlyNearZero)
+        assertTrue(store.signalAnalysis(row.id)!!.getBoolean("signal_available"))
+        assertTrue(files.operations.isEmpty())
+        assertTrue(files.reads.none { it.startsWith("audio.") })
+
+        store.deleteLesson(row.id)
+        assertNull(store.signalAnalysis(row.id))
+    }
+    @Test fun `short or missing signal evidence never claims usable audio`() {
+        val row = store.create(profile)
+        val empty = store.finish(row.id)
+        assertEquals("interrupted", empty.status)
+        assertNull(SignalAnalysis.evidence(empty))
+        val short = empty.copy(chunks = 1, samples = 100, quiet = 100)
+        assertFalse(SignalAnalysis.evidence(short)!!.mostlyNearZero)
+        assertNull(SignalAnalysis.evidence(short.copy(quiet = 101)))
+    }
     @Test fun `crash between audio and metadata does not count uncommitted audio`() {
         val row = recorded()
         files.failLessonWrite = true
@@ -154,12 +191,70 @@ class PilotStoreTest {
         store.correct(row.id, "Not specified", "", true)
         assertTrue(weeklyLessons(store.lessons(), profile.id, week, ZoneId.of("Africa/Addis_Ababa")).isEmpty())
     }
-    @Test fun `deletion removes only the selected lesson and its chunks`() {
+    @Test fun `ordinary deletion hides immediately and retains only encrypted audio for fifteen days`() {
         val first = recorded()
         val second = recorded()
+        files.operations.clear()
         store.deleteLesson(first.id)
         assertEquals(second.id, store.lessons().single().id)
+        assertFalse(files.names().contains("lesson.${first.id}"))
+        assertTrue(files.names().contains("audio.${first.id}.0"))
+        assertTrue(files.names().contains("deletion.${first.id}"))
+        assertTrue(files.operations.indexOf("write:deletion.${first.id}") < files.operations.indexOf("delete:lesson.${first.id}"))
+        assertThrows(IllegalStateException::class.java) { store.audio(first.id, 0) }
+        assertThrows(IllegalStateException::class.java) { store.deleteLesson(first.id) }
+
+        time += SHADOW_DELETE_MS - 1
+        store.expire()
+        assertTrue(files.names().contains("audio.${first.id}.0"))
+        time++
+        store.expire()
         assertTrue(files.names().none { it.contains(first.id) })
+    }
+    @Test fun `shadow deletion deadline supersedes the earlier active expiry`() {
+        val row = recorded()
+        time += RETENTION_MS - 24 * 60 * 60 * 1000L
+        store.deleteLesson(row.id)
+        time += 24 * 60 * 60 * 1000L
+        store.expire()
+        assertTrue(files.names().contains("audio.${row.id}.0"))
+        time += SHADOW_DELETE_MS - 24 * 60 * 60 * 1000L
+        store.expire()
+        assertTrue(files.names().none { it.contains(row.id) })
+    }
+    @Test fun `restart keeps shadow deleted audio inaccessible until cleanup deadline`() {
+        val row = recorded()
+        store.deleteLesson(row.id)
+        PilotStore(files) { time }.recover()
+        assertTrue(store.lessons().isEmpty())
+        assertTrue(files.names().contains("audio.${row.id}.0"))
+        time += SHADOW_DELETE_MS
+        PilotStore(files) { time }.recover()
+        assertTrue(files.names().none { it.contains(row.id) })
+    }
+    @Test fun `committed tombstone hides a lesson when metadata cleanup is interrupted`() {
+        val row = recorded()
+        files.failDeleteOnce = "lesson.${row.id}"
+        store.deleteLesson(row.id)
+        assertTrue(files.names().contains("lesson.${row.id}"))
+        assertTrue(store.lessons().isEmpty())
+        assertThrows(IllegalStateException::class.java) { store.audio(row.id, 0) }
+
+        PilotStore(files) { time }.recover()
+        assertFalse(files.names().contains("lesson.${row.id}"))
+        assertTrue(files.names().contains("audio.${row.id}.0"))
+    }
+    @Test fun `delete all immediately purges shadow deleted audio`() {
+        val row = recorded()
+        store.deleteLesson(row.id)
+        store.clearCollectedData()
+        assertTrue(files.names().none { it.contains(row.id) })
+    }
+    @Test fun `research withdrawal immediately purges shadow deleted audio`() {
+        val row = recorded()
+        store.deleteLesson(row.id)
+        store.withdrawResearch()
+        assertTrue(files.names().none { it.contains(row.id) })
     }
     @Test fun `erase collected data preserves class configuration`() {
         recorded()
@@ -173,6 +268,28 @@ class PilotStoreTest {
         store.patchSettings(JSONObject().put("locale", "om"))
         assertEquals("2026-10-05", store.settings().getString("remindedWeek"))
         assertEquals("om", store.settings().getString("locale"))
+    }
+    @Test fun `audit is bounded and analytics is allowlisted and opt in`() {
+        repeat(140) { store.auditEvent("storage", "cleanup_retry", "completed", retryBucket = 1) }
+        val audit = JSONObject(files.data.getValue("audit").toString(Charsets.UTF_8)).getJSONArray("events")
+        assertEquals(128, audit.length())
+        assertFalse(audit.getJSONObject(0).has("detail"))
+        store.usabilityEvent("review_opened", mapOf("language" to "am"))
+        assertFalse(files.names().contains("usability"))
+        store.patchSettings(JSONObject().put("syntheticAnalytics", true))
+        store.usabilityEvent("review_opened", mapOf("language" to "am"))
+        assertEquals("review_opened", JSONObject(files.data.getValue("usability").toString(Charsets.UTF_8)).getJSONArray("events").getJSONObject(0).getString("name"))
+        assertThrows(IllegalArgumentException::class.java) { store.usabilityEvent("screen_capture", mapOf("path" to "private")) }
+    }
+    @Test fun `amharic card pack has parity with every released draft card`() {
+        Coaching.cards.forEach { card ->
+            val localized = localizedCard(card, "am")
+            assertTrue(localized.title.any { it in 'ሀ'..'፿' })
+            assertEquals(card.steps.size, localized.steps.size)
+            assertTrue(localized.example.isNotBlank())
+            assertTrue(localized.limitations.isNotBlank())
+            assertTrue(localized.notFitWhen.isNotBlank())
+        }
     }
     @Test fun `a corrupt record is not replaced by synthetic or empty data`() {
         val row = recorded()

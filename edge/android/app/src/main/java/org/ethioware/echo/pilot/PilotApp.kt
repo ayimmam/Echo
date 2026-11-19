@@ -1,308 +1,534 @@
 package org.ethioware.echo.pilot
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.Call
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
-import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.core.net.toUri
+import androidx.core.view.WindowCompat
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import java.util.Locale
 import kotlinx.coroutines.delay
-import org.ethioware.echo.ui.theme.EchoTheme
+import kotlinx.coroutines.flow.drop
+import org.ethioware.echo.ui.theme.EchoTypography
+
+internal val PilotNavy = Color(0xFF1C4052)
+private val PilotBackground = Color(0xFFF5F3EF)
+private val PilotPaper = Color(0xFFFCFBF9)
+internal val PilotMint = Color(0xFFE0EEEB)
+internal val PilotMuted = Color(0xFF54707A)
+private val PilotColors = lightColorScheme(
+    primary = PilotNavy, onPrimary = Color.White,
+    secondary = PilotAccent, secondaryContainer = PilotMint, onSecondaryContainer = PilotNavy,
+    background = PilotBackground, onBackground = PilotNavy,
+    surface = PilotPaper, onSurface = PilotNavy, surfaceVariant = PilotMint, onSurfaceVariant = PilotMuted,
+    outline = Color(0xFF80979D), outlineVariant = Color(0xFFDADFDA),
+)
+internal fun tr(locale: String, en: String, am: String) = if (locale == "am") am else en
 
 @Composable
 fun PilotApp(vm: PilotViewModel, openDemo: () -> Unit) {
-    val state = RecordingMonitor.state
+    val recording = RecordingMonitor.state
     val owner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+    val snackbar = remember { SnackbarHostState() }
+    var micAction by rememberSaveable { mutableStateOf("") }
     DisposableEffect(owner) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) vm.refresh()
+            if (event == Lifecycle.Event.ON_RESUME && vm.loaded && micAction.isEmpty() && !RecordingMonitor.state.running) vm.refresh()
             if (event == Lifecycle.Event.ON_STOP) vm.stopPlayback()
         }
         owner.lifecycle.addObserver(observer)
         onDispose { owner.lifecycle.removeObserver(observer) }
     }
-    LaunchedEffect(state.running) { if (!state.running) vm.refresh() }
-    LaunchedEffect(Unit) { while (true) { delay(60_000); if (!RecordingMonitor.state.running) vm.refresh() } }
-    val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { granted ->
-        if (granted[Manifest.permission.RECORD_AUDIO] == true) vm.record() else vm.permissionDenied()
+    LaunchedEffect(vm) {
+        snapshotFlow { RecordingMonitor.state.takeUnless { it.running } }.drop(1).collect { completed ->
+            if (completed?.lessonId != null) vm.refresh()
+        }
     }
-    val reminderPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted -> vm.updateReminders(granted) }
-    var editing by rememberSaveable { mutableStateOf(false) }
-    var adding by rememberSaveable { mutableStateOf(false) }
-    EchoTheme {
-        Scaffold(bottomBar = {
-            NavigationBar {
-                listOf("Today" to Icons.Default.Home, "Reflection" to Icons.Default.DateRange, "Settings" to Icons.Default.Settings)
-                    .forEachIndexed { index, (name, icon) ->
-                        NavigationBarItem(selected = vm.tab == index, onClick = { vm.tab = index },
-                            icon = { Icon(icon, contentDescription = null) }, label = { Text(name) })
+    LaunchedEffect(recording.takeUnless { it.running }) {
+        if (!recording.running && !recording.failed && recording.lessonId != null && vm.tab == 0) {
+            snackbar.showSnackbar(tr(vm.locale, "Recording saved on this phone", "ቅጂው በዚህ ስልክ ላይ ተቀምጧል"))
+        }
+    }
+    LaunchedEffect(vm.loaded, vm.tab) { if (vm.loaded && vm.tab == 3) vm.recordUsability("review_opened") }
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(60_000)
+            if (!vm.busy && micAction.isEmpty() && !RecordingMonitor.state.running &&
+                owner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) vm.refresh()
+        }
+    }
+
+    val locale = vm.locale
+    var permissionIntro by rememberSaveable { mutableStateOf(false) }
+    var permissionDenied by rememberSaveable { mutableStateOf(false) }
+    fun runMicAction(action: String) {
+        if (action == "record") vm.record()
+        if (action == "check") vm.checkMic()
+    }
+    val microphonePermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) runMicAction(micAction) else permissionDenied = true
+        micAction = ""
+    }
+    fun requestMicrophone(action: String) {
+        if (context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            runMicAction(action)
+        } else {
+            micAction = action
+            permissionIntro = true
+        }
+    }
+    val start = { requestMicrophone("record") }
+    val check = { requestMicrophone("check") }
+    val notificationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission(), vm::updateReminders)
+
+    var setup by rememberSaveable { mutableStateOf(false) }
+    var editProfile by rememberSaveable { mutableStateOf(false) }
+    var addProfile by rememberSaveable { mutableStateOf(false) }
+    var settingsPage by rememberSaveable { mutableStateOf("") }
+    var lessonId by rememberSaveable { mutableStateOf<String?>(null) }
+    val firstClass = vm.profile == null
+    val welcome = vm.loaded && firstClass && !setup
+    val fullScreen = !vm.loaded || welcome || recording.running
+    val home = vm.loaded && !firstClass && !editProfile && vm.tab == 0
+    val selectedLesson = vm.lessons.firstOrNull { it.id == lessonId && it.profile.id == vm.selectedId }
+    val hasDetail = vm.tab == 2 && selectedLesson != null
+    fun closeDetails() {
+        vm.stopPlayback()
+        lessonId = null
+    }
+    fun selectTab(tab: Int) {
+        closeDetails()
+        settingsPage = ""
+        vm.tab = tab
+    }
+    fun goBack() {
+        when {
+            editProfile -> { editProfile = false; addProfile = false }
+            setup && firstClass -> setup = false
+            hasDetail -> closeDetails()
+            settingsPage.isNotEmpty() -> settingsPage = ""
+            else -> selectTab(0)
+        }
+    }
+    BackHandler(enabled = !recording.running && (editProfile || setup && firstClass || vm.tab != 0), onBack = ::goBack)
+    val darkStatus = fullScreen || home && vm.error == null
+    SideEffect {
+        (context as? Activity)?.window?.let { window ->
+            WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !darkStatus
+        }
+    }
+
+    MaterialTheme(colorScheme = PilotColors, typography = EchoTypography) {
+        Scaffold(
+            containerColor = if (fullScreen) PilotNavy else PilotBackground,
+            contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
+            snackbarHost = { SnackbarHost(snackbar) },
+            bottomBar = {
+                if (!fullScreen && !firstClass && !editProfile && vm.tab in 0..3 && !hasDetail) {
+                    PilotBottomBar(vm.tab, locale, ::selectTab)
+                }
+            },
+        ) { inset ->
+            val modifier = Modifier.fillMaxSize().padding(inset)
+            when {
+                !vm.loaded -> Column(modifier) {
+                    if (vm.error != null) Box(Modifier.statusBarsPadding()) { ErrorBanner(vm.error.orEmpty(), locale, vm::refresh) }
+                    PilotSplash(Modifier.weight(1f), locale)
+                }
+                recording.running -> Box(modifier) { ActiveRecording(recording, vm.externalMic, locale, vm::stop) }
+                welcome -> Box(modifier) {
+                    TeacherWelcome(locale, !vm.busy, { vm.selectLanguage(if (locale == "am") "en" else "am") }) { setup = true }
+                }
+                firstClass || editProfile -> Column(modifier.statusBarsPadding()) {
+                    vm.error?.let { ErrorBanner(it, locale, vm::refresh) }
+                    Page(tr(locale, "Class details", "የክፍል ዝርዝር"), "", locale, back = ::goBack) {
+                        ProfileEditor(if (addProfile) null else vm.profile, vm.busy, locale, firstClass,
+                            onSave = { vm.saveProfile(it); editProfile = false; addProfile = false })
                     }
-            }
-        }) { inset ->
-            Column(Modifier.fillMaxSize().padding(inset).verticalScroll(rememberScrollState()).padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                Text("Echo", style = MaterialTheme.typography.headlineMedium)
-                Text(if (vm.researchOrigin.isBlank()) "Local recording preview · Research transfer unavailable"
-                    else "Local recording preview · Optional research sharing", style = MaterialTheme.typography.labelLarge)
-                if (vm.locale != "en") Notice("${LANGUAGES[vm.locale]} selected. This new flow currently uses English preview copy; reviewed translations are not installed.")
-                vm.error?.let { Notice(it); OutlinedButton(onClick = vm::refresh) { Text("Retry") } }
-                if (!vm.loaded) {
-                    Text("Opening protected local storage…")
-                } else {
-                    if (state.running) {
-                        Panel("Recording · ${state.seconds / 60}:${(state.seconds % 60).toString().padStart(2, '0')}") {
-                            Text(state.message)
-                            Button(onClick = vm::stop, modifier = Modifier.fillMaxWidth()) { Text("Stop and save") }
-                            Text("Lock your phone and continue teaching. Completed audio is encrypted in short chunks.", style = MaterialTheme.typography.bodySmall)
-                        }
-                    } else if (state.message.isNotEmpty()) Notice(state.message)
-                    if (vm.profile == null || editing) {
-                        ProfileEditor(if (adding) null else vm.profile, vm.busy || state.running,
-                            onSave = { vm.saveProfile(it); editing = false; adding = false },
-                            onCancel = if (vm.profile != null) ({ editing = false; adding = false }) else null)
-                    } else when (vm.tab) {
-                        0 -> {
-                            Choice("Class", vm.selectedId, vm.profiles.associate { it.id to "${it.name} · Grade ${it.grade}" },
-                                enabled = !state.running && !vm.busy, onChange = vm::selectClass)
-                            Text("${vm.profile!!.subject} · ${LANGUAGES[vm.profile!!.language]} · ${vm.profile!!.size} learners")
-                            if (!state.running) {
-                                Button(onClick = {
-                                    val permissions = if (Build.VERSION.SDK_INT >= 33) arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.POST_NOTIFICATIONS)
-                                        else arrayOf(Manifest.permission.RECORD_AUDIO)
-                                    permission.launch(permissions)
-                                }, enabled = !vm.busy, modifier = Modifier.fillMaxWidth()) { Text("Record lesson") }
-                                Text(if (vm.externalMic) "Connect your wired or USB microphone first. Echo stops if the selected route changes."
-                                    else "Phone microphone selected for testing. Room-wide speech may not be captured.")
-                                Text("This button records real audio. Use only where recording is authorized. The current build is for device testing; automatic teaching analysis is not validated.", style = MaterialTheme.typography.bodySmall)
-                            }
-                            OutlinedButton(onClick = { editing = true }, enabled = !state.running && !vm.busy) { Text("Edit class details") }
-                            Text("Recent lessons", style = MaterialTheme.typography.titleLarge)
-                            if (vm.lessons.isEmpty()) Text("No recordings yet. Your first saved lesson will appear here.")
-                            vm.lessons.filter { it.profile.id == vm.selectedId }.take(8).forEach { row -> LessonPanel(vm, row, state.running) }
-                        }
-                        1 -> ReflectionScreen(vm, state.running)
-                        2 -> {
-                            Choice("App language", vm.locale, LANGUAGES, !vm.busy, vm::selectLanguage)
-                            Text("Language packs must be reviewed locally before classroom use. Classroom language is saved separately in each profile.", style = MaterialTheme.typography.bodySmall)
-                            Choice("Microphone", if (vm.externalMic) "external" else "phone",
-                                mapOf("external" to "Wired / USB external mic", "phone" to "Phone mic — device testing"), !state.running && !vm.busy) { vm.selectMic(it == "external") }
-                            OutlinedButton(onClick = { adding = true; editing = true }, enabled = !state.running && !vm.busy) { Text("Add another class") }
-                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                Switch(checked = vm.reminders, enabled = !vm.busy, onCheckedChange = {
-                                    if (it && Build.VERSION.SDK_INT >= 33) reminderPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
-                                    else vm.updateReminders(it)
-                                })
-                                Text("Weekend reflection reminder")
-                            }
-                            Text("One local reminder on the weekend, when Android permits background work. No internet required.", style = MaterialTheme.typography.bodySmall)
-                            Panel("Privacy and retention") {
-                                Text("Audio and reflections are encrypted locally. Collected data expires after 30 days; deletion runs on app opening and scheduled maintenance. If the phone is off or Echo is force-stopped, deletion resumes when Android allows it.")
-                                Text(vm.researchStatus)
-                                if (vm.researchOrigin.isBlank()) Text("Research server not configured in this build. No data is sent.")
-                                else ResearchSettings(vm, state.running)
-                                Text("Saved class settings remain until you edit them or clear app data. System backups are disabled.")
-                                DeleteAll(vm, state.running)
-                            }
-                            Panel("Development status") {
-                                Text("Coaching content is source-linked draft material awaiting Hawassa educator review. Talk ratio, question quality, participation and understanding are not inferred from these recordings.")
-                                OutlinedButton(onClick = openDemo, enabled = !state.running) { Text("Open separate synthetic demo") }
+                }
+                else -> Column(if (home && vm.error == null) modifier else modifier.statusBarsPadding()) {
+                    vm.error?.let { ErrorBanner(it, locale, vm::refresh) }
+                    when (vm.tab) {
+                        0 -> HomeScreen(vm, recording, locale, start, check, { selectTab(4) }, { id ->
+                            selectTab(2)
+                            lessonId = id
+                        }, { selectTab(3) })
+                        1 -> Page(tr(locale, "Record lesson", "ትምህርት ቅዳ"),
+                            vm.profile?.name.orEmpty(), locale) {
+                            RecordingOutcome(recording, locale)
+                            if (vm.profiles.size > 1) ClassChoice(vm, locale)
+                            CaptureCard(vm, recording, locale, start, check)
+                            if (!recording.failed && vm.lessons.any { it.id == recording.lessonId && it.profile.id == vm.selectedId }) {
+                                TextButton(onClick = { selectTab(2); lessonId = recording.lessonId }) {
+                                    Text(tr(locale, "Open saved recording", "የተቀመጠውን ቅጂ ክፈት"))
+                                }
                             }
                         }
+                        2 -> if (selectedLesson != null) LessonDetail(vm, selectedLesson, locale, ::closeDetails)
+                            else HistoryScreen(vm, locale) { lessonId = it }
+                        3 -> ReflectionScreen(vm, locale)
+                        else -> SettingsScreen(vm, false, locale, settingsPage, { settingsPage = it },
+                            onBack = ::goBack, onCheck = check,
+                            onEdit = { editProfile = true }, onAdd = { addProfile = true; editProfile = true },
+                            onReminder = {
+                                if (it && Build.VERSION.SDK_INT >= 33 &&
+                                    context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                                ) notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                else vm.updateReminders(it)
+                            }, openDemo = openDemo)
                     }
                 }
             }
         }
+        if (permissionIntro) AlertDialog(
+            onDismissRequest = { permissionIntro = false; micAction = "" },
+            icon = { PilotGlyph(PilotIcon.Mic, PilotNavy) },
+            title = { Text(tr(locale, "Allow microphone access", "የማይክሮፎን ፈቃድ ይስጡ")) },
+            text = { Text(tr(locale, "Echo uses the microphone when you record a lesson or run a mic test. The mic test saves no audio.", "Echo ማይክሮፎኑን ትምህርት ሲቀዱ ወይም ማይኩን ሲፈትሹ ይጠቀማል። የማይክ ፍተሻው ድምጽ አያስቀምጥም።")) },
+            confirmButton = { TextButton(onClick = {
+                permissionIntro = false
+                microphonePermission.launch(Manifest.permission.RECORD_AUDIO)
+            }) { Text(tr(locale, "Continue", "ቀጥል")) } },
+            dismissButton = { TextButton(onClick = { permissionIntro = false; micAction = "" }) { Text(tr(locale, "Not now", "አሁን አይደለም")) } },
+        )
+        if (permissionDenied) AlertDialog(
+            onDismissRequest = { permissionDenied = false },
+            title = { Text(tr(locale, "Microphone access is off", "የማይክሮፎን ፈቃድ ጠፍቷል")) },
+            text = { Text(tr(locale, "You can still use History and Reflection. To use the microphone, allow access in Android Settings.", "ታሪክና ምልከታን መጠቀም ይችላሉ። ማይክሮፎኑን ለመጠቀም በAndroid ቅንብሮች ውስጥ ፈቃድ ይስጡ።")) },
+            confirmButton = { TextButton(onClick = {
+                permissionDenied = false
+                context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null)))
+            }) { Text(tr(locale, "Open settings", "ቅንብሮችን ክፈት")) } },
+            dismissButton = { TextButton(onClick = { permissionDenied = false }) { Text(tr(locale, "Close", "ዝጋ")) } },
+        )
     }
 }
 
-@Composable private fun Panel(title: String, content: @Composable ColumnScope.() -> Unit) {
-    Card(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium)
-            content()
+@Composable private fun PilotSplash(modifier: Modifier, locale: String) {
+    Box(modifier.fillMaxWidth().statusBarsPadding(), contentAlignment = Alignment.Center) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            PilotGlyph(PilotIcon.Wave, Color.White, Modifier.size(48.dp))
+            Text("ECHO", color = Color.White, style = MaterialTheme.typography.displaySmall)
+            Text(tr(locale, "Private reflection for teachers", "ለመምህራን የግል ምልከታ"), color = Color.White.copy(alpha = .85f))
         }
     }
 }
-@Composable private fun Notice(text: String) {
-    Surface(color = MaterialTheme.colorScheme.secondaryContainer, shape = MaterialTheme.shapes.medium) {
-        Text(text, Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall)
+
+@Composable private fun PilotBottomBar(selected: Int, locale: String, select: (Int) -> Unit) {
+    val tabs = listOf(
+        Triple(PilotIcon.Home, "Home", "መነሻ"), Triple(PilotIcon.Mic, "Record", "ቅዳ"),
+        Triple(PilotIcon.Clipboard, "History", "ታሪክ"), Triple(PilotIcon.Book, "Reflection", "ምልከታ"),
+    )
+    NavigationBar(containerColor = PilotPaper, tonalElevation = 0.dp) {
+        tabs.forEachIndexed { index, tab ->
+            val label = tr(locale, tab.second, tab.third)
+            NavigationBarItem(selected = selected == index, onClick = { select(index) },
+                icon = { PilotGlyph(tab.first, LocalContentColor.current) },
+                label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = PilotNavy, selectedTextColor = PilotNavy,
+                    indicatorColor = PilotMint, unselectedIconColor = PilotMuted, unselectedTextColor = PilotMuted,
+                ))
+        }
     }
 }
-@Composable private fun Choice(label: String, value: String, options: Map<String, String>, enabled: Boolean = true, onChange: (String) -> Unit) {
-    var expanded by remember { mutableStateOf(false) }
+
+@Composable internal fun ClassChoice(vm: PilotViewModel, locale: String) {
+    Choice(tr(locale, "Class", "ክፍል"), vm.selectedId,
+        vm.profiles.associate { it.id to "${it.name} · ${tr(locale, "Grade", "ክፍል")} ${it.grade}" },
+        !vm.busy, vm::selectClass)
+}
+
+@Composable private fun SettingsScreen(
+    vm: PilotViewModel, recording: Boolean, locale: String, page: String, setPage: (String) -> Unit,
+    onBack: () -> Unit, onCheck: () -> Unit, onEdit: () -> Unit, onAdd: () -> Unit,
+    onReminder: (Boolean) -> Unit, openDemo: () -> Unit,
+) {
+    val context = LocalContext.current
+    var dialError by remember { mutableStateOf(false) }
+    if (page.isNotEmpty()) {
+        Page(settingsTitle(page, locale), "", locale, back = { setPage("") }) {
+            when (page) {
+                "profile" -> PilotCard { Text(vm.profile?.name.orEmpty(), style = MaterialTheme.typography.titleLarge); Text("${tr(locale, "Grade", "ክፍል")} ${vm.profile?.grade} · ${vm.profile?.subject}", color = PilotMuted); Button(onClick = onEdit) { Text(tr(locale, "Edit class details", "የክፍል ዝርዝር አርትዕ")) }; OutlinedButton(onClick = onAdd) { Text(tr(locale, "Add another class", "ሌላ ክፍል ጨምር")) } }
+                "language" -> PilotCard { Choice(tr(locale, "App language", "የመተግበሪያ ቋንቋ"), locale, linkedMapOf("en" to "English", "am" to "አማርኛ"), !vm.busy, vm::selectLanguage); Text(tr(locale, "Classroom language is stored separately in each class profile.", "የክፍል ቋንቋ በእያንዳንዱ የክፍል መገለጫ ውስጥ ተለይቶ ይቀመጣል።"), color = PilotMuted) }
+                "microphone" -> PilotCard {
+                    MicrophoneControls(vm, locale, onCheck)
+                    Text(tr(locale, "The mic test saves no audio.", "የማይክ ፍተሻው ድምጽ አያስቀምጥም።"), color = PilotMuted)
+                }
+                "notifications" -> NotificationSettings(vm, locale, onReminder)
+                "privacy" -> { PrivacyPanel(vm, locale); if (vm.researchOrigin.isNotBlank()) ResearchSettings(vm, recording, locale); DeleteAll(vm, recording, locale) }
+                "support" -> {
+                    PilotCard {
+                        SupportAnswer(tr(locale, "How do I record?", "እንዴት እቀዳለሁ?"),
+                            tr(locale, "Open Home and choose a microphone. For the K9, turn on both units, connect the receiver and tap Test mic. Tap Start recording, then Stop and save when finished.", "ወደ መነሻ ይሂዱና ማይክሮፎን ይምረጡ። K9 ሲጠቀሙ ሁለቱንም ክፍሎች ያብሩ፣ ተቀባዩን ያገናኙና ማይኩን ይፈትሹ። መቅዳት ይጀምሩ፤ ሲጨርሱ «አቁምና አስቀምጥ» ይንኩ።"))
+                        HorizontalDivider()
+                        SupportAnswer(tr(locale, "Where are my recordings?", "ቅጂዎቼ የት ናቸው?"),
+                            tr(locale, "Find saved lessons in History. Play an excerpt, check the microphone levels, or delete a recording. History and Reflection work without internet.", "የተቀመጡ ትምህርቶችን በታሪክ ያገኛሉ። ቅንጭብ ያዳምጡ፣ የማይኩን ድምጽ ይፈትሹ ወይም ቅጂን ይሰርዙ። ታሪክና ምልከታ ያለ ኢንተርኔት ይሠራሉ።"))
+                        HorizontalDivider()
+                        SupportAnswer(tr(locale, "What happens if recording is interrupted?", "ቅጂው ከተቋረጠ ምን ይሆናል?"),
+                            tr(locale, "Echo keeps audio it already saved. Open the lesson in History to see what was kept, then check your microphone before starting again.", "Echo አስቀድሞ የተቀመጠውን ድምጽ ይይዛል። የተቀመጠውን በታሪክ ይመልከቱ፣ ከዚያ እንደገና ከመጀመርዎ በፊት ማይኩን ይፈትሹ።"))
+                    }
+                    PilotCard {
+                        Text(tr(locale, "Call support", "ወደ ድጋፍ ይደውሉ"), style = MaterialTheme.typography.titleMedium)
+                        OutlinedButton(onClick = {
+                            dialError = runCatching { context.startActivity(Intent(Intent.ACTION_DIAL, "tel:0988978263".toUri())) }.isFailure
+                        }) { Text("0988978263") }
+                        if (dialError) Text(tr(locale, "Use another phone to call support.", "ለድጋፍ ከሌላ ስልክ ይደውሉ።"), color = MaterialTheme.colorScheme.error)
+                    }
+                }
+                "about" -> PilotCard { Text("ECHO", style = MaterialTheme.typography.headlineMedium, color = PilotNavy); Text(tr(locale, "Echo helps teachers record lessons for private reflection. Your recordings and notes stay on your phone. Each week, Echo offers a practice card to help you choose one action for your next lessons.", "Echo መምህራን ትምህርቶችን ለግል ምልከታ እንዲቀዱ ይረዳል። ቅጂዎችዎና ማስታወሻዎችዎ በስልክዎ ላይ ይቆያሉ። በየሳምንቱ Echo ለቀጣይ ትምህርቶችዎ አንድ ድርጊት እንዲመርጡ የሚረዳ የልምምድ ካርድ ያቀርባል።")); Text(tr(locale, "Adult rehearsal build · educator and language approval required before field release.", "የአዋቂዎች ልምምድ ስሪት · ከመስክ ልቀት በፊት የአስተማሪና የቋንቋ ፈቃድ ያስፈልጋል።"), color = PilotMuted); OutlinedButton(onClick = openDemo) { Text(tr(locale, "Open synthetic demo", "ሰው ሰራሽ ማሳያን ክፈት")) } }
+            }
+        }
+    } else Page(tr(locale, "Settings", "ቅንብሮች"), "", locale, back = onBack) {
+        SettingRow(Icons.Outlined.Person, tr(locale, "Class profile", "የክፍል መገለጫ"), vm.profile?.name.orEmpty()) { setPage("profile") }
+        SettingRow(Icons.Outlined.Edit, tr(locale, "Language", "ቋንቋ"), if (locale == "am") "አማርኛ" else "English") { setPage("language") }
+        SettingRow(null, tr(locale, "Microphone", "ማይክሮፎን"), if (vm.externalMic) tr(locale, "External microphone", "ውጫዊ ማይክሮፎን") else tr(locale, "Phone microphone", "የስልክ ማይክሮፎን")) { setPage("microphone") }
+        SettingRow(Icons.Outlined.Notifications, tr(locale, "Notifications", "ማሳወቂያዎች"), if (vm.reminders) reminderLabel(vm, locale) else tr(locale, "Off", "ጠፍቷል")) { setPage("notifications") }
+        SettingRow(Icons.Outlined.Lock, tr(locale, "Privacy & data", "ግላዊነትና መረጃ"), tr(locale, "Retention and research choices", "የማቆያና የጥናት ምርጫዎች")) { setPage("privacy") }
+        SettingRow(Icons.Outlined.Call, tr(locale, "Help & support", "እገዛና ድጋፍ"), "0988978263") { vm.recordUsability("support_opened"); setPage("support") }
+        SettingRow(Icons.Outlined.Info, tr(locale, "About ECHO", "ስለ ECHO"), tr(locale, "App information", "የመተግበሪያ መረጃ")) { setPage("about") }
+    }
+}
+
+@Composable private fun SupportAnswer(question: String, answer: String) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    Row(
+        Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable(role = Role.Button) { expanded = !expanded },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Text(question, Modifier.weight(1f), fontWeight = FontWeight.SemiBold)
+        Icon(if (expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown, null)
+    }
+    if (expanded) Text(answer, color = PilotMuted, style = MaterialTheme.typography.bodyMedium)
+}
+
+@Composable private fun NotificationSettings(vm: PilotViewModel, locale: String, onReminder: (Boolean) -> Unit) {
+    PilotCard {
+        Row(verticalAlignment = Alignment.CenterVertically) { Switch(vm.reminders, onCheckedChange = onReminder); Spacer(Modifier.width(12.dp)); Text(tr(locale, "Weekend reflection reminder", "የሳምንት መጨረሻ ምልከታ ማሳሰቢያ"), Modifier.weight(1f)) }
+        Choice(tr(locale, "Day", "ቀን"), vm.reminderDay, linkedMapOf("SATURDAY" to tr(locale, "Saturday", "ቅዳሜ"), "SUNDAY" to tr(locale, "Sunday", "እሁድ")), vm.reminders && !vm.busy) { vm.updateReminderTime(it, vm.reminderMinute) }
+        val times = (17..21).associate { (it * 60).toString() to String.format(Locale.ROOT, "%02d:00", it) }
+        Choice(tr(locale, "Time", "ሰዓት"), vm.reminderMinute.toString(), times, vm.reminders && !vm.busy) { vm.updateReminderTime(vm.reminderDay, it.toInt()) }
+        Text(tr(locale, "Suggested: Sunday at 18:00. Android may deliver later; reflection remains available on demand.", "የተጠቆመው፦ እሁድ 18:00። Android ማሳወቂያውን ዘግይቶ ሊያቀርብ ይችላል፤ ምልከታው ሁልጊዜ ይገኛል።"), color = PilotMuted, style = MaterialTheme.typography.bodySmall)
+    }
+}
+
+@Composable private fun PrivacyPanel(vm: PilotViewModel, locale: String) = PilotCard {
+    Text(tr(locale, "Private by default", "በነባሪ የግል"), style = MaterialTheme.typography.titleMedium)
+    Text(tr(locale, "Recordings, notes and ratings are encrypted locally. Active recordings expire after 30 days. Ordinary deletion hides a recording now and removes encrypted audio after 15 days; Delete all removes it immediately.", "ቅጂዎች፣ ማስታወሻዎችና ደረጃዎች በስልኩ ላይ ተመስጥረው ይቀመጣሉ። ንቁ ቅጂዎች ከ30 ቀን በኋላ ያበቃሉ። መደበኛ ስረዛ ቅጂውን አሁን ይደብቃልና ድምጹን ከ15 ቀን በኋላ ያስወግዳል፤ «ሁሉንም ሰርዝ» ወዲያውኑ ያስወግዳል።"))
+    Text(localizedResearchStatus(vm.researchStatus, locale), color = PilotMuted)
+}
+
+@Composable private fun DeleteAll(vm: PilotViewModel, recording: Boolean, locale: String) {
+    var confirm by remember { mutableStateOf(false) }
+    PilotCard { Text(tr(locale, "Delete all local data", "ሁሉንም የአካባቢ መረጃ ሰርዝ"), style = MaterialTheme.typography.titleMedium); Text(tr(locale, "Immediately removes active and shadow-deleted audio, notes and reflections. Class settings remain.", "ንቁና በ15 ቀን መስኮት ውስጥ ያሉ ድምጾችን፣ ማስታወሻዎችንና ምልከታዎችን ወዲያውኑ ያስወግዳል። የክፍል ቅንብሮች ይቆያሉ።"), color = PilotMuted); OutlinedButton(onClick = { confirm = true }, enabled = !recording && !vm.busy) { Text(tr(locale, "Delete all recordings and reflections", "ሁሉንም ቅጂዎችና ምልከታዎች ሰርዝ")) } }
+    if (confirm) AlertDialog(onDismissRequest = { confirm = false }, title = { Text(tr(locale, "Delete collected data?", "የተሰበሰበ መረጃ ይሰረዝ?")) }, text = { Text(tr(locale, "This permanent local deletion cannot be undone.", "ይህ ቋሚ ስረዛ መመለስ አይችልም።")) }, confirmButton = { TextButton(onClick = { confirm = false; vm.clearCollectedData() }) { Text(tr(locale, "Delete all", "ሁሉንም ሰርዝ")) } }, dismissButton = { TextButton(onClick = { confirm = false }) { Text(tr(locale, "Cancel", "ይቅር")) } })
+}
+
+@Composable private fun ResearchSettings(vm: PilotViewModel, recording: Boolean, locale: String) {
+    var code by remember { mutableStateOf("") }; var agreed by remember { mutableStateOf(false) }
+    PilotCard {
+        Text(tr(locale, "Optional research contribution", "አማራጭ የጥናት አስተዋጽኦ"), style = MaterialTheme.typography.titleMedium)
+        Text(tr(locale, "Only explicitly submitted numeric/enumerated weekly summaries are sent after separate consent. Audio, class names and private notes stay here. Withdrawal applies to the whole enrollment.", "ከተለየ ፈቃድ በኋላ በግልጽ ያስገቡት የቁጥር/የተዘረዘረ ማጠቃለያ ብቻ ይላካል። ድምጽ፣ የክፍል ስምና ማስታወሻ እዚህ ይቆያሉ። ፈቃድ ማንሳት ሙሉውን ምዝገባ ይመለከታል።"), color = PilotMuted)
+        OutlinedTextField(code, { code = it }, label = { Text(tr(locale, "Private enrollment code", "የግል ምዝገባ ኮድ")) }, enabled = !recording && !vm.busy, modifier = Modifier.fillMaxWidth())
+        Row(verticalAlignment = Alignment.CenterVertically) { Checkbox(agreed, { agreed = it }); Text(tr(locale, "I agreed to the separate study consent.", "ለተለየው የጥናት ፈቃድ ተስማምቻለሁ።")) }
+        Button(onClick = { vm.enrollResearch(code); code = ""; agreed = false }, enabled = agreed && code.length in 30..100 && !recording && !vm.busy) { Text(tr(locale, "Enroll", "ተመዝገብ")) }
+        OutlinedButton(onClick = vm::submitResearchReview, enabled = vm.canSubmitResearch && !recording && !vm.busy) { Text(tr(locale, "Submit selected weekly review", "የተመረጠውን ምልከታ አስገባ")) }
+        OutlinedButton(onClick = vm::withdrawResearch, enabled = !recording && !vm.busy) { Text(tr(locale, "Stop sharing and withdraw", "ማጋራትን አቁምና ፈቃድ አንሳ")) }
+    }
+}
+
+@Composable private fun ProfileEditor(
+    original: ClassProfile?, disabled: Boolean, locale: String, firstClass: Boolean, onSave: (ClassProfile) -> Unit,
+) {
+    val initial = remember(original?.id) { original ?: ClassProfile(name = tr(locale, "My class", "ክፍሌ")) }
+    var name by rememberSaveable(original?.id) { mutableStateOf(initial.name) }
+    var grade by rememberSaveable(original?.id) { mutableIntStateOf(initial.grade) }
+    var subject by rememberSaveable(original?.id) { mutableStateOf(initial.subject) }
+    var language by rememberSaveable(original?.id) { mutableStateOf(initial.language) }
+    var goal by rememberSaveable(original?.id) { mutableStateOf(initial.goal) }
+    var size by rememberSaveable(original?.id) { mutableStateOf(original?.size?.toString().orEmpty()) }
+    val candidate = initial.copy(name = name.trim(), grade = grade, subject = subject, language = language,
+        goal = goal, size = size.toIntOrNull() ?: 0)
+    val goals = Coaching.available(candidate)
+    val resolved = candidate.copy(goal = goal.takeIf { id -> goals.any { it.id == id } } ?: "understanding")
+    PilotCard {
+        OutlinedTextField(name, { name = it.take(60) }, label = { Text(tr(locale, "Class name", "የክፍል ስም")) },
+            supportingText = { Text(tr(locale, "Leave out learner names.", "የተማሪዎችን ስም አያካትቱ።")) },
+            enabled = !disabled, singleLine = true, modifier = Modifier.fillMaxWidth())
+        Choice(tr(locale, "Grade", "ክፍል"), grade.toString(),
+            ((1..4).toList() + listOf(11, 12)).associate { it.toString() to it.toString() }, !disabled) { grade = it.toInt() }
+        Choice(tr(locale, "Subject", "ትምህርት"), subject,
+            listOf("Reading", "Mathematics", "Other").associateWith { localizedSubject(it, locale) }, !disabled) { subject = it }
+        Choice(tr(locale, "Classroom language", "የክፍል ቋንቋ"), language, LANGUAGES, !disabled) { language = it }
+        OutlinedTextField(size, { size = it.filter(Char::isDigit).take(3) }, label = { Text(tr(locale, "Approximate class size", "ግምታዊ የክፍል ተማሪዎች ብዛት")) },
+            enabled = !disabled, singleLine = true, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())
+        if (!firstClass) Choice(tr(locale, "Teaching goal", "የማስተማር ግብ"), resolved.goal,
+            goals.associate { it.id to localizedCard(it, locale).title }, !disabled) { goal = it }
+        Button(onClick = { onSave(resolved) }, enabled = !disabled && resolved.valid(),
+            modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp), shape = RoundedCornerShape(16.dp)) {
+            Text(if (firstClass) tr(locale, "Go to Home", "ወደ መነሻ ሂድ") else tr(locale, "Save class", "ክፍል አስቀምጥ"))
+        }
+    }
+}
+
+@Composable internal fun Page(
+    title: String, subtitle: String, locale: String, back: (() -> Unit)? = null, content: @Composable ColumnScope.() -> Unit,
+) = Column(
+    Modifier.fillMaxSize().verticalScroll(rememberScrollState()).imePadding().padding(horizontal = 24.dp, vertical = 20.dp),
+    verticalArrangement = Arrangement.spacedBy(16.dp),
+) {
+    PageTitle(title, subtitle, locale, back)
+    content()
+    Spacer(Modifier.height(12.dp))
+}
+
+@Composable internal fun PageTitle(title: String, subtitle: String, locale: String, back: (() -> Unit)? = null) {
     Column {
+        if (back != null) IconButton(onClick = back, modifier = Modifier.offset(x = (-12).dp)) {
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, tr(locale, "Back", "ተመለስ"))
+        }
+        Text(title, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = PilotNavy,
+            modifier = Modifier.semantics { heading() })
+        if (subtitle.isNotEmpty()) Text(subtitle, color = PilotMuted, modifier = Modifier.padding(top = 4.dp))
+    }
+}
+
+@Composable internal fun PilotCard(
+    onClick: (() -> Unit)? = null, content: @Composable ColumnScope.() -> Unit,
+) {
+    val colors = CardDefaults.cardColors(containerColor = PilotPaper)
+    val shape = RoundedCornerShape(22.dp)
+    val elevation = CardDefaults.cardElevation(3.dp)
+    val body: @Composable () -> Unit = {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp), content = content)
+    }
+    if (onClick == null) Card(Modifier.fillMaxWidth(), shape = shape, colors = colors, elevation = elevation, content = { body() })
+    else Card(onClick = onClick, modifier = Modifier.fillMaxWidth(), shape = shape, colors = colors, elevation = elevation, content = { body() })
+}
+
+@Composable internal fun Stat(value: String, label: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(value, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+        Text(label, color = PilotMuted, style = MaterialTheme.typography.bodySmall)
+    }
+}
+@Composable internal fun SectionTitle(title: String, action: String? = null, click: (() -> Unit)? = null) {
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f).semantics { heading() })
+        if (action != null && click != null) TextButton(onClick = click) { Text(action, color = PilotAccent) }
+    }
+}
+internal fun localizedSubject(subject: String, locale: String) = when (subject) {
+    "Reading" -> tr(locale, "Reading", "ንባብ")
+    "Mathematics" -> tr(locale, "Mathematics", "ሂሳብ")
+    else -> tr(locale, "Other", "ሌላ")
+}
+@Composable private fun SettingRow(icon: ImageVector?, title: String, subtitle: String, click: () -> Unit) {
+    Row(Modifier.fillMaxWidth().clickable(onClick = click).padding(vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+        Box(Modifier.size(42.dp).background(PilotMint, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+            if (icon == null) PilotGlyph(PilotIcon.Mic, PilotNavy) else Icon(icon, null, tint = PilotNavy)
+        }
+        Column(Modifier.weight(1f).padding(horizontal = 14.dp)) {
+            Text(title, fontWeight = FontWeight.SemiBold)
+            Text(subtitle, color = PilotMuted, style = MaterialTheme.typography.bodySmall)
+        }
+        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null)
+    }
+    HorizontalDivider()
+}
+@Composable private fun ErrorBanner(text: String, locale: String, retry: () -> Unit) {
+    Surface(color = MaterialTheme.colorScheme.errorContainer) {
+        Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(localizedStatus(text, locale), Modifier.weight(1f))
+            TextButton(onClick = retry) { Text(tr(locale, "Retry", "እንደገና ሞክር")) }
+        }
+    }
+}
+@Composable internal fun Choice(label: String, value: String, options: Map<String, String>, enabled: Boolean = true, change: (String) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(label, style = MaterialTheme.typography.labelLarge)
         Box {
-            OutlinedButton(onClick = { expanded = true }, enabled = enabled, modifier = Modifier.fillMaxWidth()) { Text(options[value] ?: "Choose") }
-            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                options.forEach { (key, text) -> DropdownMenuItem(text = { Text(text) }, onClick = { onChange(key); expanded = false }) }
+            OutlinedButton(onClick = { expanded = true }, enabled = enabled, modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)) {
+                Text(options[value] ?: "—", modifier = Modifier.weight(1f))
+                Text("⌄")
             }
-        }
-    }
-}
-
-@Composable private fun ProfileEditor(original: ClassProfile?, disabled: Boolean, onSave: (ClassProfile) -> Unit, onCancel: (() -> Unit)?) {
-    var value by remember(original?.id) { mutableStateOf(original ?: ClassProfile()) }
-    var size by remember(original?.id) { mutableStateOf(value.size.toString()) }
-    Panel(if (original == null) "Set up a class once" else "Class details") {
-        OutlinedTextField(value.name, { value = value.copy(name = it.take(60)) }, label = { Text("Class name (no pupil names)") }, enabled = !disabled, modifier = Modifier.fillMaxWidth())
-        Choice("Grade", value.grade.toString(), ((1..4).toList() + listOf(11, 12)).associate { it.toString() to "Grade $it" }, !disabled) {
-            val changed = value.copy(grade = it.toInt())
-            value = changed.copy(goal = if (Coaching.available(changed).any { card -> card.id == changed.goal }) changed.goal else "understanding")
-        }
-        Choice("Subject", value.subject, listOf("Reading", "Mathematics", "Other").associateWith { it }, !disabled) { value = value.copy(subject = it) }
-        if (value.cohort == "secondary") OutlinedTextField(value.topic, { value = value.copy(topic = it.take(80)) },
-            label = { Text("Curriculum topic (optional)") }, enabled = !disabled, modifier = Modifier.fillMaxWidth())
-        Choice("Classroom language", value.language, LANGUAGES, !disabled) { value = value.copy(language = it) }
-        OutlinedTextField(size, { size = it.filter(Char::isDigit).take(3) }, label = { Text("Approximate number of learners") }, enabled = !disabled, modifier = Modifier.fillMaxWidth())
-        Choice("Your teaching goal", value.goal, Coaching.available(value).associate { it.id to it.title }, !disabled) { value = value.copy(goal = it) }
-        val number = size.toIntOrNull()
-        val candidate = value.copy(size = number ?: 0, goal = if (Coaching.available(value).any { it.id == value.goal }) value.goal else "understanding")
-        Button(onClick = { onSave(candidate) }, enabled = !disabled && candidate.valid(), modifier = Modifier.fillMaxWidth()) { Text("Save class") }
-        onCancel?.let { OutlinedButton(onClick = it, enabled = !disabled) { Text("Cancel") } }
-    }
-}
-
-@Composable private fun LessonPanel(vm: PilotViewModel, row: LocalLesson, recording: Boolean) {
-    var expanded by remember(row.id) { mutableStateOf(false) }
-    var deleting by remember(row.id) { mutableStateOf(false) }
-    var context by remember(row.id, row.context) { mutableStateOf(row.context) }
-    var note by remember(row.id, row.note) { mutableStateOf(row.note) }
-    var excluded by remember(row.id, row.excluded) { mutableStateOf(row.excluded) }
-    var excerpt by remember(row.id) { mutableIntStateOf(0) }
-    val time = Instant.ofEpochMilli(row.createdAt).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("EEE d MMM · HH:mm"))
-    Panel(time) {
-        Text("${row.capturedMs / 60_000} min ${row.capturedMs / 1000 % 60} sec saved · ${row.status}")
-        if (row.reason.isNotEmpty()) Text(row.reason)
-        if (row.excluded) Text("Excluded from weekly reflection")
-        if (row.samples > 0 && row.clipped.toDouble() / row.samples > .01) Text("Audio clipping detected. Check microphone placement before the next lesson.")
-        if (row.samples > 0 && row.quiet.toDouble() / row.samples > .95) Text("Most captured samples were near zero. Check the microphone; this does not mean learners were silent.")
-        OutlinedButton(onClick = { expanded = !expanded }, enabled = !recording) { Text(if (expanded) "Hide details" else "Context, correction or deletion") }
-        if (expanded) {
-            if (row.chunks > 0) {
-                Choice("Local excerpt", excerpt.toString(), (0 until row.chunks).associate {
-                    it.toString() to "Excerpt ${it + 1} · about ${it * 30 / 60}m ${it * 30 % 60}s"
-                }, !vm.busy) { excerpt = it.toInt() }
-                OutlinedButton(onClick = { if (vm.playing == row.id) vm.stopPlayback() else vm.play(row, excerpt) }, enabled = !vm.busy) {
-                    Text(if (vm.playing == row.id) "Stop playback" else "Play excerpt on phone")
+            DropdownMenu(expanded && enabled, { expanded = false }) {
+                options.forEach { (key, text) ->
+                    DropdownMenuItem(text = { Text(text, fontWeight = if (key == value) FontWeight.Bold else FontWeight.Normal) },
+                        onClick = { expanded = false; change(key) })
                 }
-                Text("Use headphones for private listening. Excerpts may include children's voices.", style = MaterialTheme.typography.bodySmall)
             }
-            Choice("What was happening?", context, PilotStore.CONTEXTS.associateWith { it }, !vm.busy) { context = it }
-            OutlinedTextField(note, { note = it.take(500) }, label = { Text("Optional private note (no pupil names)") }, modifier = Modifier.fillMaxWidth(), enabled = !vm.busy)
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(excluded, { excluded = it }, enabled = !vm.busy); Text("Leave out of weekly reflection")
-            }
-            Button(onClick = { vm.correct(row, context, note, excluded); expanded = false }, enabled = !vm.busy) { Text("Save correction") }
-            Text("Audio observations are preserved; your context is stored separately. Expires ${Instant.ofEpochMilli(row.expiresAt).atZone(ZoneId.systemDefault()).toLocalDate()}.", style = MaterialTheme.typography.bodySmall)
-            TextButton(onClick = { deleting = true }, enabled = !vm.busy) { Text("Delete lesson and audio") }
         }
     }
-    if (deleting) AlertDialog(onDismissRequest = { deleting = false }, title = { Text("Delete this lesson?") },
-        text = { Text("This permanently removes its local audio, notes and summary.") },
-        confirmButton = { TextButton(onClick = { deleting = false; vm.delete(row) }) { Text("Delete") } },
-        dismissButton = { TextButton(onClick = { deleting = false }) { Text("Keep") } })
 }
 
-@Composable private fun ReflectionScreen(vm: PilotViewModel, recording: Boolean) {
-    val rows = vm.weekly
-    val report = vm.report
-    var details by remember { mutableStateOf(false) }
-    Text("One small step for next week", style = MaterialTheme.typography.headlineSmall)
-    Choice("Class", vm.selectedId, vm.profiles.associate { it.id to "${it.name} · Grade ${it.grade}" }, !vm.busy, vm::selectClass)
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        TextButton(onClick = { vm.moveWeek(-1) }, enabled = !vm.busy && vm.week > monday(LocalDate.now().minusDays(30))) { Text("Earlier") }
-        TextButton(onClick = { vm.moveWeek(1) }, enabled = !vm.busy && vm.week < monday(LocalDate.now())) { Text("Later") }
+internal fun localizedStatus(value: String, locale: String): String {
+    if (locale != "am") return value.replaceFirstChar { it.uppercase() }
+    return when {
+        value == "saved" || value.startsWith("Lesson saved") -> "ቅጂው በዚህ ስልክ ላይ ተቀምጧል።"
+        value == "interrupted" -> "ተቋርጧል"
+        value.contains("route changed") -> "የማይክሮፎኑ መንገድ ተቀይሯል። ያገናኙና እንደገና ይሞክሩ።"
+        value.contains("permission", ignoreCase = true) -> "የማይክሮፎን ፈቃድ ያስፈልጋል።"
+        value.contains("storage", ignoreCase = true) || value.contains("32 MB") -> "የማከማቻ ቦታ በቂ አይደለም።"
+        value.startsWith("Connect a wired") || value.contains("selected microphone") -> "ማይክሮፎኑን ያገናኙና እንደገና ይሞክሩ።"
+        value.startsWith("No completed audio") || value.contains("before audio was saved") -> "ምንም ድምጽ አልተቀመጠም።"
+        value.contains("completed chunks", ignoreCase = true) -> "የተጠናቀቁ የድምጽ ክፍሎች ብቻ ተመልሰዋል።"
+        value.startsWith("Some ending audio") -> "የመጨረሻው ድምጽ ክፍል አልተቀመጠም።"
+        value.startsWith("Two-hour") -> "ቅጂው የሁለት ሰዓት ገደቡ ላይ ደርሷል።"
+        value.startsWith("No audio arrived") || value.contains("microphone", ignoreCase = true) -> "የማይክሮፎኑን ግንኙነት ይፈትሹና እንደገና ይሞክሩ።"
+        else -> value
     }
-    Text("Week of ${vm.week} · 2–10 minutes · Private", style = MaterialTheme.typography.labelLarge)
-    Panel("Your recorded week") {
-        Text(report?.observation ?: "Choose a class to begin reflection.")
-        if (rows.isEmpty()) Text("No saved lessons for this class and week. You can still choose a goal-based practice.")
-        else {
-            val longest = rows.maxOf { it.capturedMs }.coerceAtLeast(1)
-            rows.forEach { row ->
-                Text("${lessonDate(row, ZoneId.systemDefault()).dayOfWeek} · ${row.capturedMs / 60_000} min · ${row.status}", style = MaterialTheme.typography.bodySmall)
-                LinearProgressIndicator(progress = { row.capturedMs.toFloat() / longest }, modifier = Modifier.fillMaxWidth())
-            }
-            Text("Bars show saved recording duration, not teaching quality or the proportion of the lesson observed.", style = MaterialTheme.typography.bodySmall)
-        }
-        Text(report?.limitation ?: "Automatic teaching observations are not available.")
-        TextButton(onClick = { details = !details }) { Text(if (details) "Hide lesson context" else "Review or correct lesson context") }
-    }
-    if (details) vm.lessons.filter { it.profile.id == vm.selectedId && monday(lessonDate(it, ZoneId.systemDefault())) == vm.week }
-        .forEach { LessonPanel(vm, it, recording) }
-    val previous = Coaching.cards.firstOrNull { it.id == vm.previousReflection.optString("chosen") }
-    if (previous != null) Panel("Last week's practice: ${previous.title}") {
-        Text("Your answer is a reflection, not an audio finding.")
-        Choice("Did you try it?", vm.reflection.optString("tried"), linkedMapOf("yes" to "I tried it", "notyet" to "Not yet", "notuseful" to "It did not fit my class"), !vm.busy) { vm.updateReflection("tried", it) }
-        Text(report?.followUp ?: "What did learners show you?")
-    }
-    val card = vm.chosen ?: vm.suggested
-    Panel(card.title) {
-        Text("Suggested from your goal · ${card.scope}", style = MaterialTheme.typography.labelMedium)
-        report?.action?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
-        card.steps.forEachIndexed { index, step ->
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("${index + 1}", style = MaterialTheme.typography.headlineSmall)
-                Text(step, modifier = Modifier.weight(1f))
-            }
-        }
-        Text("Try saying: “${card.example}”")
-        Text("Try this in one lesson. Next week, reflect on whether it helped you decide what to teach next.")
-        Button(onClick = { vm.updateReflection("chosen", card.id) }, enabled = !vm.busy && vm.chosen?.id != card.id, modifier = Modifier.fillMaxWidth()) {
-            Text(if (vm.chosen?.id == card.id) "Chosen for next week" else "Try this next week")
-        }
-        Choice("Or choose another practice", card.id, vm.profile?.let(Coaching::available).orEmpty().associate { it.id to it.title }, !vm.busy) { vm.updateReflection("chosen", it) }
-        if (vm.chosen != null) TextButton(onClick = { vm.updateReflection("chosen", "") }, enabled = !vm.busy) { Text("Remove my choice") }
-        Text("Evidence: ${card.source}", style = MaterialTheme.typography.bodySmall)
-        Text("Draft ${Coaching.VERSION} · card v${card.version}. ${card.limitations} Local educator and language review pending.", style = MaterialTheme.typography.bodySmall)
-    }
-    Choice("Was this review useful?", vm.reflection.optString("rating"), linkedMapOf("1" to "1 — Not useful", "2" to "2 — Slightly useful", "3" to "3 — Somewhat useful", "4" to "4 — Useful", "5" to "5 — Very useful"), !vm.busy) { vm.updateReflection("rating", it) }
-    Text(if (vm.researchOrigin.isBlank()) "Your rating stays on this phone."
-        else "Your rating stays on this phone unless you explicitly submit this review after study enrollment.", style = MaterialTheme.typography.bodySmall)
 }
-
-@Composable private fun DeleteAll(vm: PilotViewModel, recording: Boolean) {
-    var confirming by remember { mutableStateOf(false) }
-    OutlinedButton(onClick = { confirming = true }, enabled = !recording && !vm.busy) { Text("Delete all recordings and reflections") }
-    if (confirming) AlertDialog(onDismissRequest = { confirming = false }, title = { Text("Delete collected data?") },
-        text = { Text("All local audio, lesson notes and weekly reflections will be permanently removed. Class settings remain.") },
-        confirmButton = { TextButton(onClick = { confirming = false; vm.clearCollectedData() }) { Text("Delete all") } },
-        dismissButton = { TextButton(onClick = { confirming = false }) { Text("Cancel") } })
-}
-
-@Composable private fun ResearchSettings(vm: PilotViewModel, recording: Boolean) {
-    var code by remember { mutableStateOf("") }
-    var agreed by remember { mutableStateOf(false) }
-    Text("Approved research server: ${vm.researchOrigin}")
-    Text("Optional study enrollment sends grade, language, class-size band, recording and reflection totals, chosen practice, follow-up and usefulness rating under the enrolled study schema. These summaries may still identify a participant in a small study. Audio, class names and private notes stay here. Separate study consent is required.")
-    OutlinedTextField(value=code,onValueChange={code=it},label={Text("Private enrollment code")},singleLine=true,enabled=!recording && !vm.busy)
-    Row(verticalAlignment=Alignment.CenterVertically) {
-        Checkbox(checked=agreed,onCheckedChange={agreed=it},enabled=!recording && !vm.busy)
-        Text("I have reviewed and agreed to the separate study consent.")
-    }
-    Button(onClick={vm.enrollResearch(code);code="";agreed=false},enabled=agreed && code.length in 30..100 && !recording && !vm.busy) {Text("Enroll in research")}
-    OutlinedButton(onClick=vm::submitResearchReview,enabled=vm.canSubmitResearch && !recording && !vm.busy) {Text("Submit selected weekly review")}
-    if (vm.profile?.cohort == "secondary" && vm.researchStudy != "secondary") Text("Secondary research submissions require a separate study enrollment; local reflection remains available.")
-    OutlinedButton(onClick=vm::syncResearch,enabled=!recording && !vm.busy) {Text("Retry research transfer")}
-    OutlinedButton(onClick=vm::withdrawResearch,enabled=!recording && !vm.busy) {Text("Stop sharing and withdraw")}
-    Text("Withdrawal clears queued summaries immediately. Remote deletion waits for connectivity; all records also expire within 30 days. Deleting or excluding lessons stops enrollment to retract any submitted summary.")
+private fun localizedResearchStatus(value: String, locale: String): String { if (locale != "am") return value; return when { value.startsWith("Research sharing is off") -> "የጥናት ማጋራት ጠፍቷል።"; value.startsWith("Sharing is off") -> "ማጋራት ጠፍቷል። የርቀት ፈቃድ ማንሳት ግንኙነትን እየጠበቀ ነው።"; value.startsWith("Research active") -> "ጥናቱ ንቁ ነው። በግልጽ የገቡ ምልከታዎች ብቻ ይጋራሉ።"; else -> value } }
+private fun settingsTitle(page: String, locale: String) = when (page) { "profile" -> tr(locale, "Class profile", "የክፍል መገለጫ"); "language" -> tr(locale, "Language", "ቋንቋ"); "microphone" -> tr(locale, "Microphone", "ማይክሮፎን"); "notifications" -> tr(locale, "Notifications", "ማሳወቂያዎች"); "privacy" -> tr(locale, "Privacy & data", "ግላዊነትና መረጃ"); "support" -> tr(locale, "Help & support", "እገዛና ድጋፍ"); else -> tr(locale, "About ECHO", "ስለ ECHO") }
+private fun reminderLabel(vm: PilotViewModel, locale: String): String {
+    val day = if (vm.reminderDay == "SUNDAY") tr(locale, "Sunday", "እሁድ") else tr(locale, "Saturday", "ቅዳሜ")
+    val time = String.format(Locale.ROOT, "%02d:%02d", vm.reminderMinute / 60, vm.reminderMinute % 60)
+    return "$day · $time"
 }

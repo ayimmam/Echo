@@ -1,6 +1,6 @@
 # Offline recording development build
 
-Current workflow: 2026-10-11. See the [Android guide](../../edge/android/README.md) for build prerequisites and the [documentation index](../README.md) for current versus historical scope.
+See the [Android guide](../../edge/android/README.md) for build prerequisites and the [documentation index](../README.md) for current versus historical scope.
 
 The launcher now opens real local capture, not the seeded simulator. Do not confuse successful compilation with readiness to record classrooms. Use authorized adult test audio for the checks below before field validation.
 
@@ -14,12 +14,12 @@ Open `edge/android` in Android Studio, or run from that directory:
 
 APK: `edge/android/app/build/outputs/apk/debug/app-debug.apk`. The current scaffold requires Android 10+; inventory actual teacher devices before procurement. Native model compatibility is not established.
 
-1. Save a class name, grade 1–4, subject, classroom language, class size and learning goal. Do not enter pupil names. More classes can be added in Settings.
-2. Connect a wired/USB input and tap Record; grant microphone permission. The default refuses to start without an external input. Phone-mic testing is an explicit Settings choice. Bluetooth capture is not part of this implementation.
-3. Lock the screen and teach/test normally. Stop from the app or ongoing notification. Completed audio is saved locally without a separate save screen.
-4. Open the lesson's details to play a selected short excerpt on the phone, add private context, exclude the lesson or delete it. Use headphones for privacy.
-5. Open Reflection, choose the class/week, review saved-duration bars, correct lesson context, choose one goal-based practice and rate the review. Next week's reflection asks whether the previous practice was tried.
-6. Settings has an opt-in local weekend reminder (Android notification permission is required), and exposes the separately stored synthetic demo, language preference, mic choice and permanent deletion of collected data. Default builds send no research data. Optional connected-build enrollment/transfer is covered in the [infrastructure runbook](NON_HUAWEI_INFRASTRUCTURE_RUNBOOK.md).
+1. In the welcome screen, choose English or Amharic. Save a class name, grade, subject, classroom language and class size. Use authorized adult audio and leave out learner names.
+2. On Home, choose a wired/USB or phone microphone beside **Start recording**. Select **Test mic** and grant microphone access. Verify that the test detects adult speech and creates no recording in History.
+3. Record in airplane mode. Confirm that the input display responds to sound, lock the screen, then unlock and tap **Stop and save**. Repeat using the recording notification when notification access is enabled.
+4. Open the recording in History. Use headphones to play an excerpt. Check that the audio check is available immediately, with no charger or network. Edit the lesson context and note, or exclude the lesson from Reflection.
+5. Open Reflection. Save a private note, choose one goal-based practice and rate the review. Restart the app and confirm those choices are restored offline.
+6. Open Settings from Home. Check the built-in help, weekend reminder, language, synthetic demo and deletion controls. Optional connected-build enrollment and transfer are covered in the [infrastructure runbook](NON_HUAWEI_INFRASTRUCTURE_RUNBOOK.md).
 
 ## Automated checks
 
@@ -33,6 +33,7 @@ Record results per phone, OS, microphone/adapter and app revision. A failed row 
 
 | Check | Expected result |
 |---|---|
+| Fresh install in airplane mode | Welcome, class setup and Home open in both languages. Larger text keeps the microphone choice and record action reachable. |
 | Microphone denied/revoked | No capture or crash; actionable message; already committed chunks remain recoverable. |
 | External input absent | Default external mode refuses to record; no automatic phone-mic fallback. |
 | Unplug/change route | Capture ends with an interruption reason; inspect for any audio after the route change. |
@@ -43,6 +44,7 @@ Record results per phone, OS, microphone/adapter and app revision. A failed row 
 | Reboot | No automatic microphone restart; previous interrupted session recovers when opened. |
 | Low storage | Capture stops before exhausting storage; the app reports the problem. |
 | Playback | First/middle/final AAC excerpt plays from RAM; leaving the app and starting capture stop playback. |
+| Offline audio check | Saved lesson detail shows microphone guidance immediately. Compare a normal adult recording with very low input and clipped input. |
 | Retention | In a disposable test installation, advance the clock past 30 days: audio, notes and reflection disappear; playback denies expired content; rollback does not restore it. |
 | Backups | Verify OS backup/restore and device-transfer exclusions on the tested vendor build. |
 | Corrupt ciphertext/Keystore loss | Visible storage error; no demo data substitution or silent reset. |

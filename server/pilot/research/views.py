@@ -15,6 +15,11 @@ from .models import Maintenance
 def response(code,status):return JsonResponse({'error':code},status=status)
 
 def json_api(limit=30):
+    """Credential-only API: never authorize using browser sessions or cookies.
+
+    CSRF exemption is limited to JSON POSTs authenticated by an explicit bearer
+    token (or a single-use enrollment code). Browser views retain CSRF checks.
+    """
     def decorate(fn):
         @csrf_exempt
         @wraps(fn)

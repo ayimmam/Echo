@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-24",
+  "engine": "Semgrep OSS 1.182.1 (semgrep-core)",
+  "mode": "Local scan; no source upload; native-language, spacegrep and regex targets",
+  "target_manifest": "git-tracked text files with extensions: py, kt, html, yml, yaml, sh, json, xml, md, txt, toml, properties, kts, example",
+  "scan_options": {
+    "jobs": 2,
+    "timeout_seconds_per_rule_file": 5
+  },
+  "unique_text_files": 222,
+  "scans": [
+    {
+      "config": "p/default",
+      "rules_sha256": "19ad41aca0b6095a6cb2dd3826473abda71b94b92813dc9963666e95591975cc",
+      "files_scanned": 222,
+      "before_findings": 9,
+      "after_findings": 5,
+      "errors": []
+    },
+    {
+      "config": "p/security-audit",
+      "rules_sha256": "83d7cde9157b3c79cc5cfaea26e7bd2ba9c740f2ba07635ad475b2585556c32d",
+      "files_scanned": 222,
+      "before_findings": 1,
+      "after_findings": 1,
+      "errors": []
+    },
+    {
+      "config": "p/mobsfscan",
+      "rules_sha256": "a9b39ead14a509555a1cff45684cf748bb558562b6ac4344bf115278a6d650d6",
+      "files_scanned": 57,
+      "before_findings": 1,
+      "after_findings": 1,
+      "errors": []
+    }
+  ],
+  "findings": [
+    {
+      "rule": "yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+      "path": ".github/workflows/pilot-infrastructure.yml",
+      "line": 32,
+      "severity": "WARNING",
+      "disposition": "fixed",
+      "message": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`."
+    },
+    {
+      "rule": "yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+      "path": ".github/workflows/pilot-infrastructure.yml",
+      "line": 35,
+      "severity": "WARNING",
+      "disposition": "fixed",
+      "message": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`."
+    },
+    {
+      "rule": "yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+      "path": ".github/workflows/pilot-infrastructure.yml",
+      "line": 50,
+      "severity": "WARNING",
+      "disposition": "fixed",
+      "message": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`."
+    },
+    {
+      "rule": "yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+      "path": ".github/workflows/pilot-infrastructure.yml",
+      "line": 53,
+      "severity": "WARNING",
+      "disposition": "fixed",
+      "message": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`."
+    },
+    {
+      "rule": "java.android.security.exported_activity.exported_activity",
+      "path": "edge/android/app/src/main/AndroidManifest.xml",
+      "line": 29,
+      "severity": "WARNING",
+      "disposition": "reviewed_intentional",
+      "message": "The application exports an activity. Any application on the device can launch the exported activity which may compromise the integrity of your application or its data.  Ensure that any exported activities do not have privileged access to your application's control plane."
+    },
+    {
+      "rule": "kotlin.lang.security.gcm-detection.gcm-detection",
+      "path": "edge/android/app/src/main/java/org/ethioware/echo/pilot/AuthenticatedEnvelope.kt",
+      "line": 10,
+      "severity": "INFO",
+      "disposition": "reviewed_intentional",
+      "message": "GCM detected, please check that IV/nonce is not reused, an Initialization Vector (IV) is a nonce used to randomize the encryption, so that even if multiple messages with identical plaintext are encrypted, the generated corresponding ciphertexts are different.Unlike the Key, the IV usually does not need to be secret, rather it is important that it is random and unique. Certain encryption schemes the IV is exchanged in public as part of the ciphertext. Reusing same Initialization Vector with the same Key to encrypt multiple plaintext blocks allows an attacker to compare the ciphertexts and then, with some assumptions on the content of the messages, to gain important information about the data being encrypted."
+    },
+    {
+      "rule": "kotlin.lang.security.gcm-detection.gcm-detection",
+      "path": "edge/android/app/src/main/java/org/ethioware/echo/pilot/AuthenticatedEnvelope.kt",
+      "line": 18,
+      "severity": "INFO",
+      "disposition": "reviewed_intentional",
+      "message": "GCM detected, please check that IV/nonce is not reused, an Initialization Vector (IV) is a nonce used to randomize the encryption, so that even if multiple messages with identical plaintext are encrypted, the generated corresponding ciphertexts are different.Unlike the Key, the IV usually does not need to be secret, rather it is important that it is random and unique. Certain encryption schemes the IV is exchanged in public as part of the ciphertext. Reusing same Initialization Vector with the same Key to encrypt multiple plaintext blocks allows an attacker to compare the ciphertexts and then, with some assumptions on the content of the messages, to gain important information about the data being encrypted."
+    },
+    {
+      "rule": "kotlin.lang.security.gcm-detection.gcm-detection",
+      "path": "edge/android/app/src/main/java/org/ethioware/echo/pilot/AuthenticatedEnvelope.kt",
+      "line": 19,
+      "severity": "INFO",
+      "disposition": "reviewed_intentional",
+      "message": "GCM detected, please check that IV/nonce is not reused, an Initialization Vector (IV) is a nonce used to randomize the encryption, so that even if multiple messages with identical plaintext are encrypted, the generated corresponding ciphertexts are different.Unlike the Key, the IV usually does not need to be secret, rather it is important that it is random and unique. Certain encryption schemes the IV is exchanged in public as part of the ciphertext. Reusing same Initialization Vector with the same Key to encrypt multiple plaintext blocks allows an attacker to compare the ciphertexts and then, with some assumptions on the content of the messages, to gain important information about the data being encrypted."
+    },
+    {
+      "rule": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+      "path": "server/pilot/research/views.py",
+      "line": 24,
+      "severity": "WARNING",
+      "disposition": "reviewed_intentional",
+      "message": "Detected usage of @csrf_exempt, which indicates that there is no CSRF token set for this route. This could lead to an attacker manipulating the user's account and exfiltration of private data. Instead, create a function without this decorator."
+    },
+    {
+      "rule": "mobsf.mobsfscan.kotlin.crypto.android_kotlin_insecure_random",
+      "path": "edge/android/app/src/main/java/org/ethioware/echo/domain/MockMeasure.kt",
+      "line": 25,
+      "severity": "WARNING",
+      "disposition": "reviewed_intentional",
+      "message": "The App uses an insecure Random Number Generator."
+    }
+  ]
+}

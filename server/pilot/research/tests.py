@@ -87,6 +87,19 @@ class ResearchTests(TestCase):
     def test_csrf_required_for_browser_login(self):
         client=Client(enforce_csrf_checks=True)
         self.assertEqual(client.post('/accounts/login/',{'username':'x','password':'y'}).status_code,403)
+    def test_api_requires_explicit_credentials_even_with_browser_session(self):
+        client=Client(enforce_csrf_checks=True)
+        user=User.objects.create_user('api-session-viewer')
+        user.user_permissions.add(Permission.objects.get(codename='view_research_aggregate'))
+        client.force_login(user)
+        payload=json.dumps(self.data)
+        url='/api/v1/research/summaries'
+        self.assertEqual(client.post(url,payload,content_type='application/json').status_code,401)
+        self.assertEqual(Summary.objects.count(),0)
+        self.assertEqual(client.post('/api/v1/research/withdraw','{}',content_type='application/json').status_code,401)
+        self.assertEqual(client.post('/api/v1/research/enroll','{}',content_type='application/json').status_code,400)
+        self.assertEqual(client.post(url,payload,content_type='application/json',
+            HTTP_AUTHORIZATION='Bearer '+self.token).status_code,200)
     def test_duplicate_json_keys_rejected(self):
         r=self.client.post('/api/v1/research/enroll','{"enrollment_code":"a","enrollment_code":"b"}',content_type='application/json')
         self.assertEqual(r.status_code,400)

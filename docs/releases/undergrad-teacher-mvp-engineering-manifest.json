@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "created_at_utc": "2026-11-17T18:56:23.550607+00:00",
+  "app_commit": "7172063e79998675866737a8da17ece868844f1d",
+  "backend_commit": "7172063e79998675866737a8da17ece868844f1d",
+  "worktree_clean": false,
+  "apk_path": "/Users/anteneh/Documents/Repos/Echo/edge/android/app/build/outputs/apk/debug/app-debug.apk",
+  "apk_sha256": "79500ad2a7d1ce26652703f2522c5090ad8de30933b26f6b5a8972f50c997e56",
+  "environment": "offline",
+  "research_contracts": [
+    "RESEARCH_SUMMARY_V1",
+    "RESEARCH_SUMMARY_V2"
+  ],
+  "coaching_content_version": "hawassa-coaching-2026-10-draft-2",
+  "design_revision": "repository ECHO Android App Design exports @ current commit",
+  "warning": "A dirty or unsigned build is evidence for engineering rehearsal only, not field release."
+}

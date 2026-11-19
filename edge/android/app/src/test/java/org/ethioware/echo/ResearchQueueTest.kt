@@ -99,12 +99,15 @@ class ResearchQueueTest {
         val profile=ClassProfile(grade=11,subject="Mathematics",goal="math_reasoning")
         val review=JSONObject().put("created",time).put("chosen","math_reasoning")
             .put("tried","notyet").put("rating",4)
+            .put("notes", JSONObject().put("participation", "private classroom note"))
         val payload=ResearchProjection.buildV2(profile,emptyList(),review)
         assertEquals(2,payload.getInt("schema_version"))
         assertEquals(0,payload.getInt("lesson_count"))
         assertEquals(0,payload.getInt("recorded_minutes"))
         assertEquals("not_yet",payload.getString("follow_up"))
         assertFalse(payload.toString().contains(profile.name))
+        assertFalse(payload.has("notes"))
+        assertFalse(payload.toString().contains("private classroom note"))
     }
     @Test fun signalHasNoSemanticMetricsAndExpiresWithLesson() {
         val row=lesson();val result=store.analyzeSignal(row.id)!!

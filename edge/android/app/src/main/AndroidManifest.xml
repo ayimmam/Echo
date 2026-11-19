@@ -22,7 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Echo">
         <service android:name=".pilot.RecordingService" android:exported="false" android:foregroundServiceType="microphone" />
-        <service android:name=".pilot.AnalysisJob" android:exported="false" android:permission="android.permission.BIND_JOB_SERVICE" />
         <service android:name=".pilot.ResearchJob" android:exported="false" android:permission="android.permission.BIND_JOB_SERVICE" />
         <service android:name=".pilot.ExpiryJob" android:exported="false" android:permission="android.permission.BIND_JOB_SERVICE" />
         <activity android:name=".SyntheticDemoActivity" android:exported="false" />
